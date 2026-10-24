@@ -1,0 +1,130 @@
+export const curriculumData = {
+  overview:
+    "Kurikulum SD Plus An-Nur menerapkan Kurikulum SD Merdeka yang diperkaya dengan Kurikulum Keislaman Khas An-Nur (Tahfidzul Qur'an, Tahsin Qira'ati, Fiqih Ibadah Praktis, dan Adab Islami), diselenggarakan dalam format 6 hari sekolah (Pagi).",
+
+  utilities: {
+    curriculum: "Kurikulum SD Merdeka",
+    schedule: "Pagi / 6 hari",
+    semester: "2026/2027 Gasal",
+    internet: "Shared",
+    powerSource: "PLN",
+    powerCapacity: "3.500 VA",
+    landArea: "1.320 m²",
+    rombelCount: "13 Rombongan Belajar",
+    classrooms: "13 Ruang Kelas",
+    teachers: "13 Guru",
+    studentsTotal: "398 Siswa (193 Laki-laki, 205 Perempuan)",
+  },
+
+  pillars: [
+    {
+      id: "pillar-merdeka",
+      title: "Kurikulum SD Merdeka",
+      category: "Standar Kemendikbudristek",
+      summary: "Pembelajaran intrakurikuler berdiferensiasi yang memfasilitasi setiap siswa mengeksplorasi konsep sesuai tahap pencapaian perkembangan belajarnya.",
+      points: [
+        "Fokus pada materi esensial literasi membaca dan numerasi kontekstual",
+        "Pembelajaran mendalam (deep learning) dan bermakna ramah anak",
+        "Penilaian berkala berbasis asesmen diagnostik dan formatif",
+        "Waktu belajar pagi / 6 hari kerja sekolah teratur dan efektif",
+      ],
+      iconName: "BookOpen",
+    },
+    {
+      id: "pillar-p5",
+      title: "Projek Penguatan Profil Pelajar Pancasila (P5)",
+      category: "Karakter & Kebangsaan",
+      summary: "Kegiatan kokurikuler berbasis projek nyata untuk menumbuhkan karakter beriman, bertaqwa, berakhlak mulia, bernalar kritis, dan gotong royong.",
+      points: [
+        "Tema Kearifan Lokal dan Cinta Lingkungan Hidup",
+        "Projek Kewirausahaan Cilik & Market Day Siswa",
+        "Tema Bhinneka Tunggal Ika & Kepedulian Sosial Siswa",
+        "Gelar Karya & Pameran Kreativitas Siswa setiap semester",
+      ],
+      iconName: "Sparkles",
+    },
+    {
+      id: "pillar-diniyah-tahfidz",
+      title: "Program Tahfidz & Keislaman Plus",
+      category: "Ciri Khas Keislaman",
+      summary: "Program pembinaan keagamaan intensif mencakup hafalan Al-Qur'an Juz 30, tahsin metode teruji, hafalan doa harian, dan praktik ibadah.",
+      points: [
+        "Target hafalan tuntas Juz 30 dan surat-surat pilihan dengan tartil",
+        "Pembimbingan tahsin makharijul huruf bersama ustadz/ustadzah kompeten",
+        "Pembiasaan shalat Dhuha, shalat Zhuhur berjamaah, dan dzikir bersama",
+        "Munaqasyah dan Tasmi' Hafalan Juz 30 berkala",
+      ],
+      iconName: "Award",
+    },
+    {
+      id: "pillar-bilingual-ekskul",
+      title: "Literasi Digital & Bahasa Dasar",
+      category: "Kecakapan Abad 21",
+      summary: "Pengenalan dasar percakapan bahasa Inggris dan bahasa Arab sederhana, serta pengenalan literasi komputer ramah anak.",
+      points: [
+        "English Fun Club: kosakata harian, bernyanyi, dan percakapan sederhana",
+        "Bahasa Arab Dasar untuk memahami bacaan shalat dan doa harian",
+        "Literasi komputer dasar & koding logika logika ramah anak di perpustakaan",
+        "Ekstrakurikuler Pramuka Siaga/Penggalang, Futsal, Seni Kriya, dan Beladiri",
+      ],
+      iconName: "Building",
+    },
+  ],
+
+  levels: [
+    {
+      level: "Fase A (Kelas 1 - 2)",
+      ageRange: "Usia 6 - 8 Tahun",
+      title: "Fase Transisi & Literasi Fondasi",
+      focus: "Adaptasi Sekolah Menyenangkan, Membaca Lancar, & Hafalan Surat Pendek",
+      description: "Membantu anak beradaptasi dari TK ke jenjang SD dengan pendekatan belajar menyenangkan, menguatkan fondasi calistung kontekstual, dan pembiasaan adab.",
+      keyCompetencies: [
+        "Lancar membaca kalimat sederhana dan berhitung dasar",
+        "Hafalan Surat An-Nas sampai dengan Surat Al-Kafirun",
+        "Hafalan doa-doa harian (makan, tidur, masuk masjid, orang tua)",
+        "Kemandirian merapikan perlengkapan sekolah dan bersosialisasi",
+      ],
+      hours: "Pagi (07.00 - 12.00 WIB)",
+    },
+    {
+      level: "Fase B (Kelas 3 - 4)",
+      ageRange: "Usia 8 - 10 Tahun",
+      title: "Fase Pengembangan Nalar & Kemandirian",
+      focus: "Literasi-Numerasi Lanjutan, Tahfidz Juz 30 Pertengahan, & Eksplorasi Sains",
+      description: "Mengembangkan nalar logis matematika, rasa ingin tahu sains alam, memperdalam kemampuan tahsin tilawah, dan kerja sama kelompok.",
+      keyCompetencies: [
+        "Pemecahan soal cerita matematika dan literasi paragraf panjang",
+        "Hafalan Surat Al-Ma'un sampai dengan Surat Ad-Dhuha",
+        "Praktik wudhu dan shalat fardhu secara mandiri dan tertib",
+        "Keaktifan dalam kegiatan projek kelompok P5 dan kepramukaan",
+      ],
+      hours: "Pagi (07.00 - 13.00 WIB)",
+    },
+    {
+      level: "Fase C (Kelas 5 - 6)",
+      ageRange: "Usia 10 - 12 Tahun",
+      title: "Fase Pemantapan & Kepemimpinan",
+      focus: "Tuntas Hafalan Juz 30, Sukses Asesmen Standar, & Kesiapan Melanjutkan ke SMP/MTs",
+      description: "Memantapkan kompetensi akademik asesmen nasional, penyelesaian target hafalan Juz 30, serta pembentukan karakter kepemimpinan dan kematangan akhlak.",
+      keyCompetencies: [
+        "Khatam dan tuntas tasmi' hafalan Juz 30 berpredikat baik",
+        "Kesiapan optimal menghadapi Asesmen Standar Pendidikan",
+        "Kepemimpinan regu pramuka dan petugas upacara bendera",
+        "Kesiapan matang melanjutkan ke SMP/MTs atau pondok pesantren",
+      ],
+      hours: "Pagi (07.00 - 13.30 WIB)",
+    },
+  ],
+
+  dailySchedule: [
+    { time: "06.45 - 07.00", activity: "Penyambutan Siswa oleh Guru (3S: Senyum, Salam, Sapa)" },
+    { time: "07.00 - 07.30", activity: "Apel Pagi / Ikrar / Shalat Dhuha Berjamaah & Tadarrus Al-Qur'an" },
+    { time: "07.30 - 09.15", activity: "Sesi Belajar 1: Pembelajaran Tematik & Kurikulum SD Merdeka" },
+    { time: "09.15 - 09.45", activity: "Istirahat 1: Makan Sehat Bersama & Bermain di Halaman Sekolah" },
+    { time: "09.45 - 11.30", activity: "Sesi Belajar 2: Program Tahfidz, Tahsin Qur'an, & PAI" },
+    { time: "11.30 - 12.00", activity: "Persiapan & Pelaksanaan Shalat Zhuhur Berjamaah di Musholla" },
+    { time: "12.00 - 12.30", activity: "Istirahat Siang / Makan Siang Bersama" },
+    { time: "12.30 - 13.30", activity: "Sesi Belajar 3: Projek Penguatan Profil Pelajar Pancasila (P5) / Ekstrakurikuler" },
+    { time: "13.30", activity: "Doa Penutup Majelis, Evaluasi Harian, & Kepulangan Siswa" },
+  ],
+};
