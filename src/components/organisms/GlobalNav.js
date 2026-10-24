@@ -27,24 +27,9 @@ export default function GlobalNav() {
         {/* Left: Brand Identity */}
         <Link
           href="/"
-          className="flex items-center gap-3 text-white hover:opacity-90 transition-opacity apple-press-action shrink-0"
+          className="text-[16px] sm:text-[17px] font-semibold tracking-[-0.2px] text-white hover:text-[#cccccc] transition-colors apple-press-action shrink-0"
         >
-          <span className="w-8 h-8 rounded-full bg-[#0066cc] flex items-center justify-center text-[14px] font-bold text-white shadow-xs">
-            ن
-          </span>
-          <div className="flex flex-col text-left">
-            <div className="flex items-center gap-2">
-              <span className="text-[15px] sm:text-[16px] font-semibold tracking-tight leading-tight">
-                SD PLUS AN-NUR
-              </span>
-              <span className="text-[10px] font-medium bg-[#1d1d1f] text-[#2997ff] border border-[#333333] px-1.5 py-0.2 rounded-full uppercase tracking-wider">
-                SD Swasta
-              </span>
-            </div>
-            <span className="text-[11px] text-[#7a7a7a] leading-none hidden sm:inline-block">
-              Terakreditasi A • Kurikulum SD Merdeka
-            </span>
-          </div>
+          SD PLUS AN-NUR
         </Link>
 
         {/* Center: Desktop Nav Links (Single unified section) */}
