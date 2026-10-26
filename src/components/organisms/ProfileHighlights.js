@@ -215,6 +215,26 @@ export default function ProfileHighlights({ showAll = false }) {
                 </Badge>
               </div>
 
+              {/* Sejarah & Rekam Jejak Callout Button */}
+              <div className="mb-6 p-4 rounded-xl bg-[#fafafc] border border-[#e0e0e0] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <span className="text-[12px] text-[#0066cc] font-semibold uppercase block">
+                    Sejarah &amp; Pendirian
+                  </span>
+                  <span className="text-[14px] text-[#1d1d1f] font-medium block">
+                    Didirikan 12 Juli 2012 • 3 Periode Kepala Sekolah
+                  </span>
+                </div>
+                <Button
+                  href="/profil/sejarah"
+                  variant="primary"
+                  size="sm"
+                  className="shrink-0 text-[13px]"
+                >
+                  Buka Linimasa &amp; Kepemimpinan →
+                </Button>
+              </div>
+
               {/* Direct Maps Link Block */}
               <div className="p-4 rounded-xl bg-[#f5f5f7] border border-[#e0e0e0] flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -415,6 +435,16 @@ export default function ProfileHighlights({ showAll = false }) {
                 </p>
               </div>
             ))}
+          </div>
+
+          <div className="mt-8 text-center">
+            <Button
+              href="/profil/kepala-wakil"
+              variant="secondary-pill"
+              size="md"
+            >
+              Lihat Halaman Khusus Kepala &amp; Wakil Kepala →
+            </Button>
           </div>
         </div>
       </section>

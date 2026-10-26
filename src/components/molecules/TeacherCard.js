@@ -1,66 +1,48 @@
 import React from "react";
-import Badge from "@/components/atoms/Badge";
-import Text from "@/components/atoms/Text";
-import { GraduationCapIcon } from "@/components/atoms/Icons";
+import Image from "next/image";
 
-export default function TeacherCard({ teacher, onSelect }) {
-  const isFemale = teacher.gender === "P";
+export default function TeacherCard({ teacher }) {
+  // Check if this teacher is the Principal with photo
+  const isPrincipal = teacher.id === "guru-01";
+
+  // Initials for avatar
+  const initials = teacher.name
+    .replace(/^(Ustadz|Ustadzah|Dr\.|Dra\.|H\.|Hj\.)\s+/gi, "")
+    .slice(0, 2)
+    .toUpperCase();
 
   return (
-    <div className="bg-white border border-[#e0e0e0] rounded-[18px] p-6 flex flex-col justify-between transition-all hover:border-[#1d1d1f] hover:bg-[#fafafc]">
-      <div>
-        {/* Top: Avatar placeholder & Department Badge */}
-        <div className="flex items-start justify-between gap-3 mb-4">
-          <div className="w-14 h-14 rounded-lg bg-[#f5f5f7] border border-[#e0e0e0] flex items-center justify-center text-[#1d1d1f] font-semibold text-lg overflow-hidden shrink-0">
-            {/* Elegant initials glyph with geometric styling */}
-            <span className="text-[#0066cc]">
-              {teacher.name
-                .replace(/^(Ustadz|Ustadzah|Dr\.|Dra\.|H\.|Hj\.)\s+/gi, "")
-                .slice(0, 2)
-                .toUpperCase()}
+    <div className="bg-white border border-[#e0e0e0] rounded-[20px] overflow-hidden flex flex-col apple-product-shadow transition-all duration-200 hover:border-[#1d1d1f] hover:shadow-md hover:-translate-y-0.5">
+      {/* Top: Teacher Portrait (3:4 aspect ratio) */}
+      <div className="relative aspect-[3/4] w-full bg-gradient-to-b from-[#f0f4f8] via-[#e8eff8] to-[#dce7f5] flex items-center justify-center overflow-hidden border-b border-[#e0e0e0]">
+        {isPrincipal ? (
+          <Image
+            src="/images/kepala-sekolah.jpg"
+            alt={teacher.name}
+            fill
+            className="object-cover object-top"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        ) : (
+          <div className="flex flex-col items-center justify-center text-center select-none">
+            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-white border border-[#e0e0e0] shadow-xs flex items-center justify-center mb-2.5 text-[#0066cc] font-bold text-3xl">
+              {initials}
+            </div>
+            <span className="text-[12px] font-medium text-[#7a7a7a]">
+              SD Plus An-Nur
             </span>
           </div>
-          <Badge variant="neutral" size="sm" className="truncate max-w-[170px]">
-            {teacher.department}
-          </Badge>
-        </div>
-
-        {/* Teacher Name */}
-        <h3 className="text-[17px] font-semibold leading-[1.24] tracking-[-0.374px] text-[#1d1d1f] mb-1">
-          {teacher.name}
-        </h3>
-
-        {/* Role & Subject */}
-        <p className="text-[14px] text-[#0066cc] font-medium leading-[1.4] mb-3">
-          {teacher.role}
-        </p>
-
-        {/* Education Credentials */}
-        <div className="flex items-start gap-2 text-[13px] text-[#7a7a7a] mb-3">
-          <GraduationCapIcon className="w-4 h-4 shrink-0 mt-0.5 text-[#1d1d1f]" />
-          <span className="line-clamp-2 leading-[1.4]">{teacher.education}</span>
-        </div>
-
-        {/* Quote / Motto */}
-        {teacher.quote && (
-          <p className="text-[13px] italic text-[#333333] bg-[#f5f5f7] p-3 rounded-lg border-l-2 border-[#0066cc] mb-4 leading-relaxed">
-            &ldquo;{teacher.quote}&rdquo;
-          </p>
         )}
       </div>
 
-      {/* Footer / Certifications */}
-      <div className="pt-3 border-t border-[#f0f0f0] flex flex-wrap items-center justify-between gap-2">
-        <span className="text-[12px] text-[#7a7a7a]">
-          {teacher.experience}
-        </span>
-        <button
-          type="button"
-          onClick={() => onSelect && onSelect(teacher)}
-          className="text-[14px] text-[#0066cc] hover:underline font-normal apple-press-action cursor-pointer"
-        >
-          Detail Profil →
-        </button>
+      {/* Details: Only Teacher Name and Subject/Wali Kelas */}
+      <div className="p-5 text-center flex flex-col justify-center min-h-[96px]">
+        <h3 className="text-[17px] font-bold text-[#1d1d1f] leading-snug tracking-[-0.2px] mb-1.5">
+          {teacher.name}
+        </h3>
+        <p className="text-[14px] text-[#0066cc] font-medium leading-snug">
+          {teacher.role}
+        </p>
       </div>
     </div>
   );

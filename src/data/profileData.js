@@ -141,4 +141,53 @@ export const profileData = {
       description: "Penyedia makanan dan minuman sehat, bergizi, dan higienis yang terawasi untuk seluruh warga sekolah.",
     },
   ],
+
+  // History timeline and leadership track record
+  history: {
+    foundingYear: "2012",
+    foundingDate: "12 Juli 2012",
+    shortBackground:
+      "SD Plus An-Nur didirikan pada 12 Juli 2012 di bawah naungan Yayasan Pendidikan Islam An-Nur Kediri. Berawal dari ikhtiar para tokoh pendidikan dan alim ulama setempat untuk menghadirkan sekolah dasar yang memadukan keunggulan kurikulum nasional dengan pondasi adab, tahfidzul qur'an, dan pembiasaan ibadah harian. Berawal dari 1 rombongan belajar awal, kini SD Plus An-Nur telah berkembang menjadi Sekolah Dasar Swasta unggulan berakreditasi A dengan 13 rombongan belajar dan 398 peserta didik aktif.",
+    milestones: [
+      {
+        badge: "Awal Pendirian",
+        date: "12 Juli 2012",
+        title: "Peletakan Pondasi & Pembukaan Angkatan Pertama",
+        desc: "Resmi beroperasi dengan 1 rombongan belajar pertama. Menghadirkan model pembelajaran terpadu antara kurikulum dasar kementerian dengan program unggulan Tahfidz Qur'an dan pembiasaan shalat berjamaah di Kecamatan Kras, Kabupaten Kediri.",
+      },
+      {
+        badge: "Kemandirian & Akreditasi",
+        date: "10 Agustus 2017",
+        title: "Perolehan Status Akreditasi A & Perluasan Gedung",
+        desc: "Berhasil meraih predikat Akreditasi A dari Badan Akreditasi Nasional Sekolah/Madrasah (BAN-S/M). Disertai peresmian perluasan sarana gedung ruang kelas mandiri, perpustakaan terpadu, dan fasilitas musholla siswa.",
+      },
+      {
+        badge: "Transformasi Kurikulum Merdeka",
+        date: "15 Juli 2022",
+        title: "Implementasi Penuh Kurikulum SD Merdeka & Literasi Sains",
+        desc: "Menjadi pelopor penerapan Kurikulum SD Merdeka secara komprehensif di lingkungan SD Swasta wilayah Kediri, dengan penguatan Projek Penguatan Profil Pelajar Pancasila (P5) dan literasi digital ramah anak hingga menjangkau 13 rombel.",
+      },
+    ],
+    leadershipTrackRecord: [
+      {
+        no: "01",
+        period: "2012 - 2016",
+        name: "Ustadz Drs. H. Maksum Ridwan",
+        status: "Perintis & Peletak Pondasi Kurikulum Islam Terpadu",
+      },
+      {
+        no: "02",
+        period: "2016 - 2020",
+        name: "Ustadz Muhammad Syukron, S.Pd.I.",
+        status: "Pengembangan Akreditasi A & Fasilitas Kampus",
+      },
+      {
+        no: "03",
+        period: "2020 - Sekarang",
+        name: "Ustadz H. Ahmad Fauzi, S.Pd.I., M.Pd.",
+        status: "Kepala Sekolah Aktif • Inovasi Kurikulum Merdeka & 13 Rombel",
+      },
+    ],
+  },
 };
+
