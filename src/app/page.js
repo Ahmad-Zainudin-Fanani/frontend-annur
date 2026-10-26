@@ -5,6 +5,8 @@ import FeaturedPrograms from "@/components/organisms/FeaturedPrograms";
 import VisionMissionPrincipal from "@/components/organisms/VisionMissionPrincipal";
 import HomeContactSection from "@/components/organisms/HomeContactSection";
 import CTASection from "@/components/organisms/CTASection";
+import ApiState from "@/components/atoms/ApiState";
+import { normalizeCurriculums, publicApi } from "@/data/api";
 
 export const metadata = {
   title: "SD Plus An-Nur | Sekolah Dasar Swasta Islam Unggulan",
@@ -12,7 +14,27 @@ export const metadata = {
     "Situs resmi SD Plus An-Nur (Sekolah Dasar Swasta). Menerapkan Kurikulum SD Merdeka, program Tahfidz Al-Qur'an, dan pembiasaan adab islami dalam lingkungan belajar yang ramah anak.",
 };
 
-export default function HomePage() {
+export const instant = false;
+
+export default async function HomePage() {
+  let profile = null;
+  let profileError = null;
+  let curriculum = normalizeCurriculums();
+  let curriculumError = null;
+
+  try {
+    profile = await publicApi.profile();
+  } catch (error) {
+    profileError = error.message;
+  }
+
+  try {
+    const records = await publicApi.curriculums();
+    curriculum = normalizeCurriculums(records, profile);
+  } catch (error) {
+    curriculumError = error.message;
+  }
+
   return (
     <MainLayout>
       {/* ========================================================
@@ -23,32 +45,32 @@ export default function HomePage() {
       {/* ========================================================
           SECTION 2: Ringkasan Program Unggulan
           ======================================================== */}
-      <FeaturedPrograms />
+      <FeaturedPrograms curriculum={curriculum} error={curriculumError} />
 
       {/* ========================================================
           SECTION 3: Visi Misi & Box Kepala Sekolah yang Sedang Menjabat
           (Mengacu persis pada konsep layout gambar/screenshot)
           ======================================================== */}
-      <VisionMissionPrincipal />
+      <VisionMissionPrincipal profile={profile} error={profileError} />
 
       {/* ========================================================
           SECTION 4: Contact Section (Google Maps Kiri & Deskripsi/Kontak Kanan)
           ======================================================== */}
-      <HomeContactSection />
+      <HomeContactSection profile={profile} error={profileError} />
 
       {/* ========================================================
           SECTION 5: Elegant CTA PPDB (Dark #272729)
           ======================================================== */}
-      <CTASection
+      {profile ? <CTASection
         theme="dark"
-        eyebrow="Penerimaan Peserta Didik Baru (PPDB) TA 2026/2027"
-        title="Daftarkan Putra-Putri Anda di SD Plus An-Nur."
-        description="Mari bersama-sama membimbing ananda meraih masa depan cemerlang, beriman, dan berakhlak mulia di Sekolah Dasar Swasta Islam terpercaya."
+        eyebrow="Penerimaan Peserta Didik Baru (PPDB)"
+        title={`Daftarkan Putra-Putri Anda di ${profile.institutionName}.`}
+        description={profile.tagline}
         primaryText="Konsultasi Pendaftaran (PPDB)"
         primaryHref="/kontak"
         secondaryText="Hubungi WhatsApp Kami"
-        secondaryHref="https://wa.me/6281234567890?text=Halo%20SD%20Plus%20An-Nur,%20saya%20ingin%20konsultasi%20PPDB"
-      />
+        secondaryHref={profile.whatsapp ? `https://wa.me/${profile.whatsapp.replace(/\D/g, "")}` : "/kontak"}
+      /> : <ApiState error={profileError} empty={!profileError} />}
     </MainLayout>
   );
 }

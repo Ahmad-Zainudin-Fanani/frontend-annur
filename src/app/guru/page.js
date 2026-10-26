@@ -3,21 +3,33 @@ import MainLayout from "@/components/templates/MainLayout";
 import HeroTile from "@/components/organisms/HeroTile";
 import TeachersShowcase from "@/components/organisms/TeachersShowcase";
 import CTASection from "@/components/organisms/CTASection";
+import { publicApi } from "@/data/api";
 
 export const metadata = {
   title: "Dewan Guru | SD Plus An-Nur",
   description:
-    "Direktori 13 tenaga pendidik SD Plus An-Nur (Sekolah Dasar Swasta) yang penuh dedikasi mendampingi 398 siswa dalam 13 rombongan belajar.",
+    "Direktori tenaga pendidik SD Plus An-Nur.",
 };
 
-export default function GuruPage() {
+export const instant = false;
+
+export default async function GuruPage() {
+  let teachers = [];
+  let error = null;
+
+  try {
+    teachers = await publicApi.teachers();
+  } catch (requestError) {
+    error = requestError.message;
+  }
+
   return (
     <MainLayout>
       <HeroTile
         variant="white"
         eyebrow="Tenaga Pendidik Profesional"
-        title="Dewan Guru SD Plus An-Nur (13 Pendidik)."
-        subtitle="Didukung 13 guru berdedikasi tinggi yang mendampingi tumbuh kembang 398 siswa dalam kurikulum SD Merdeka dan pembinaan akhlak mulia."
+        title="Dewan Guru SD Plus An-Nur."
+        subtitle="Kenali para pendidik yang mendampingi kegiatan belajar dan perkembangan siswa."
         primaryCtaText="Telusuri Direktori Pendidik"
         primaryCtaHref="#guru"
         secondaryCtaText="Struktur Kurikulum"
@@ -25,7 +37,7 @@ export default function GuruPage() {
       />
 
       {/* Teachers Directory Component */}
-      <TeachersShowcase />
+      <TeachersShowcase initialTeachers={teachers} error={error} />
 
       <CTASection
         theme="dark"

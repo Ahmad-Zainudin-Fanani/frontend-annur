@@ -6,17 +6,22 @@ import AchievementCard from "@/components/molecules/AchievementCard";
 import SearchBar from "@/components/molecules/SearchBar";
 import Chip from "@/components/atoms/Chip";
 import Button from "@/components/atoms/Button";
-import {
-  achievementsData,
-  achievementCategories,
-} from "@/data/achievementsData";
+import ApiState from "@/components/atoms/ApiState";
 
-export default function AchievementsShowcase({ initialLimit }) {
+export default function AchievementsShowcase({
+  achievements = [],
+  initialLimit,
+  error = null,
+}) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Semua");
+  const achievementCategories = [
+    "Semua",
+    ...new Set(achievements.map((item) => item.category).filter(Boolean)),
+  ];
 
   const filteredAchievements = useMemo(() => {
-    return achievementsData.filter((item) => {
+    return achievements.filter((item) => {
       const matchCat =
         selectedCategory === "Semua" || item.category === selectedCategory;
       const matchQuery =
@@ -27,7 +32,7 @@ export default function AchievementsShowcase({ initialLimit }) {
         item.description.toLowerCase().includes(searchQuery.toLowerCase());
       return matchCat && matchQuery;
     });
-  }, [searchQuery, selectedCategory]);
+  }, [achievements, searchQuery, selectedCategory]);
 
   const displayedAchievements = initialLimit
     ? filteredAchievements.slice(0, initialLimit)
@@ -89,7 +94,9 @@ export default function AchievementsShowcase({ initialLimit }) {
         </div>
 
         {/* Grid of Achievements */}
-        {displayedAchievements.length > 0 ? (
+        {error ? (
+          <ApiState error={error} />
+        ) : displayedAchievements.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {displayedAchievements.map((item) => (
               <AchievementCard key={item.id} achievement={item} />
@@ -98,7 +105,9 @@ export default function AchievementsShowcase({ initialLimit }) {
         ) : (
           <div className="bg-[#fafafc] border border-[#e0e0e0] rounded-2xl p-10 text-center max-w-md mx-auto">
             <p className="text-[16px] text-[#1d1d1f] font-medium mb-1">
-              Tidak ada data prestasi yang sesuai
+              {achievements.length === 0
+                ? "Belum ada data prestasi"
+                : "Tidak ada data prestasi yang sesuai"}
             </p>
             <p className="text-[13px] text-[#7a7a7a] mb-4">
               Silakan pilih kategori lain atau bersihkan kotak pencarian.

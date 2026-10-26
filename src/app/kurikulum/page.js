@@ -3,21 +3,38 @@ import MainLayout from "@/components/templates/MainLayout";
 import HeroTile from "@/components/organisms/HeroTile";
 import CurriculumOverview from "@/components/organisms/CurriculumOverview";
 import CTASection from "@/components/organisms/CTASection";
+import { normalizeCurriculums, publicApi } from "@/data/api";
 
 export const metadata = {
-  title: "Kurikulum SD Merdeka | SD Plus An-Nur",
-  description:
-    "Kurikulum SD Merdeka di SD Plus An-Nur (SD Swasta). Penyelenggaraan pagi / 6 hari, projek penguatan profil pelajar Pancasila (P5), program tahfidz Juz 30, dan pembinaan karakter.",
+  title: "Kurikulum | SD Plus An-Nur",
+  description: "Informasi kurikulum dan kegiatan belajar SD Plus An-Nur.",
 };
 
-export default function KurikulumPage() {
+export const instant = false;
+
+export default async function KurikulumPage() {
+  let curriculum = normalizeCurriculums();
+  let profile = null;
+  let error = null;
+
+  try {
+    const [records, schoolProfile] = await Promise.all([
+      publicApi.curriculums(),
+      publicApi.profile(),
+    ]);
+    profile = schoolProfile;
+    curriculum = normalizeCurriculums(records, profile);
+  } catch (requestError) {
+    error = requestError.message;
+  }
+
   return (
     <MainLayout>
       <HeroTile
         variant="white"
         eyebrow="Kurikulum &amp; Sistem Belajar"
-        title="Kurikulum SD Merdeka Berbasis Karakter."
-        subtitle="Memadukan Kurikulum SD Merdeka Kemendikbudristek dengan pembinaan keislaman khas, tahfidzul qur'an, dan pembiasaan adab dalam jadwal pagi / 6 hari sekolah."
+        title="Kurikulum & Sistem Belajar SD Plus An-Nur."
+        subtitle={curriculum.overview || "Informasi program kurikulum dan kegiatan belajar."}
         primaryCtaText="Telusuri Pilar Kurikulum"
         primaryCtaHref="#pilar"
         secondaryCtaText="Lihat Fase Belajar (A - C)"
@@ -25,7 +42,7 @@ export default function KurikulumPage() {
       />
 
       {/* Curriculum Overview Component */}
-      <CurriculumOverview />
+      <CurriculumOverview curriculum={curriculum} error={error} />
 
       <CTASection
         theme="dark"
@@ -35,7 +52,7 @@ export default function KurikulumPage() {
         primaryText="Konsultasi PPDB Sekarang"
         primaryHref="/kontak"
         secondaryText="Peta Lokasi Sekolah"
-        secondaryHref="https://www.google.com/maps?q=-7.8743,112.1076"
+        secondaryHref={profile?.location.mapsUrl || "/kontak"}
       />
     </MainLayout>
   );

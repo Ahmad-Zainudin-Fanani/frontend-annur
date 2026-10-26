@@ -1,42 +1,18 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import SectionHeader from "@/components/molecules/SectionHeader";
 import TeacherCard from "@/components/molecules/TeacherCard";
 import SearchBar from "@/components/molecules/SearchBar";
 import { ChevronLeftIcon, ChevronRightIcon } from "@/components/atoms/Icons";
-import { teachersData } from "@/data/teachersData";
-import { publicApi } from "@/data/api";
+import ApiState from "@/components/atoms/ApiState";
 
 const ITEMS_PER_PAGE = 8;
 
-export default function TeachersShowcase() {
-  const [teachers, setTeachers] = useState(teachersData);
+export default function TeachersShowcase({ initialTeachers = [], error = null }) {
+  const teachers = initialTeachers;
 const [searchQuery, setSearchQuery] = useState("");
 const [currentPage, setCurrentPage] = useState(1);
-
-useEffect(() => {
-  let isMounted = true;
-
-  const fetchTeachers = async () => {
-    try {
-      const data = await publicApi.teachers();
-
-      if (isMounted && Array.isArray(data)) {
-        setTeachers(data);
-      }
-    } catch (error) {
-      console.error("Gagal mengambil data guru dari API:", error);
-      // Jika API gagal, gunakan teachersData sebagai fallback.
-    }
-  };
-
-  fetchTeachers();
-
-  return () => {
-    isMounted = false;
-  };
-}, []);
 
   const filteredTeachers = useMemo(() => {
   const q = searchQuery.trim().toLowerCase();
@@ -83,7 +59,7 @@ useEffect(() => {
         <SectionHeader
           eyebrow="Tenaga Pendidik Berdedikasi"
           title="Dewan Guru SD Plus An-Nur"
-          description="Direktori 13 tenaga pendidik profesional yang membimbing pembelajaran dan karakter Qur'ani seluruh peserta didik."
+          description="Kenali tenaga pendidik yang membimbing pembelajaran dan perkembangan siswa."
         />
 
         {/* Clean, minimalist search bar only */}
@@ -109,7 +85,9 @@ useEffect(() => {
         </div>
 
         {/* Grid of Clean Teacher Cards */}
-        {paginatedTeachers.length > 0 ? (
+        {error ? (
+          <ApiState error={error} />
+        ) : paginatedTeachers.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {paginatedTeachers.map((teacher) => (
               <TeacherCard key={teacher.id} teacher={teacher} />
@@ -118,7 +96,7 @@ useEffect(() => {
         ) : (
           <div className="bg-white border border-[#e0e0e0] rounded-2xl p-10 text-center max-w-md mx-auto">
             <p className="text-[16px] text-[#1d1d1f] font-medium mb-1">
-              Guru tidak ditemukan
+              {teachers.length === 0 ? "Belum ada data guru" : "Guru tidak ditemukan"}
             </p>
             <p className="text-[14px] text-[#7a7a7a] mb-4">
               Tidak ada nama guru atau mata pelajaran yang sesuai dengan pencarian Anda.

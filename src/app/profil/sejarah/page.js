@@ -4,7 +4,8 @@ import HeroTile from "@/components/organisms/HeroTile";
 import CTASection from "@/components/organisms/CTASection";
 import Badge from "@/components/atoms/Badge";
 import Button from "@/components/atoms/Button";
-import { profileData } from "@/data/profileData";
+import ApiState from "@/components/atoms/ApiState";
+import { publicApi } from "@/data/api";
 import {
   UsersIcon,
   GraduationCapIcon,
@@ -19,8 +20,29 @@ export const metadata = {
     "Sejarah berdirinya SD Plus An-Nur, background pendirian, serta rekam jejak kepemimpinan Kepala Sekolah dari masa ke masa di Kediri, Jawa Timur.",
 };
 
-export default function SejarahPage() {
-  const { history } = profileData;
+export const instant = false;
+
+export default async function SejarahPage() {
+  let profile = null;
+  let error = null;
+
+  try {
+    profile = await publicApi.profile();
+  } catch (requestError) {
+    error = requestError.message;
+  }
+
+  if (!profile) {
+    return (
+      <MainLayout>
+        <section className="py-20">
+          <ApiState error={error} empty={!error} />
+        </section>
+      </MainLayout>
+    );
+  }
+
+  const { history } = profile;
 
   return (
     <MainLayout>
@@ -28,8 +50,10 @@ export default function SejarahPage() {
       <HeroTile
         variant="parchment"
         eyebrow="Napak Tilas & Amanah Perjuangan"
-        title="Sejarah & Rekam Jejak Kepemimpinan"
-        subtitle="Melihat kembali awal pendirian SD Plus An-Nur sejak 2012, dedikasi para perintis, dan estafet kepemimpinan kepala sekolah dari masa ke masa."
+        title={`Sejarah & Rekam Jejak ${profile.institutionName}`}
+        subtitle={history.foundingYear
+          ? `Sejarah ${profile.institutionName} sejak ${history.foundingYear}, perjalanan sekolah, dan estafet kepemimpinan.`
+          : `Sejarah ${profile.institutionName} dan estafet kepemimpinan.`}
         primaryCtaText="Telusuri Linimasa Sejarah"
         primaryCtaHref="#linimasa"
         secondaryCtaText="Daftar Kepala Sekolah"
@@ -54,7 +78,7 @@ export default function SejarahPage() {
 
           {/* Timeline Nodes */}
           <div className="relative pl-6 sm:pl-10 border-l-2 border-[#0066cc]/30 space-y-12">
-            {history.milestones.map((item, idx) => (
+            {history.milestones.length ? history.milestones.map((item, idx) => (
               <div key={idx} className="relative group">
                 {/* Timeline Circle Node */}
                 <div className="absolute -left-[31px] sm:-left-[47px] top-1.5 w-5 h-5 rounded-full bg-white border-4 border-[#0066cc] shadow-xs group-hover:scale-110 transition-transform" />
@@ -81,7 +105,7 @@ export default function SejarahPage() {
                   </p>
                 </div>
               </div>
-            ))}
+            )) : <ApiState empty />}
           </div>
 
           {/* Background Singkat Callout Card */}
@@ -96,7 +120,7 @@ export default function SejarahPage() {
               </span>
             </div>
             <p className="text-[15px] sm:text-[16px] text-[#333333] leading-relaxed">
-              {history.shortBackground}
+              {history.shortBackground || "Informasi sejarah belum tersedia."}
             </p>
           </div>
         </div>
@@ -132,7 +156,7 @@ export default function SejarahPage() {
 
             {/* Table Rows */}
             <div className="divide-y divide-[#f0f0f0]">
-              {history.leadershipTrackRecord.map((record) => (
+              {history.leadershipTrackRecord.length ? history.leadershipTrackRecord.map((record) => (
                 <div
                   key={record.no}
                   className="grid grid-cols-12 gap-4 px-6 sm:px-8 py-5 items-center hover:bg-[#fafafc] transition-colors"
@@ -163,7 +187,7 @@ export default function SejarahPage() {
                     </div>
                   </div>
                 </div>
-              ))}
+              )) : <ApiState empty />}
             </div>
           </div>
 

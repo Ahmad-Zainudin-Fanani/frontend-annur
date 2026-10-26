@@ -8,7 +8,6 @@ import {
   XIcon,
   ChevronDownIcon,
   ChevronRightIcon,
-  MapPinIcon,
 } from "@/components/atoms/Icons";
 import Button from "@/components/atoms/Button";
 
@@ -22,7 +21,7 @@ const navLinks = [
     children: [
       { href: "/profil/sejarah", label: "Sejarah", desc: "Awal pendirian & rekam jejak kepemimpinan" },
       { href: "/profil/kepala-wakil", label: "Kepala & Wakil Kepala", desc: "Pimpinan lembaga dan manajemen" },
-      { href: "/guru", label: "Dewan Guru", desc: "13 tenaga pendidik profesional" },
+      { href: "/guru", label: "Dewan Guru", desc: "Profil tenaga pendidik" },
       { href: "/profil/tim-pengembang", label: "Tim Pengembang WEB", desc: "Tim perancang sistem web" },
     ],
   },
@@ -34,38 +33,35 @@ const navLinks = [
 ];
 
 export default function GlobalNav() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileMenuRoute, setMobileMenuRoute] = useState(null);
+  const [dropdownRoute, setDropdownRoute] = useState(null);
   const [mobileProfilExpanded, setMobileProfilExpanded] = useState(true);
   const dropdownRef = useRef(null);
   const closeTimeoutRef = useRef(null);
   const pathname = usePathname();
+  const mobileMenuOpen = mobileMenuRoute === pathname;
+  const dropdownOpen = dropdownRoute === pathname;
+  const closeMobileMenu = () => setMobileMenuRoute(null);
 
   // Handle smooth hover with slight delay so moving cursor won't immediately close it
   const handleMouseEnter = () => {
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current);
     }
-    setDropdownOpen(true);
+    setDropdownRoute(pathname);
   };
 
   const handleMouseLeave = () => {
     closeTimeoutRef.current = setTimeout(() => {
-      setDropdownOpen(false);
+      setDropdownRoute(null);
     }, 200);
   };
-
-  // Close dropdown on route change
-  useEffect(() => {
-    setDropdownOpen(false);
-    setMobileMenuOpen(false);
-  }, [pathname]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdownOpen(false);
+        setDropdownRoute(null);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -79,7 +75,7 @@ export default function GlobalNav() {
   useEffect(() => {
     function handleKeyDown(event) {
       if (event.key === "Escape") {
-        setDropdownOpen(false);
+        setDropdownRoute(null);
       }
     }
     document.addEventListener("keydown", handleKeyDown);
@@ -116,7 +112,11 @@ export default function GlobalNav() {
                 >
                   <button
                     type="button"
-                    onClick={() => setDropdownOpen((prev) => !prev)}
+                    onClick={() =>
+                      setDropdownRoute((prev) =>
+                        prev === pathname ? null : pathname
+                      )
+                    }
                     aria-expanded={dropdownOpen}
                     aria-haspopup="true"
                     className={`inline-flex items-center gap-1 transition-colors py-1 cursor-pointer apple-press-action ${
@@ -151,7 +151,7 @@ export default function GlobalNav() {
                               key={sub.label}
                               href={sub.href}
                               role="menuitem"
-                              onClick={() => setDropdownOpen(false)}
+                              onClick={() => setDropdownRoute(null)}
                               className={`block px-4 py-2.5 hover:bg-[#242426] transition-colors group ${
                                 isSubActive ? "bg-[#1f1f21]" : ""
                               }`}
@@ -215,7 +215,9 @@ export default function GlobalNav() {
           {/* Mobile Hamburger Toggle */}
           <button
             type="button"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            onClick={() =>
+              setMobileMenuRoute(mobileMenuOpen ? null : pathname)
+            }
             className="lg:hidden p-2 text-[#cccccc] hover:text-white rounded-md apple-press-action cursor-pointer"
             aria-label="Toggle menu"
           >
@@ -231,11 +233,6 @@ export default function GlobalNav() {
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="lg:hidden bg-[#000000] border-t border-[#222222] px-6 py-5 space-y-2 max-h-[calc(100vh-60px)] overflow-y-auto">
-          <div className="pb-3 border-b border-[#222222] flex items-center justify-between text-xs text-[#7a7a7a]">
-            <span>Status: Sekolah Dasar Swasta (SD Swasta)</span>
-            <span className="text-[#2997ff]">Akreditasi A</span>
-          </div>
-
           {navLinks.map((item) => {
             if (item.isDropdown) {
               return (
@@ -243,7 +240,7 @@ export default function GlobalNav() {
                   <div className="flex items-center justify-between">
                     <Link
                       href={item.href}
-                      onClick={() => setMobileMenuOpen(false)}
+                      onClick={closeMobileMenu}
                       className={`block py-2 text-[15px] font-normal tracking-tight transition-colors ${
                         isProfilActive
                           ? "text-white font-semibold pl-2 border-l-2 border-[#0066cc]"
@@ -274,7 +271,7 @@ export default function GlobalNav() {
                           <Link
                             key={sub.label}
                             href={sub.href}
-                            onClick={() => setMobileMenuOpen(false)}
+                            onClick={closeMobileMenu}
                             className={`block py-1.5 text-[14px] transition-colors ${
                               isSubActive
                                 ? "text-[#2997ff] font-medium"
@@ -303,7 +300,7 @@ export default function GlobalNav() {
               <Link
                 key={item.href}
                 href={item.href}
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={closeMobileMenu}
                 className={`block py-2 text-[15px] font-normal tracking-tight transition-colors ${
                   isActive
                     ? "text-white font-semibold pl-2 border-l-2 border-[#0066cc]"
@@ -318,22 +315,13 @@ export default function GlobalNav() {
           <div className="pt-3 border-t border-[#222222] space-y-2">
             <Button
               href="/kontak"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={closeMobileMenu}
               variant="primary"
               size="md"
               className="w-full text-[14px]"
             >
               Pendaftaran Siswa Baru (PPDB)
             </Button>
-            <a
-              href="https://www.google.com/maps?q=-7.8743,112.1076"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full inline-flex items-center justify-center gap-1.5 text-[13px] text-[#2997ff] py-2 hover:underline"
-            >
-              <MapPinIcon className="w-4 h-4" />
-              <span>Lihat Lokasi di Google Maps</span>
-            </a>
           </div>
         </div>
       )}

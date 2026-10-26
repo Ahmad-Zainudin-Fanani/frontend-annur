@@ -4,12 +4,36 @@ import React, { useState } from "react";
 import SectionHeader from "@/components/molecules/SectionHeader";
 import CurriculumCard from "@/components/molecules/CurriculumCard";
 import Chip from "@/components/atoms/Chip";
-import { curriculumData } from "@/data/curriculumData";
+import ApiState from "@/components/atoms/ApiState";
 import { CheckIcon, CalendarIcon } from "@/components/atoms/Icons";
 
-export default function CurriculumOverview() {
-  const [activeTab, setActiveTab] = useState("pillars"); // "pillars" | "levels" | "schedule"
+export default function CurriculumOverview({ curriculum, error = null }) {
+  const curriculumData = curriculum || {
+    overview: "",
+    utilities: {},
+    pillars: [],
+    levels: [],
+    dailySchedule: [],
+  };
+  const firstAvailableTab = curriculumData.pillars.length
+    ? "pillars"
+    : curriculumData.levels.length
+      ? "levels"
+      : "schedule";
+  const [activeTab, setActiveTab] = useState(firstAvailableTab);
   const [selectedLevelIndex, setSelectedLevelIndex] = useState(0);
+
+  if (error) {
+    return <ApiState error={error} />;
+  }
+
+  if (
+    !curriculumData.pillars.length &&
+    !curriculumData.levels.length &&
+    !curriculumData.dailySchedule.length
+  ) {
+    return <ApiState empty />;
+  }
 
   return (
     <div className="w-full">
@@ -17,24 +41,30 @@ export default function CurriculumOverview() {
       <section className="bg-white pt-8 pb-4 border-b border-[#e0e0e0]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center">
           <div className="flex flex-wrap items-center justify-center gap-2 p-1.5 bg-[#f5f5f7] rounded-full border border-[#e0e0e0]">
-            <Chip
-              label="4 Pilar Kurikulum Terpadu"
-              selected={activeTab === "pillars"}
-              onClick={() => setActiveTab("pillars")}
-              size="sm"
-            />
-            <Chip
-              label="Jenjang Pendidikan (TK - SMA)"
-              selected={activeTab === "levels"}
-              onClick={() => setActiveTab("levels")}
-              size="sm"
-            />
-            <Chip
-              label="Ritme Harian Santri 24 Jam"
-              selected={activeTab === "schedule"}
-              onClick={() => setActiveTab("schedule")}
-              size="sm"
-            />
+            {curriculumData.pillars.length ? (
+              <Chip
+                label="Pilar Kurikulum"
+                selected={activeTab === "pillars"}
+                onClick={() => setActiveTab("pillars")}
+                size="sm"
+              />
+            ) : null}
+            {curriculumData.levels.length ? (
+              <Chip
+                label="Fase Belajar SD (A - C)"
+                selected={activeTab === "levels"}
+                onClick={() => setActiveTab("levels")}
+                size="sm"
+              />
+            ) : null}
+            {curriculumData.dailySchedule.length ? (
+              <Chip
+                label="Jadwal Belajar Harian"
+                selected={activeTab === "schedule"}
+                onClick={() => setActiveTab("schedule")}
+                size="sm"
+              />
+            ) : null}
           </div>
         </div>
       </section>
@@ -72,7 +102,7 @@ export default function CurriculumOverview() {
             <div className="flex flex-wrap justify-center gap-2 mb-10">
               {curriculumData.levels.map((lvl, idx) => (
                 <Chip
-                  key={idx}
+                  key={lvl.id}
                   label={lvl.level}
                   selected={selectedLevelIndex === idx}
                   onClick={() => setSelectedLevelIndex(idx)}
@@ -89,7 +119,7 @@ export default function CurriculumOverview() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-12">
               {curriculumData.levels.map((lvl, idx) => (
                 <div
-                  key={idx}
+                  key={lvl.id}
                   onClick={() => setSelectedLevelIndex(idx)}
                   className={`p-4 rounded-xl border transition-all cursor-pointer ${
                     selectedLevelIndex === idx
@@ -119,8 +149,8 @@ export default function CurriculumOverview() {
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeader
               eyebrow="Kedisiplinan & Barakah Waktu"
-              title="Jadwal & Ritme Harian Santri (24 Jam)"
-              description="Keteraturan jadwal membiasakan santri untuk istiqamah dalam ibadah, disiplin belajar, dan mandiri mengelola waktu."
+              title="Jadwal Belajar Harian"
+              description="Kegiatan belajar dan pembiasaan siswa dalam satu hari sekolah."
             />
 
             <div className="bg-[#fafafc] border border-[#e0e0e0] rounded-2xl overflow-hidden divide-y divide-[#e0e0e0]">

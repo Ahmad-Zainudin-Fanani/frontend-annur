@@ -3,6 +3,7 @@ import MainLayout from "@/components/templates/MainLayout";
 import HeroTile from "@/components/organisms/HeroTile";
 import AchievementsShowcase from "@/components/organisms/AchievementsShowcase";
 import CTASection from "@/components/organisms/CTASection";
+import { publicApi } from "@/data/api";
 
 export const metadata = {
   title: "Prestasi Siswa | SD Plus An-Nur",
@@ -10,7 +11,18 @@ export const metadata = {
     "Galeri prestasi dan rekam jejak kejuaraan siswa-siswi SD Plus An-Nur di bidang OSN SD, tahfidz Al-Qur'an, seni FLS2N, dan olahraga O2SN tingkat kabupaten.",
 };
 
-export default function PrestasiPage() {
+export const instant = false;
+
+export default async function PrestasiPage() {
+  let achievements = [];
+  let error = null;
+
+  try {
+    achievements = await publicApi.achievements();
+  } catch (requestError) {
+    error = requestError.message;
+  }
+
   return (
     <MainLayout>
       <HeroTile
@@ -25,7 +37,7 @@ export default function PrestasiPage() {
       />
 
       {/* Minimalist Achievements Showcase Component */}
-      <AchievementsShowcase />
+      <AchievementsShowcase achievements={achievements} error={error} />
 
       <CTASection
         theme="dark"

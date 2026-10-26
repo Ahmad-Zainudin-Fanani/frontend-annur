@@ -2,9 +2,6 @@ import React from "react";
 import Image from "next/image";
 
 export default function TeacherCard({ teacher }) {
-  // Check if this teacher is the Principal with photo
-  const isPrincipal = teacher.id === "guru-01";
-
   // Initials for avatar
   const initials = teacher.name
     .replace(/^(Ustadz|Ustadzah|Dr\.|Dra\.|H\.|Hj\.)\s+/gi, "")
@@ -15,13 +12,14 @@ export default function TeacherCard({ teacher }) {
     <div className="bg-white border border-[#e0e0e0] rounded-[20px] overflow-hidden flex flex-col apple-product-shadow transition-all duration-200 hover:border-[#1d1d1f] hover:shadow-md hover:-translate-y-0.5">
       {/* Top: Teacher Portrait (3:4 aspect ratio) */}
       <div className="relative aspect-[3/4] w-full bg-gradient-to-b from-[#f0f4f8] via-[#e8eff8] to-[#dce7f5] flex items-center justify-center overflow-hidden border-b border-[#e0e0e0]">
-        {isPrincipal ? (
+        {teacher.photo ? (
           <Image
-            src="/images/kepala-sekolah.jpg"
+            src={teacher.photo}
             alt={teacher.name}
             fill
             className="object-cover object-top"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            unoptimized
           />
         ) : (
           <div className="flex flex-col items-center justify-center text-center select-none">

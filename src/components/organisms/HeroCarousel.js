@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import Image from "next/image";
 import Button from "@/components/atoms/Button";
 import { ChevronLeftIcon, ChevronRightIcon } from "@/components/atoms/Icons";
 
@@ -11,12 +10,13 @@ const defaultSlides = [
     eyebrow: "Sekolah Dasar Swasta Islam Unggulan",
     title: "SD Plus An-Nur. Cerdas, Berakhlak, Berkarakter.",
     subtitle:
-      "Menerapkan Kurikulum SD Merdeka yang dipadukan dengan pembiasaan adab islami, tahfidzul qur'an Juz 30, dan literasi sains dalam 13 rombongan belajar ramah anak.",
+      "Menerapkan Kurikulum SD Merdeka yang dipadukan dengan pembiasaan adab islami, tahfidzul qur'an Juz 30, dan literasi sains dalam lingkungan belajar ramah anak.",
     primaryCtaText: "Pendaftaran Siswa Baru (PPDB)",
     primaryCtaHref: "/kontak",
     secondaryCtaText: "Pelajari Profil Sekolah",
     secondaryCtaHref: "/profil",
-    bgImage: "/images/hero-1.jpg",
+    background:
+      "radial-gradient(ellipse at 50% 18%, #24466a 0%, #182838 45%, #090b0f 100%)",
   },
   {
     id: 2,
@@ -28,7 +28,8 @@ const defaultSlides = [
     primaryCtaHref: "/kurikulum#pilar",
     secondaryCtaText: "Prestasi Siswa",
     secondaryCtaHref: "/prestasi",
-    bgImage: "/images/hero-2.jpg",
+    background:
+      "radial-gradient(ellipse at 80% 24%, #315047 0%, #1d302d 42%, #090b0f 100%)",
   },
   {
     id: 3,
@@ -40,7 +41,8 @@ const defaultSlides = [
     primaryCtaHref: "/kurikulum",
     secondaryCtaText: "Hubungi Kontak PPDB",
     secondaryCtaHref: "/kontak",
-    bgImage: "/images/hero-3.jpg",
+    background:
+      "radial-gradient(ellipse at 20% 28%, #59472f 0%, #30291f 44%, #090b0f 100%)",
   },
 ];
 
@@ -74,7 +76,7 @@ export default function HeroCarousel({ slides = defaultSlides }) {
       onMouseLeave={() => setIsPaused(false)}
     >
       {/* ========================================================
-          1. BACKGROUND IMAGE SLIDES (Full-bleed, clean, no decorative gradients)
+          1. SLIDE BACKGROUNDS
           ======================================================== */}
       {slides.map((slide, index) => {
         const isActive = index === currentIndex;
@@ -85,27 +87,17 @@ export default function HeroCarousel({ slides = defaultSlides }) {
               isActive ? "opacity-100 z-0" : "opacity-0 -z-10 pointer-events-none"
             }`}
           >
-            <div className="relative w-full h-full bg-[#1d1d1f]">
-              {slide.bgImage && (
-                <Image
-                  src={slide.bgImage}
-                  alt={slide.title}
-                  fill
-                  priority={index === 0}
-                  className="object-cover object-center"
-                  onError={(e) => {
-                    // Gracefully hide missing file so clean dark canvas shows
-                    e.currentTarget.style.display = "none";
-                  }}
-                />
-              )}
-            </div>
+            <div
+              className="relative w-full h-full"
+              style={{ background: slide.background }}
+              aria-hidden="true"
+            />
           </div>
         );
       })}
 
       {/* ========================================================
-          2. CINEMATIC DARK OVERLAY (Pure functional contrast)
+          2. DARK OVERLAY
           ======================================================== */}
       <div
         className="absolute inset-0 z-10 bg-black/60 pointer-events-none"

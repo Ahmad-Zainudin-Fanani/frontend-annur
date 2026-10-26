@@ -10,12 +10,17 @@ import {
   ClockIcon,
   ChevronRightIcon,
 } from "@/components/atoms/Icons";
-import { profileData } from "@/data/profileData";
+import ApiState from "@/components/atoms/ApiState";
 
-export default function HomeContactSection() {
-  const mapsEmbedUrl =
-    "https://maps.google.com/maps?q=-7.8743,112.1076&hl=id&z=15&output=embed";
-  const mapsExternalUrl = profileData.location.mapsUrl;
+export default function HomeContactSection({ profile, error = null }) {
+  if (error) return <ApiState error={error} />;
+  if (!profile) return <ApiState empty />;
+
+  const mapsExternalUrl = profile.location.mapsUrl;
+  const whatsapp = (profile.whatsapp || profile.phone || "").replace(/\D/g, "");
+  const whatsappNumber = whatsapp.startsWith("0")
+    ? `62${whatsapp.slice(1)}`
+    : whatsapp;
 
   return (
     <section className="py-20 lg:py-24 bg-white border-b border-[#e0e0e0]">
@@ -27,10 +32,10 @@ export default function HomeContactSection() {
               Lokasi &amp; Kontak Resmi
             </span>
             <h2 className="text-[28px] sm:text-[34px] lg:text-[40px] font-semibold text-[#1d1d1f] leading-[1.1] tracking-normal">
-              Kunjungi Kampus SD Plus An-Nur
+              Kunjungi {profile.institutionName}
             </h2>
             <p className="mt-3 text-[17px] text-[#7a7a7a] leading-[1.47] tracking-[-0.374px]">
-              Temukan lokasi kampus kami di Kabupaten Kediri dan hubungi tim layanan sekretariat untuk informasi pendaftaran, kurikulum, serta kunjungan sekolah.
+              Temukan lokasi kampus kami di {profile.location.address || "alamat yang terdaftar"} dan hubungi tim layanan sekretariat untuk informasi pendaftaran, kurikulum, serta kunjungan sekolah.
             </p>
           </div>
         </ScrollReveal>
@@ -42,10 +47,11 @@ export default function HomeContactSection() {
               ======================================================== */}
           <div className="lg:col-span-7">
             <ScrollReveal animation="fade-up" delay={80} duration={650}>
+              {profile.mapsEmbedUrl ? (
               <div className="relative rounded-[18px] overflow-hidden border border-[#e0e0e0] bg-[#f5f5f7] h-[380px] sm:h-[460px] lg:h-[480px] w-full">
                 <iframe
-                  title="Peta Lokasi SD Plus An-Nur"
-                  src={mapsEmbedUrl}
+                  title={`Peta Lokasi ${profile.institutionName}`}
+                  src={profile.mapsEmbedUrl}
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
@@ -56,19 +62,26 @@ export default function HomeContactSection() {
                 />
 
                 {/* Direct Google Maps Action Button at Bottom Right */}
-                <div className="absolute bottom-4 right-4 z-10">
-                  <Button
-                    href={mapsExternalUrl}
-                    target="_blank"
-                    variant="primary"
-                    size="sm"
-                    className="inline-flex items-center gap-1"
-                  >
-                    <span>Buka Google Maps</span>
-                    <ChevronRightIcon className="w-3.5 h-3.5" />
-                  </Button>
-                </div>
+                {mapsExternalUrl ? (
+                  <div className="absolute bottom-4 right-4 z-10">
+                    <Button
+                      href={mapsExternalUrl}
+                      target="_blank"
+                      variant="primary"
+                      size="sm"
+                      className="inline-flex items-center gap-1"
+                    >
+                      <span>Buka Google Maps</span>
+                      <ChevronRightIcon className="w-3.5 h-3.5" />
+                    </Button>
+                  </div>
+                ) : null}
               </div>
+              ) : (
+                <div className="rounded-[18px] border border-[#e0e0e0] bg-[#f5f5f7] min-h-48 flex items-center justify-center">
+                  <ApiState empty />
+                </div>
+              )}
             </ScrollReveal>
           </div>
 
@@ -86,10 +99,10 @@ export default function HomeContactSection() {
                   </h3>
                 </div>
                 <p className="text-[15px] text-[#555555] leading-relaxed">
-                  SD Plus An-Nur berlokasi di kawasan asri Kecamatan Kras, Kabupaten Kediri. Suasana lingkungan yang tenang, jauh dari kebisingan jalan raya utama, sangat aman, sejuk, dan kondusif untuk mendukung kegiatan belajar mengajar serta pembiasaan ibadah harian peserta didik.
+                  {profile.location.address}
                 </p>
                 <div className="mt-4 pt-3.5 border-t border-[#e0e0e0] text-[13px] text-[#7a7a7a]">
-                  <strong>Alamat:</strong> {profileData.location.fullAddress}
+                  <strong>Alamat:</strong> {profile.location.fullAddress}
                 </div>
               </div>
 
@@ -99,7 +112,7 @@ export default function HomeContactSection() {
                   Layanan Sekretariat &amp; PPDB
                 </h3>
 
-                <div className="flex items-start gap-3.5">
+                {(profile.whatsapp || profile.phone) ? <div className="flex items-start gap-3.5">
                   <div className="w-10 h-10 rounded-xl bg-[#f5f5f7] text-[#0066cc] flex items-center justify-center shrink-0">
                     <PhoneIcon className="w-5 h-5" />
                   </div>
@@ -108,17 +121,17 @@ export default function HomeContactSection() {
                       WhatsApp &amp; Telepon
                     </span>
                     <a
-                      href="https://wa.me/6281234567890?text=Halo%20SD%20Plus%20An-Nur,%20saya%20ingin%20bertanya%20seputar%20pendaftaran%20siswa%20baru"
+                      href={whatsappNumber ? `https://wa.me/${whatsappNumber}` : undefined}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-[16px] font-semibold text-[#1d1d1f] hover:text-[#0066cc] transition-colors"
                     >
-                      0812-3456-7890
+                      {profile.whatsapp || profile.phone}
                     </a>
                   </div>
-                </div>
+                </div> : null}
 
-                <div className="flex items-start gap-3.5 pt-2">
+                {profile.email ? <div className="flex items-start gap-3.5 pt-2">
                   <div className="w-10 h-10 rounded-xl bg-[#f5f5f7] text-[#0066cc] flex items-center justify-center shrink-0">
                     <MailIcon className="w-5 h-5" />
                   </div>
@@ -127,15 +140,15 @@ export default function HomeContactSection() {
                       Email Resmi
                     </span>
                     <a
-                      href="mailto:info@sdplusannur.sch.id"
+                      href={profile.email ? `mailto:${profile.email}` : undefined}
                       className="text-[16px] font-semibold text-[#1d1d1f] hover:text-[#0066cc] transition-colors"
                     >
-                      info@sdplusannur.sch.id
+                      {profile.email}
                     </a>
                   </div>
-                </div>
+                </div> : null}
 
-                <div className="flex items-start gap-3.5 pt-2">
+                {(profile.utilities.schedule || profile.utilities.service_hours) ? <div className="flex items-start gap-3.5 pt-2">
                   <div className="w-10 h-10 rounded-xl bg-[#f5f5f7] text-[#0066cc] flex items-center justify-center shrink-0">
                     <ClockIcon className="w-5 h-5" />
                   </div>
@@ -144,19 +157,19 @@ export default function HomeContactSection() {
                       Jam Layanan Sekolah
                     </span>
                     <span className="text-[14px] text-[#1d1d1f] font-medium block">
-                      Pagi / 6 Hari (Senin - Sabtu)
+                      {profile.utilities.schedule || ""}
                     </span>
                     <span className="text-[13px] text-[#7a7a7a] block">
-                      Senin - Kamis: 07.00 - 15.00 WIB • Jumat: 07.00 - 11.30 WIB
+                      {profile.utilities.service_hours}
                     </span>
                   </div>
-                </div>
+                </div> : null}
               </div>
 
               {/* 3. Fast Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 pt-1">
                 <Button
-                  href="https://wa.me/6281234567890?text=Halo%20SD%20Plus%20An-Nur,%20saya%20ingin%20informasi%20seputar%20sekolah"
+                  href={whatsappNumber ? `https://wa.me/${whatsappNumber}` : "/kontak"}
                   target="_blank"
                   variant="primary"
                   size="md"

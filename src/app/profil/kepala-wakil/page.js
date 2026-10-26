@@ -5,8 +5,8 @@ import CTASection from "@/components/organisms/CTASection";
 import Badge from "@/components/atoms/Badge";
 import Button from "@/components/atoms/Button";
 import Image from "next/image";
-import { profileData } from "@/data/profileData";
-import { teachersData } from "@/data/teachersData";
+import ApiState from "@/components/atoms/ApiState";
+import { publicApi } from "@/data/api";
 import {
   GraduationCapIcon,
   AwardIcon,
@@ -18,12 +18,43 @@ import {
 export const metadata = {
   title: "Kepala & Wakil Kepala Sekolah | SD Plus An-Nur",
   description:
-    "Profil pimpinan SD Plus An-Nur: Kepala Sekolah Ustadz H. Ahmad Fauzi, S.Pd.I., M.Pd. dan jajaran Wakil Kepala Sekolah serta Koordinator.",
+    "Profil kepala sekolah, wakil kepala sekolah, dan koordinator SD Plus An-Nur.",
 };
 
-export default function KepalaWakilPage() {
-  const principal = profileData.leadership[0];
-  const vicePrincipals = profileData.leadership.slice(1);
+export const instant = false;
+
+export default async function KepalaWakilPage() {
+  let profile = null;
+  let error = null;
+
+  try {
+    profile = await publicApi.profile();
+  } catch (requestError) {
+    error = requestError.message;
+  }
+
+  if (!profile) {
+    return (
+      <MainLayout>
+        <section className="py-20">
+          <ApiState error={error} empty={!error} />
+        </section>
+      </MainLayout>
+    );
+  }
+
+  const principal = profile.leadership[0];
+  const vicePrincipals = profile.leadership.slice(1);
+
+  if (!principal) {
+    return (
+      <MainLayout>
+        <section className="py-20">
+          <ApiState empty />
+        </section>
+      </MainLayout>
+    );
+  }
 
   return (
     <MainLayout>
@@ -47,10 +78,12 @@ export default function KepalaWakilPage() {
               Pimpinan Utama Lembaga
             </span>
             <h2 className="text-[28px] sm:text-[36px] font-semibold text-[#1d1d1f] tracking-tight leading-tight">
-              Kepala Sekolah SD Plus An-Nur
+              Kepala Sekolah {profile.institutionName}
             </h2>
             <p className="text-[16px] text-[#7a7a7a] mt-2">
-              Nakhoda kepemimpinan yang membimbing dan mengawal kualitas pembelajaran 398 siswa dalam 13 rombel.
+              {profile.stats?.students != null
+                ? `Pimpinan sekolah membimbing ${profile.stats.students} siswa dalam ${profile.stats.class_groups ?? ""} rombongan belajar.`
+                : "Pimpinan sekolah membimbing kegiatan pendidikan dan perkembangan siswa."}
             </p>
           </div>
 
@@ -60,14 +93,17 @@ export default function KepalaWakilPage() {
               {/* Photo Column */}
               <div className="lg:col-span-5 flex justify-center">
                 <div className="relative w-full max-w-[340px] aspect-[3/4] rounded-[20px] overflow-hidden border border-[#e0e0e0] bg-[#1d1d1f] apple-product-shadow shadow-md">
-                  <Image
-                    src="/images/kepala-sekolah.jpg"
-                    alt={`Kepala Sekolah ${principal.name}`}
-                    fill
-                    className="object-cover object-top"
-                    sizes="(max-width: 1024px) 100vw, 340px"
-                    priority
-                  />
+                  {principal.photo ? (
+                    <Image
+                      src={principal.photo}
+                      alt={principal.name}
+                      fill
+                      unoptimized
+                      className="object-cover object-top"
+                      sizes="(max-width: 1024px) 100vw, 340px"
+                      priority
+                    />
+                  ) : null}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
                   <div className="absolute top-4 left-4 z-10">
                     <span className="px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md text-white text-[12px] font-medium tracking-wide border border-white/20">
@@ -76,7 +112,7 @@ export default function KepalaWakilPage() {
                   </div>
                   <div className="absolute bottom-4 left-4 right-4 z-10 text-white">
                     <p className="text-[13px] font-medium text-white/90">
-                      SD Plus An-Nur Kediri
+                      {profile.institutionName}
                     </p>
                   </div>
                 </div>
@@ -90,7 +126,7 @@ export default function KepalaWakilPage() {
                   </Badge>
                   <Badge variant="emerald" size="md">
                     <ShieldCheckIcon className="w-3.5 h-3.5 inline mr-1" />
-                    Terakreditasi A
+                    {profile.accreditation}
                   </Badge>
                 </div>
 
@@ -160,8 +196,7 @@ export default function KepalaWakilPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {vicePrincipals.map((vp, index) => {
                 // Find matching teacher record if exists
-                const teacherMatch = teachersData.find((t) => t.name === vp.name);
-                const isFemale = teacherMatch?.gender === "P";
+                const isFemale = vp.gender === "P";
 
                 return (
                   <div
@@ -196,7 +231,7 @@ export default function KepalaWakilPage() {
                         <div className="space-y-2 mb-4 text-[13px] text-[#555555]">
                           <div className="flex items-start gap-2">
                             <GraduationCapIcon className="w-4 h-4 text-[#7a7a7a] shrink-0 mt-0.5" />
-                            <span className="leading-snug">{vp.education}</span>
+                      <span className="leading-snug">{vp.education}</span>
                           </div>
                           <div className="flex items-start gap-2">
                             <SparklesIcon className="w-4 h-4 text-[#7a7a7a] shrink-0 mt-0.5" />
