@@ -1,28 +1,54 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import SectionHeader from "@/components/molecules/SectionHeader";
 import TeacherCard from "@/components/molecules/TeacherCard";
 import SearchBar from "@/components/molecules/SearchBar";
 import { ChevronLeftIcon, ChevronRightIcon } from "@/components/atoms/Icons";
 import { teachersData } from "@/data/teachersData";
+import { publicApi } from "@/data/api";
 
 const ITEMS_PER_PAGE = 8;
 
 export default function TeachersShowcase() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+  const [teachers, setTeachers] = useState(teachersData);
+const [searchQuery, setSearchQuery] = useState("");
+const [currentPage, setCurrentPage] = useState(1);
+
+useEffect(() => {
+  let isMounted = true;
+
+  const fetchTeachers = async () => {
+    try {
+      const data = await publicApi.teachers();
+
+      if (isMounted && Array.isArray(data)) {
+        setTeachers(data);
+      }
+    } catch (error) {
+      console.error("Gagal mengambil data guru dari API:", error);
+      // Jika API gagal, gunakan teachersData sebagai fallback.
+    }
+  };
+
+  fetchTeachers();
+
+  return () => {
+    isMounted = false;
+  };
+}, []);
 
   const filteredTeachers = useMemo(() => {
-    if (!searchQuery.trim()) return teachersData;
-    const q = searchQuery.toLowerCase();
-    return teachersData.filter(
-      (t) =>
-        t.name.toLowerCase().includes(q) ||
-        t.role.toLowerCase().includes(q) ||
-        t.department.toLowerCase().includes(q)
-    );
-  }, [searchQuery]);
+  const q = searchQuery.trim().toLowerCase();
+
+  if (!q) return teachers;
+
+  return teachers.filter((t) =>
+    [t.name, t.role, t.department].some((value) =>
+      String(value ?? "").toLowerCase().includes(q)
+    )
+  );
+}, [teachers, searchQuery]);
 
   // Reset to page 1 whenever search query changes
   const handleSearchChange = (value) => {
