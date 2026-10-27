@@ -74,11 +74,6 @@ export default function Footer() {
                   Fase Belajar (A, B, C)
                 </Link>
               </li>
-              <li>
-                <Link href="/kurikulum#jadwal" className="hover:text-[#0066cc] transition-colors">
-                  Jadwal Belajar (Pagi / 6 Hari)
-                </Link>
-              </li>
             </ul>
           </div>
 

@@ -21,6 +21,8 @@ export default async function HomePage() {
   let profileError = null;
   let curriculum = normalizeCurriculums();
   let curriculumError = null;
+  let heroSlides = [];
+  let heroSlidesError = null;
 
   try {
     profile = await publicApi.profile();
@@ -35,12 +37,18 @@ export default async function HomePage() {
     curriculumError = error.message;
   }
 
+  try {
+    heroSlides = await publicApi.heroSlides();
+  } catch (error) {
+    heroSlidesError = error.message;
+  }
+
   return (
     <MainLayout>
       {/* ========================================================
           SECTION 1: Full-screen Hero Section (Background Image, Dark Overlay & Carousel)
           ======================================================== */}
-      <HeroCarousel />
+      <HeroCarousel slides={heroSlides} error={heroSlidesError} />
 
       {/* ========================================================
           SECTION 2: Ringkasan Program Unggulan

@@ -185,13 +185,35 @@ export function normalizeGallery(gallery) {
   };
 }
 
+export function normalizeHeroSlide(slide) {
+  let image = slide.image || "";
+
+  if (image) {
+    try {
+      const apiOrigin = new URL(API_URL).origin;
+      image = new URL(image, `${apiOrigin}/`).toString();
+    } catch {
+      image = slide.image;
+    }
+  }
+
+  return {
+    id: slide.id,
+    image,
+    heading: slide.heading || "",
+    subheading: slide.subheading || "",
+    caption: slide.caption || "",
+    buttonLabel: slide.button_label || "",
+    buttonUrl: slide.button_url || "",
+  };
+}
+
 export function normalizeCurriculums(records = [], profile = null) {
   const sections = profile?.public_sections?.curriculum || {};
 
   return {
     overview: sections.overview || "",
     utilities: sections.utilities || {},
-    dailySchedule: sections.daily_schedule || [],
     pillars: records
       .filter((record) => record.section === "pillar")
       .map((record) => ({
@@ -234,6 +256,9 @@ export const publicApi = {
 
   curriculums: (params = {}) =>
     request(`/curriculums${withQuery(params)}`),
+
+  heroSlides: async () =>
+    (await request("/hero-slides")).map(normalizeHeroSlide),
 
   galleries: async (params = {}) =>
     (await request(`/galleries${withQuery(params)}`)).map(normalizeGallery),

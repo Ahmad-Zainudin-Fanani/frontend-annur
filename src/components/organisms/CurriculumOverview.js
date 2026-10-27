@@ -5,7 +5,6 @@ import SectionHeader from "@/components/molecules/SectionHeader";
 import CurriculumCard from "@/components/molecules/CurriculumCard";
 import Chip from "@/components/atoms/Chip";
 import ApiState from "@/components/atoms/ApiState";
-import { CheckIcon, CalendarIcon } from "@/components/atoms/Icons";
 
 export default function CurriculumOverview({ curriculum, error = null }) {
   const curriculumData = curriculum || {
@@ -13,13 +12,10 @@ export default function CurriculumOverview({ curriculum, error = null }) {
     utilities: {},
     pillars: [],
     levels: [],
-    dailySchedule: [],
   };
   const firstAvailableTab = curriculumData.pillars.length
     ? "pillars"
-    : curriculumData.levels.length
-      ? "levels"
-      : "schedule";
+    : "levels";
   const [activeTab, setActiveTab] = useState(firstAvailableTab);
   const [selectedLevelIndex, setSelectedLevelIndex] = useState(0);
 
@@ -29,8 +25,7 @@ export default function CurriculumOverview({ curriculum, error = null }) {
 
   if (
     !curriculumData.pillars.length &&
-    !curriculumData.levels.length &&
-    !curriculumData.dailySchedule.length
+    !curriculumData.levels.length
   ) {
     return <ApiState empty />;
   }
@@ -54,14 +49,6 @@ export default function CurriculumOverview({ curriculum, error = null }) {
                 label="Fase Belajar SD (A - C)"
                 selected={activeTab === "levels"}
                 onClick={() => setActiveTab("levels")}
-                size="sm"
-              />
-            ) : null}
-            {curriculumData.dailySchedule.length ? (
-              <Chip
-                label="Jadwal Belajar Harian"
-                selected={activeTab === "schedule"}
-                onClick={() => setActiveTab("schedule")}
                 size="sm"
               />
             ) : null}
@@ -143,37 +130,6 @@ export default function CurriculumOverview({ curriculum, error = null }) {
         </section>
       )}
 
-      {/* 3. View: Daily Schedule / Rhythm */}
-      {activeTab === "schedule" && (
-        <section id="jadwal" className="py-16 lg:py-20 bg-white">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SectionHeader
-              eyebrow="Kedisiplinan & Barakah Waktu"
-              title="Jadwal Belajar Harian"
-              description="Kegiatan belajar dan pembiasaan siswa dalam satu hari sekolah."
-            />
-
-            <div className="bg-[#fafafc] border border-[#e0e0e0] rounded-2xl overflow-hidden divide-y divide-[#e0e0e0]">
-              {curriculumData.dailySchedule.map((item, idx) => (
-                <div
-                  key={idx}
-                  className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:px-6 hover:bg-white transition-colors"
-                >
-                  <div className="flex items-center gap-3 mb-1 sm:mb-0">
-                    <span className="w-2 h-2 rounded-full bg-[#0066cc]" />
-                    <span className="text-[15px] font-semibold text-[#1d1d1f] min-w-[130px]">
-                      {item.time}
-                    </span>
-                  </div>
-                  <span className="text-[15px] text-[#333333] pl-5 sm:pl-0">
-                    {item.activity}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
     </div>
   );
 }
