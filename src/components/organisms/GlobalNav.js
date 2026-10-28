@@ -88,7 +88,7 @@ export default function GlobalNav() {
     pathname.startsWith("/profil") || pathname.startsWith("/guru");
 
   return (
-    <header className="sticky top-0 z-50 bg-[#000000] text-white select-none border-b border-[#222222]">
+    <header className="sticky top-0 z-50 bg-[#000000]/90 backdrop-blur-md text-white select-none border-b border-[#222222]/80 transition-colors duration-300">
       <div className="max-w-7xl mx-auto h-[60px] px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Left: Brand Identity */}
         <Link

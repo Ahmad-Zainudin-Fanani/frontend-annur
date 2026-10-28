@@ -3,41 +3,51 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#f5f5f7] border-t border-[#e0e0e0] text-[#333333] pt-16 pb-12">
+    <footer className="relative bg-[#f5f5f7] border-t-2 border-[#e0e0e0] text-[#333333] pt-16 sm:pt-20 pb-12 select-none">
+      {/* Visual Accent Hairline */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Top summary disclaimer */}
-        <div className="pb-8 mb-10 border-b border-[#e0e0e0]">
-          <p className="text-[12px] text-[#7a7a7a] leading-relaxed max-w-4xl">
-            Pendidikan dasar yang memadukan kegiatan belajar, pengembangan karakter, minat, dan bakat siswa.
-          </p>
+        {/* Top Summary & Identity */}
+        <div className="pb-8 mb-10 border-b border-[#e0e0e0] flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="max-w-3xl">
+            <span className="text-[14px] font-semibold tracking-tight text-[#1d1d1f] block mb-1">
+              SD PLUS AN-NUR
+            </span>
+            <p className="text-[12px] sm:text-[13px] text-[#7a7a7a] leading-relaxed">
+              Lembaga pendidikan dasar Islam yang mengintegrasikan Kurikulum Merdeka, Tahfidz Al-Qur&apos;an, dan pembiasaan adab islami dalam ekosistem belajar yang ramah anak dan berdaya saing global.
+            </p>
+          </div>
+          <div className="shrink-0">
+            <Link
+              href="/kontak"
+              className="inline-flex items-center gap-1.5 text-[13px] font-medium text-[#0066cc] hover:underline"
+            >
+              <span>Hubungi Sekretariat</span>
+              <span>→</span>
+            </Link>
+          </div>
         </div>
 
-        {/* Link Columns */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
+        {/* Structured Multi-Column Directory */}
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-14">
           {/* Col 1: Profil Sekolah */}
           <div>
-            <h4 className="text-[14px] font-semibold tracking-[-0.224px] text-[#1d1d1f] mb-3">
-              Profil SD Plus An-Nur
+            <h4 className="text-[13px] font-semibold tracking-tight text-[#1d1d1f] uppercase mb-4">
+              Profil Lembaga
             </h4>
-            <ul className="text-[14px] sm:text-[15px] space-y-2.5 text-[#333333]">
+            <ul className="text-[13px] sm:text-[14px] space-y-2.5 text-[#555555]">
               <li>
                 <Link href="/profil" className="hover:text-[#0066cc] transition-colors">
                   Tentang SD Plus An-Nur
                 </Link>
               </li>
               <li>
-                <Link href="/profil#sejarah" className="hover:text-[#0066cc] transition-colors">
-                  Statistik &amp; Utilitas
-                </Link>
-              </li>
-              <li>
-                <Link href="/profil#visi-misi" className="hover:text-[#0066cc] transition-colors">
-                  Visi &amp; Misi Sekolah
+                <Link href="/profil/sejarah" className="hover:text-[#0066cc] transition-colors">
+                  Sejarah &amp; Rekam Jejak
                 </Link>
               </li>
               <li>
                 <Link href="/profil/kepala-wakil" className="hover:text-[#0066cc] transition-colors">
-                  Pimpinan &amp; Pengelola
+                  Kepala &amp; Wakil Kepala
                 </Link>
               </li>
               <li>
@@ -45,17 +55,22 @@ export default function Footer() {
                   Fasilitas Sekolah
                 </Link>
               </li>
+              <li>
+                <Link href="/profil/tim-pengembang" className="hover:text-[#0066cc] transition-colors">
+                  Tim Pengembang WEB
+                </Link>
+              </li>
             </ul>
           </div>
 
           {/* Col 2: Kurikulum & Akademik */}
           <div>
-            <h4 className="text-[14px] font-semibold tracking-[-0.224px] text-[#1d1d1f] mb-3">
-              Kurikulum SD
+            <h4 className="text-[13px] font-semibold tracking-tight text-[#1d1d1f] uppercase mb-4">
+              Kurikulum
             </h4>
-            <ul className="text-[14px] sm:text-[15px] space-y-2.5 text-[#333333]">
+            <ul className="text-[13px] sm:text-[14px] space-y-2.5 text-[#555555]">
               <li>
-                <Link href="/kurikulum#pilar" className="hover:text-[#0066cc] transition-colors">
+                <Link href="/kurikulum" className="hover:text-[#0066cc] transition-colors">
                   Kurikulum SD Merdeka
                 </Link>
               </li>
@@ -66,26 +81,26 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/kurikulum#pilar" className="hover:text-[#0066cc] transition-colors">
-                  Program Tahfidz Juz 30
+                  Program Tahfidz Qur&apos;an
                 </Link>
               </li>
               <li>
                 <Link href="/kurikulum#jenjang" className="hover:text-[#0066cc] transition-colors">
-                  Fase Belajar (A, B, C)
+                  Fase Pembelajaran
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Col 3: Guru & Asatidz */}
+          {/* Col 3: Guru & Pendidik */}
           <div>
-            <h4 className="text-[14px] font-semibold tracking-[-0.224px] text-[#1d1d1f] mb-3">
-              Dewan Guru
+            <h4 className="text-[13px] font-semibold tracking-tight text-[#1d1d1f] uppercase mb-4">
+              Tenaga Pendidik
             </h4>
-            <ul className="text-[14px] sm:text-[15px] space-y-2.5 text-[#333333]">
+            <ul className="text-[13px] sm:text-[14px] space-y-2.5 text-[#555555]">
               <li>
                 <Link href="/guru" className="hover:text-[#0066cc] transition-colors">
-                  Direktori Pendidik
+                  Direktori Guru
                 </Link>
               </li>
               <li>
@@ -100,21 +115,26 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/guru" className="hover:text-[#0066cc] transition-colors">
-                  Guru Bahasa &amp; PJOK
+                  Guru Bidang Studi
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Col 4: Prestasi & Kegiatan */}
+          {/* Col 4: Prestasi & Informasi */}
           <div>
-            <h4 className="text-[14px] font-semibold tracking-[-0.224px] text-[#1d1d1f] mb-3">
-              Prestasi &amp; Info
+            <h4 className="text-[13px] font-semibold tracking-tight text-[#1d1d1f] uppercase mb-4">
+              Prestasi &amp; Agenda
             </h4>
-            <ul className="text-[14px] sm:text-[15px] space-y-2.5 text-[#333333]">
+            <ul className="text-[13px] sm:text-[14px] space-y-2.5 text-[#555555]">
               <li>
                 <Link href="/prestasi" className="hover:text-[#0066cc] transition-colors">
-                  Galeri Prestasi Siswa
+                  Torehan Prestasi Siswa
+                </Link>
+              </li>
+              <li>
+                <Link href="/galeri" className="hover:text-[#0066cc] transition-colors">
+                  Galeri Dokumentasi
                 </Link>
               </li>
               <li>
@@ -122,24 +142,22 @@ export default function Footer() {
                   Informasi Lomba Siswa
                 </Link>
               </li>
-              <li>
-                <Link href="/galeri" className="hover:text-[#0066cc] transition-colors">
-                  Dokumentasi Kegiatan
-                </Link>
-              </li>
             </ul>
           </div>
 
-          {/* Col 5: Sekretariat */}
+          {/* Col 5: Layanan PPDB */}
           <div className="col-span-2 md:col-span-4 lg:col-span-1">
-            <h4 className="text-[14px] font-semibold tracking-[-0.224px] text-[#1d1d1f] mb-3">
-              Sekretariat PPDB
+            <h4 className="text-[13px] font-semibold tracking-tight text-[#1d1d1f] uppercase mb-4">
+              Pendaftaran (PPDB)
             </h4>
-            <p className="text-[13px] text-[#7a7a7a] leading-relaxed mb-3">
-              Alamat, nomor telepon, email, dan jam layanan tersedia di halaman kontak.
+            <p className="text-[12px] sm:text-[13px] text-[#7a7a7a] leading-relaxed mb-3">
+              Informasi persyaratan pendaftaran, jadwal seleksi, dan biaya pendidikan dapat dikonsultasikan melalui sekretariat.
             </p>
-            <Link href="/kontak" className="text-[13px] text-[#0066cc] hover:underline">
-              Lihat informasi kontak
+            <Link
+              href="/kontak"
+              className="inline-block text-[13px] font-medium text-[#0066cc] hover:underline"
+            >
+              Konsultasi Pendaftaran →
             </Link>
           </div>
         </div>
@@ -149,12 +167,18 @@ export default function Footer() {
           <p>
             Hak Cipta SD Plus An-Nur. Seluruh hak cipta dilindungi undang-undang.
           </p>
-          <div className="flex items-center space-x-6">
-            <Link href="/profil" className="hover:text-[#1d1d1f]">
-              Profil Sekolah
+          <div className="flex items-center space-x-6 text-[12px]">
+            <Link href="/" className="hover:text-[#1d1d1f] transition-colors">
+              Beranda
             </Link>
-            <Link href="/kontak" className="hover:text-[#1d1d1f]">
-              Kontak
+            <Link href="/profil" className="hover:text-[#1d1d1f] transition-colors">
+              Profil
+            </Link>
+            <Link href="/kurikulum" className="hover:text-[#1d1d1f] transition-colors">
+              Kurikulum
+            </Link>
+            <Link href="/kontak" className="hover:text-[#1d1d1f] transition-colors">
+              Kontak &amp; Lokasi
             </Link>
           </div>
         </div>

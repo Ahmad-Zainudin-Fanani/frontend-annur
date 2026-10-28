@@ -1,23 +1,15 @@
 import React from "react";
-import Badge from "@/components/atoms/Badge";
-import { AwardIcon } from "@/components/atoms/Icons";
 
 export default function AchievementCard({ achievement }) {
-  const isInternational = achievement.level === "Internasional";
 
   return (
     <div className="bg-white border border-[#e0e0e0] rounded-[18px] p-6 flex flex-col justify-between transition-all hover:border-[#1d1d1f] hover:bg-[#fafafc]">
       <div>
-        {/* Top Badges: Year & Level */}
+        {/* Top Meta: Level & Year */}
         <div className="flex items-center justify-between gap-2 mb-4">
-          <Badge
-            variant={isInternational ? "gold" : "primary"}
-            size="sm"
-            className="font-medium"
-          >
-            <AwardIcon className="w-3.5 h-3.5" />
-            {achievement.level}
-          </Badge>
+          <span className="text-[12px] font-semibold uppercase tracking-wider text-[#0066cc]">
+            Tingkat {achievement.level}
+          </span>
           <span className="text-[13px] font-semibold text-[#7a7a7a]">
             {achievement.year}
           </span>

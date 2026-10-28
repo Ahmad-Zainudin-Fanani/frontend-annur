@@ -1,14 +1,13 @@
 import React from "react";
 import MainLayout from "@/components/templates/MainLayout";
-import HeroTile from "@/components/organisms/HeroTile";
-import AchievementsShowcase from "@/components/organisms/AchievementsShowcase";
-import CTASection from "@/components/organisms/CTASection";
+import PrestasiHero from "@/components/organisms/PrestasiHero";
+import PrestasiWinnersGallery from "@/components/organisms/PrestasiWinnersGallery";
 import { publicApi } from "@/data/api";
 
 export const metadata = {
-  title: "Prestasi Siswa | SD Plus An-Nur",
+  title: "Galeri Prestasi Siswa | SD Plus An-Nur",
   description:
-    "Galeri prestasi dan rekam jejak kejuaraan siswa-siswi SD Plus An-Nur di bidang OSN SD, tahfidz Al-Qur'an, seni FLS2N, dan olahraga O2SN tingkat kabupaten.",
+    "Galeri visual pemenang lomba dan rekam jejak prestasi siswa-siswi SD Plus An-Nur di bidang sains (OSN), keagamaan (MHQ & Pentas PAI), seni (FLS2N), dan olahraga (O2SN).",
 };
 
 export const instant = false;
@@ -18,37 +17,18 @@ export default async function PrestasiPage() {
   let error = null;
 
   try {
-    achievements = await publicApi.achievements();
+    achievements = await publicApi.achievements({ status: "published" });
   } catch (requestError) {
     error = requestError.message;
   }
 
   return (
     <MainLayout>
-      <HeroTile
-        variant="white"
-        eyebrow="Prestasi Siswa SD Plus An-Nur"
-        title="Mengasah Potensi, Mengukir Prestasi."
-        subtitle="Dari Olimpiade Sains Nasional (OSN SD), Musabaqah Hifdzil Qur'an, seni FLS2N, hingga kejuaraan olahraga O2SN tingkat kabupaten, siswa SD Plus An-Nur terus bersemangat menorehkan prestasi membanggakan."
-        primaryCtaText="Lihat Prestasi Siswa"
-        primaryCtaHref="#prestasi"
-        secondaryCtaText="Informasi Lomba Siswa"
-        secondaryCtaHref="/lomba"
-      />
+      {/* 1. Hero Prestasi — Disederhanakan & Editorial */}
+      <PrestasiHero />
 
-      {/* Minimalist Achievements Showcase Component */}
-      <AchievementsShowcase achievements={achievements} error={error} />
-
-      <CTASection
-        theme="dark"
-        eyebrow="Apresiasi &amp; Motivasi"
-        title="Dukung Tumbuh Kembang Bakat Ananda"
-        description="SD Plus An-Nur memberikan ruang seluas-luasnya bagi setiap siswa untuk mengeksplorasi minat dan bakat melalui berbagai ekstrakurikuler pilihan."
-        primaryText="Daftar Siswa Baru (PPDB)"
-        primaryHref="/kontak"
-        secondaryText="Hubungi Sekolah"
-        secondaryHref="/kontak"
-      />
+      {/* 2. Galeri Pemenang Lomba — Grid Foto Editorial Besar ala SOHUB Digital */}
+      <PrestasiWinnersGallery achievements={achievements} error={error} />
     </MainLayout>
   );
 }

@@ -1,12 +1,11 @@
 import React from "react";
 import MainLayout from "@/components/templates/MainLayout";
 import HeroCarousel from "@/components/organisms/HeroCarousel";
-import FeaturedPrograms from "@/components/organisms/FeaturedPrograms";
+import HomeAchievements from "@/components/organisms/HomeAchievements";
 import VisionMissionPrincipal from "@/components/organisms/VisionMissionPrincipal";
+import HomeGallery from "@/components/organisms/HomeGallery";
 import HomeContactSection from "@/components/organisms/HomeContactSection";
-import CTASection from "@/components/organisms/CTASection";
-import ApiState from "@/components/atoms/ApiState";
-import { normalizeCurriculums, publicApi } from "@/data/api";
+import { publicApi } from "@/data/api";
 
 export const metadata = {
   title: "SD Plus An-Nur | Sekolah Dasar Swasta Islam Unggulan",
@@ -17,68 +16,70 @@ export const metadata = {
 export const instant = false;
 
 export default async function HomePage() {
-  let profile = null;
-  let profileError = null;
-  let curriculum = normalizeCurriculums();
-  let curriculumError = null;
-  let heroSlides = [];
-  let heroSlidesError = null;
+  let profile          = null;
+  let profileError     = null;
+  let heroSlides       = [];
+  let heroSlidesError  = null;
+  let achievements     = [];
+  let achievementsError = null;
+  let galleries        = [];
+  let galleriesError   = null;
 
   try {
     profile = await publicApi.profile();
-  } catch (error) {
-    profileError = error.message;
-  }
-
-  try {
-    const records = await publicApi.curriculums();
-    curriculum = normalizeCurriculums(records, profile);
-  } catch (error) {
-    curriculumError = error.message;
+  } catch (e) {
+    profileError = e.message;
   }
 
   try {
     heroSlides = await publicApi.heroSlides();
-  } catch (error) {
-    heroSlidesError = error.message;
+  } catch (e) {
+    heroSlidesError = e.message;
+  }
+
+  try {
+    achievements = await publicApi.achievements({ status: "published" });
+  } catch (e) {
+    achievementsError = e.message;
+  }
+
+  try {
+    galleries = await publicApi.galleries({ status: "published" });
+  } catch (e) {
+    galleriesError = e.message;
   }
 
   return (
     <MainLayout>
       {/* ========================================================
-          SECTION 1: Full-screen Hero Section (Background Image, Dark Overlay & Carousel)
+          SECTION 1: Hero Banner (Full-Screen Carousel + SplitText)
           ======================================================== */}
       <HeroCarousel slides={heroSlides} error={heroSlidesError} />
 
       {/* ========================================================
-          SECTION 2: Ringkasan Program Unggulan
+          SECTION 2: Prestasi Siswa (Menggantikan Program Unggulan)
+          Editorial layout dinamis ala SOHUB Digital + GSAP
           ======================================================== */}
-      <FeaturedPrograms curriculum={curriculum} error={curriculumError} />
+      <HomeAchievements achievements={achievements} error={achievementsError} />
 
       {/* ========================================================
-          SECTION 3: Visi Misi & Box Kepala Sekolah yang Sedang Menjabat
-          (Mengacu persis pada konsep layout gambar/screenshot)
+          SECTION 3: Arah Pendidikan & Kepemimpinan
+          (Menggantikan statistik angka "Dedikasi yang Terukur")
+          Visi, Misi & Kepala Sekolah dalam satu narasi terpadu
           ======================================================== */}
       <VisionMissionPrincipal profile={profile} error={profileError} />
 
       {/* ========================================================
-          SECTION 4: Contact Section (Google Maps Kiri & Deskripsi/Kontak Kanan)
+          SECTION 4: Galeri Kegiatan
+          Bento layout dinamis + GSAP Flip filter & ScrollTrigger
           ======================================================== */}
-      <HomeContactSection profile={profile} error={profileError} />
+      <HomeGallery galleries={galleries} error={galleriesError} />
 
       {/* ========================================================
-          SECTION 5: Elegant CTA PPDB (Dark #272729)
+          SECTION 5: Lokasi & Kontak Resmi
+          Peta interaktif, saluran WhatsApp, email, dan jam layanan
           ======================================================== */}
-      {profile ? <CTASection
-        theme="dark"
-        eyebrow="Penerimaan Peserta Didik Baru (PPDB)"
-        title={`Daftarkan Putra-Putri Anda di ${profile.institutionName}.`}
-        description={profile.tagline}
-        primaryText="Konsultasi Pendaftaran (PPDB)"
-        primaryHref="/kontak"
-        secondaryText="Hubungi WhatsApp Kami"
-        secondaryHref={profile.whatsapp ? `https://wa.me/${profile.whatsapp.replace(/\D/g, "")}` : "/kontak"}
-      /> : <ApiState error={profileError} empty={!profileError} />}
+      <HomeContactSection profile={profile} error={profileError} />
     </MainLayout>
   );
 }

@@ -1,68 +1,75 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+/**
+ * ScrollReveal — GSAP ScrollTrigger edition.
+ *
+ * Pengganti ScrollReveal.js berbasis CSS sebelumnya.
+ * Mendukung prefers-reduced-motion dan cleanup yang benar
+ * untuk menghindari duplikasi ScrollTrigger pada re-render.
+ */
+
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap, ScrollTrigger, ease, dur } from "@/lib/gsapConfig";
+
+// Daftarkan useGSAP agar GSAP mengetahui React lifecycle.
+import gsapLib from "gsap";
+gsapLib.registerPlugin(ScrollTrigger);
+
+const ANIMATIONS = {
+  "fade-up":    { opacity: 0, y: 40 },
+  "fade-down":  { opacity: 0, y: -40 },
+  "fade-left":  { opacity: 0, x: 40 },
+  "fade-right": { opacity: 0, x: -40 },
+  "zoom-in":    { opacity: 0, scale: 0.92, y: 20 },
+  "clip-up":    { opacity: 0, clipPath: "inset(100% 0 0 0)", y: 0 },
+};
 
 export default function ScrollReveal({
   children,
-  animation = "fade-up", // "fade-up" | "fade-down" | "fade-left" | "fade-right" | "zoom-in"
-  delay = 0, // ms
-  duration = 750, // ms
+  animation = "fade-up",
+  delay = 0,           // ms
+  duration = 650,      // ms
   threshold = 0.12,
   className = "",
+  once = false,        // true = animasi hanya sekali
 }) {
-  const [isVisible, setIsVisible] = useState(false);
-  const elementRef = useRef(null);
+  const containerRef = useRef(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        // Toggle visibility when scrolling in or out
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        } else {
-          // Allow gentle re-triggering when scrolling back up
-          if (entry.boundingClientRect.top > 0) {
-            setIsVisible(false);
-          }
+  useGSAP(
+    () => {
+      // Hormati prefers-reduced-motion.
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+      if (prefersReduced) return;
+
+      const from = ANIMATIONS[animation] ?? ANIMATIONS["fade-up"];
+      const to = { opacity: 1, y: 0, x: 0, scale: 1, clipPath: "inset(0% 0 0 0)" };
+
+      gsap.fromTo(
+        containerRef.current,
+        from,
+        {
+          ...to,
+          duration: duration / 1000,
+          delay: delay / 1000,
+          ease: ease.enter,
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: `top ${Math.round((1 - threshold) * 100)}%`,
+            toggleActions: once
+              ? "play none none none"
+              : "play none none reverse",
+          },
         }
-      },
-      {
-        threshold,
-        rootMargin: "0px 0px -40px 0px",
-      }
-    );
-
-    const currentElem = elementRef.current;
-    if (currentElem) {
-      observer.observe(currentElem);
-    }
-
-    return () => {
-      if (currentElem) {
-        observer.unobserve(currentElem);
-      }
-    };
-  }, [threshold]);
-
-  let initialTransform = "translateY(36px)";
-  if (animation === "fade-down") initialTransform = "translateY(-36px)";
-  if (animation === "fade-left") initialTransform = "translateX(40px)";
-  if (animation === "fade-right") initialTransform = "translateX(-40px)";
-  if (animation === "zoom-in") initialTransform = "scale(0.92) translateY(20px)";
+      );
+    },
+    { scope: containerRef, dependencies: [animation, delay, duration, threshold, once] }
+  );
 
   return (
-    <div
-      ref={elementRef}
-      className={`transition-all ${className}`}
-      style={{
-        opacity: isVisible ? 1 : 0,
-        transform: isVisible ? "none" : initialTransform,
-        transitionDuration: `${duration}ms`,
-        transitionDelay: `${delay}ms`,
-        transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
-        willChange: "transform, opacity",
-      }}
-    >
+    <div ref={containerRef} className={className} style={{ willChange: "transform, opacity" }}>
       {children}
     </div>
   );

@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+import GSAPProvider from "@/components/atoms/GSAPProvider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -31,6 +32,8 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-canvas text-ink" suppressHydrationWarning>
+        {/* GSAPProvider mendaftarkan ScrollTrigger sekali di client side */}
+        <GSAPProvider />
         {children}
       </body>
     </html>

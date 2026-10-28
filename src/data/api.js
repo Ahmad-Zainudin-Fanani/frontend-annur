@@ -160,8 +160,21 @@ export function normalizeTeacher(teacher) {
 }
 
 export function normalizeAchievement(achievement) {
+  let image = achievement.image || "";
+
+  if (image && !image.startsWith("http")) {
+    try {
+      const apiOrigin = new URL(API_URL).origin;
+      image = new URL(image, `${apiOrigin}/`).toString();
+    } catch {
+      image = achievement.image;
+    }
+  }
+
   return {
     ...achievement,
+    image,
+    imageUrl: image,
     studentName: achievement.recipient_name || "",
     organizer: achievement.organizer || "",
   };
@@ -248,6 +261,17 @@ export const publicApi = {
     (await request(`/achievements${withQuery(params)}`)).map(
       normalizeAchievement
     ),
+
+  achievement: async (id) => {
+    try {
+      const item = await request(`/achievements/${id}`);
+      if (item) return normalizeAchievement(item);
+    } catch {
+      // Backend may not have single resource route, fallback to array find
+    }
+    const all = await publicApi.achievements();
+    return all.find((item) => String(item.id) === String(id)) || null;
+  },
 
   competitions: async (params = {}) =>
     (await request(`/competitions${withQuery(params)}`)).map(
