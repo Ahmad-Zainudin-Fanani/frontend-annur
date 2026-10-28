@@ -14,7 +14,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, SplitText, ease } from "@/lib/gsapConfig";
 import ApiState from "@/components/atoms/ApiState";
@@ -25,6 +25,7 @@ import {
 } from "@/components/atoms/Icons";
 
 export default function VisionMissionPrincipal({ profile, error = null }) {
+  const [failedPrincipalPhoto, setFailedPrincipalPhoto] = useState(null);
   const sectionRef    = useRef(null);
   const headingRef    = useRef(null);
   const eyebrowRef    = useRef(null);
@@ -170,6 +171,7 @@ export default function VisionMissionPrincipal({ profile, error = null }) {
   if (!profile) return <ApiState empty />;
 
   const principal = profile.principal;
+  const hasPrincipalPhoto = principal?.photo && failedPrincipalPhoto !== principal.photo;
 
   return (
     <section
@@ -289,7 +291,7 @@ export default function VisionMissionPrincipal({ profile, error = null }) {
             {principal ? (
               <article className="relative h-full min-h-[500px] rounded-[22px] overflow-hidden border border-[#e0e0e0] bg-[#1d1d1f] flex flex-col justify-end shadow-sm group">
                 {/* Official Leader Photo */}
-                {principal.photo ? (
+                {hasPrincipalPhoto ? (
                   <Image
                     src={principal.photo}
                     alt={principal.name}
@@ -297,6 +299,7 @@ export default function VisionMissionPrincipal({ profile, error = null }) {
                     unoptimized
                     className="object-cover object-top filter brightness-[0.95] group-hover:scale-102 transition-transform duration-700"
                     sizes="(max-width: 1024px) 100vw, 42vw"
+                    onError={() => setFailedPrincipalPhoto(principal.photo)}
                   />
                 ) : (
                   <div className="absolute inset-0 bg-gradient-to-br from-[#272729] to-[#161617] flex items-center justify-center text-white/20">

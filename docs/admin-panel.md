@@ -4,16 +4,16 @@ Panduan ini menjadi acuan saat membuat panel admin yang memakai API Laravel An-N
 
 ## 1. Struktur Aplikasi
 
-- Admin panel adalah aplikasi frontend terpisah dari website company profile. Jangan menambahkan halaman atau layout admin ke aplikasi `frontend-annur`.
-- Gunakan Next.js App Router dan Tailwind sesuai stack frontend proyek. Terapkan Atomic Design untuk komponen bersama: `atoms`, `molecules`, `organisms`, dan `templates`.
+- Admin panel dan website company profile berjalan dalam satu aplikasi Next.js di root repo. Website berada di route group `src/app/(public)` dan admin di `src/app/(admin)`; nama route group tidak mengubah URL. Halaman admin tersedia di `/admin`, login di `/login`, dan website tetap memakai URL publik yang ada.
+- Jalankan satu aplikasi dari root repo dengan `npm run dev` (atau `npm run build` dan `npm run start`). Gunakan Next.js App Router dan Tailwind sesuai stack proyek. Terapkan Atomic Design; komponen khusus admin berada di `src/components/admin/`.
 - Kelompok halaman panel: dashboard, profil sekolah, guru, prestasi, lomba, pilar kurikulum, fase, slide hero, galeri, dan CRM kontak.
 - Gunakan label dan pesan validasi berbahasa Indonesia. Setiap halaman daftar/form memiliki loading, empty, error, dan success state.
 
 ## 2. Integrasi API dan Sesi
 
-Backend API menggunakan prefix `/api`. Untuk development, base URL umumnya `http://127.0.0.1:8000/api`. Pada aplikasi admin, simpan base URL dalam env server-only, misalnya `API_BASE_URL`; jangan memakai prefix `NEXT_PUBLIC_`.
+Backend API menggunakan prefix `/api`. Untuk development, base URL umumnya `http://127.0.0.1:8000/api`. Simpan base URL dalam environment server-only aplikasi root, misalnya `API_BASE_URL`; jangan memakai prefix `NEXT_PUBLIC_`.
 
-Browser hanya memanggil route handler pada origin admin. Route handler Next.js bertindak sebagai BFF dan meneruskan request ke Laravel dengan header `Authorization: Bearer <token>`.
+Browser hanya memanggil route handler BFF pada origin aplikasi. Route handler Next.js meneruskan request ke Laravel dengan header `Authorization: Bearer <token>`.
 
 ### Route sesi BFF
 
@@ -88,7 +88,9 @@ Guru dengan riwayat kepala sekolah tidak dapat dihapus; API mengembalikan 422. T
 | Ubah status/prioritas | `PATCH /api/admin/contacts/{id}/status` | `crm_status`: `new`, `contacted`, `in_progress`, `resolved`, `closed`; `priority`: `low`, `normal`, `high`, `urgent`; `handled_by` opsional. |
 | Tambah catatan | `POST /api/admin/contacts/{id}/notes` | Body `{ "note": "..." }`; panjang 3–2000 karakter. |
 | Hapus kontak | `DELETE /api/admin/contacts/{id}` | Tidak ada endpoint tambah/edit pesan; pesan dibuat dari formulir publik. |
-| Upload berkas | `POST /api/admin/upload` | Multipart field `file`, maksimal 5 MB; JPG/JPEG/PNG/WEBP/GIF/PDF. Respons berisi `url` dan `path`. |
+| Upload berkas | `POST /api/admin/upload` | Multipart field `file`, maksimal 5 MB; JPG/JPEG/PNG/WEBP/AVIF/GIF/PDF. Respons berisi `url` dan `path`. |
+
+Laravel menyimpan upload di `storage/app/public/uploads` dan menyajikannya melalui `/storage/uploads/...`; jalankan `php artisan storage:link` sekali pada setiap environment agar file dapat diakses publik.
 
 Gunakan URL dari respons upload sebagai nilai field gambar/file pada resource. Filter status kontak mendukung `all`, `new`, `contacted`, `in_progress`, `resolved`, `closed`; filter prioritas mendukung `all`, `low`, `normal`, `high`, `urgent`.
 

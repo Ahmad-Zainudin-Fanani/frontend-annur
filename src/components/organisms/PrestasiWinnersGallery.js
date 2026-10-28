@@ -8,7 +8,7 @@
  * - Animasi GSAP ScrollTrigger reveal saat halaman berganti
  */
 
-import React, { useState, useMemo, useRef, useEffect } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
@@ -139,10 +139,10 @@ export default function PrestasiWinnersGallery({ achievements = [], error = null
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
 
-  // Reset ke halaman 1 saat pencarian berubah
-  useEffect(() => {
+  const handleSearchChange = (value) => {
+    setSearchQuery(value);
     setCurrentPage(1);
-  }, [searchQuery]);
+  };
 
   const pageItems = useMemo(() => {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -194,14 +194,14 @@ export default function PrestasiWinnersGallery({ achievements = [], error = null
               id="prestasi-search"
               type="text"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => handleSearchChange(e.target.value)}
               placeholder="Cari siswa atau lomba..."
               className="w-full pl-10 pr-9 py-2.5 rounded-full bg-[#f5f5f7] border border-[#e0e0e0] text-[13px] text-[#1d1d1f] placeholder-[#7a7a7a] focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:bg-white transition-all"
             />
             {searchQuery && (
               <button
                 type="button"
-                onClick={() => setSearchQuery("")}
+                onClick={() => handleSearchChange("")}
                 aria-label="Bersihkan pencarian"
                 className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#7a7a7a] hover:text-[#1d1d1f] transition-colors"
               >
@@ -221,7 +221,7 @@ export default function PrestasiWinnersGallery({ achievements = [], error = null
             <p className="text-[14px] text-[#7a7a7a] mb-5">Coba cari dengan nama siswa atau nama lomba lainnya.</p>
             <button
               type="button"
-              onClick={() => setSearchQuery("")}
+              onClick={() => handleSearchChange("")}
               className="px-5 py-2.5 rounded-full bg-[#1d1d1f] text-white text-[13px] font-medium hover:bg-[#333333] transition-colors"
             >
               Tampilkan Semua

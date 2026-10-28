@@ -18,7 +18,7 @@ Ikuti `DESIGN.md` untuk tampilan frontend. Terapkan sistem desainnya pada identi
 Periksa konfigurasi dan versi yang benar-benar tersedia di repositori sebelum mengubah dependensi. Jangan mengganti teknologi utama tanpa persetujuan tim.
 
 ## 4. Struktur Aplikasi dan Ruang Lingkup
-Pisahkan aplikasi **company profile (compro)** dan **admin panel** ke direktori frontend yang berbeda. Keduanya boleh memakai backend/API yang sama, tetapi halaman, layout, dan fitur khusus admin tidak boleh dicampur ke aplikasi compro.
+Gunakan satu aplikasi Next.js untuk **company profile (compro)** dan **admin panel**. Pisahkan rute dan layout keduanya dengan route group App Router `(public)` dan `(admin)` agar URL publik tetap sama dan gaya admin tidak bercampur dengan website publik. Admin menggunakan rute `/admin` dan `/login`; BFF admin tetap berada pada origin yang sama.
 
 Contoh struktur (sesuaikan dengan repositori yang ada):
 
@@ -26,19 +26,20 @@ Contoh struktur (sesuaikan dengan repositori yang ada):
 /
 ├── AGENTS.md
 ├── DESIGN.md
-├── backend/                 # Laravel API
-├── compro/                  # Next.js company profile
-└── admin-panel/             # Next.js admin, CMS, dan CRM
+├── src/app/(public)/        # Halaman company profile
+├── src/app/(admin)/         # Halaman admin dan route handler BFF
+├── src/components/          # Komponen publik dan admin
+└── docs/                    # Dokumentasi proyek
 ```
 
-Gunakan **Atomic Design** untuk struktur frontend pada kedua aplikasi:
+Gunakan **Atomic Design** untuk struktur komponen kedua area di dalam aplikasi:
 - `atoms/`: elemen dasar, seperti tombol, label, dan input.
 - `molecules/`: gabungan elemen sederhana, seperti kolom formulir.
 - `organisms/`: bagian antarmuka kompleks, seperti navigasi, formulir lengkap, dan tabel.
 - `templates/`: kerangka tata letak halaman.
 - `pages/` atau sistem routing bawaan Next.js: halaman/rute aplikasi. Jangan mengganti sistem routing Next.js hanya demi menyesuaikan nama folder Atomic Design.
 
-Hindari duplikasi komponen yang sama. Jika komponen perlu dipakai bersama, tempatkan di direktori bersama yang jelas tanpa menghilangkan pemisahan kedua aplikasi.
+Hindari duplikasi komponen yang sama. Tempatkan komponen admin di bawah `src/components/admin/` agar nama atau gaya komponen tidak menimpa komponen website publik.
 
 Ruang lingkup:
 - **Compro:** profil, kontak, prestasi, guru, galeri, informasi lomba, dan kurikulum.
