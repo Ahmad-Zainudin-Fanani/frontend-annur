@@ -57,8 +57,8 @@ export default async function HomePage() {
       <HeroCarousel slides={heroSlides} error={heroSlidesError} />
 
       {/* ========================================================
-          SECTION 2: Prestasi Siswa (Menggantikan Program Unggulan)
-          Editorial layout dinamis ala SOHUB Digital + GSAP
+          SECTION 2: Prestasi Siswa (Running showcase)
+          Marquee berjalan otomatis, 4 prestasi terbaru + CardPrestasi
           ======================================================== */}
       <HomeAchievements achievements={achievements} error={achievementsError} />
 
