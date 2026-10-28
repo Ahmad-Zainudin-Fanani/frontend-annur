@@ -18,9 +18,9 @@ import ApiState from "@/components/atoms/ApiState";
 import { BookOpenIcon, AwardIcon, SparklesIcon, BuildingIcon } from "@/components/atoms/Icons";
 
 const CARD_THEMES = [
-  { icon: BookOpenIcon, accent: "#0066cc", light: "rgba(0,102,204,0.08)", ring: "rgba(0,102,204,0.2)" },
-  { icon: SparklesIcon, accent: "#6366f1", light: "rgba(99,102,241,0.08)", ring: "rgba(99,102,241,0.2)" },
-  { icon: AwardIcon,    accent: "#0891b2", light: "rgba(8,145,178,0.08)", ring: "rgba(8,145,178,0.2)" },
+  { icon: BookOpenIcon, accent: "#333333", light: "rgba(51,51,51,0.08)", ring: "rgba(51,51,51,0.2)" },
+  { icon: SparklesIcon, accent: "#555555", light: "rgba(85,85,85,0.08)", ring: "rgba(85,85,85,0.2)" },
+  { icon: AwardIcon,    accent: "#7a7a7a", light: "rgba(122,122,122,0.08)", ring: "rgba(122,122,122,0.2)" },
   { icon: BuildingIcon, accent: "#059669", light: "rgba(5,150,105,0.08)", ring: "rgba(5,150,105,0.2)" },
 ];
 
@@ -65,7 +65,7 @@ export default function FeaturedPrograms({ curriculum, error = null }) {
         {/* Heading */}
         <div ref={headingRef} className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 sm:mb-16">
           <div className="max-w-2xl">
-            <span data-r className="inline-block text-[12px] font-bold uppercase tracking-[0.2em] text-[#0066cc] mb-4 px-3 py-1 rounded-full border border-[#0066cc]/25 bg-[#0066cc]/8">
+            <span data-r className="inline-block text-[12px] font-bold uppercase tracking-[0.2em] text-[#7a7a7a] mb-4 px-3 py-1 rounded-full border border-[#333333]/25 bg-[#333333]/8">
               Kurikulum &amp; Keunggulan
             </span>
             <h2 data-r className="text-[28px] sm:text-[36px] lg:text-[44px] font-semibold text-[#1d1d1f] leading-tight tracking-tight">
@@ -75,9 +75,9 @@ export default function FeaturedPrograms({ curriculum, error = null }) {
               {curriculum?.overview || "Kurikulum terpadu yang menyeimbangkan ilmu umum, keislaman, dan kecakapan abad ke-21."}
             </p>
           </div>
-          <Link href="/kurikulum" data-r className="shrink-0 inline-flex items-center gap-2 text-[14px] font-medium text-[#0066cc] hover:text-[#1d1d1f] transition-colors">
+          <Link href="/kurikulum" data-r className="shrink-0 inline-flex items-center gap-2 text-[14px] font-medium text-[#333333] hover:text-[#1d1d1f] transition-colors">
             Semua Kurikulum
-            <span className="w-6 h-6 rounded-full border border-[#0066cc]/40 flex items-center justify-center text-xs">→</span>
+            <span className="w-6 h-6 rounded-full border border-[#333333]/40 flex items-center justify-center text-xs">→</span>
           </Link>
         </div>
 
@@ -120,7 +120,7 @@ export default function FeaturedPrograms({ curriculum, error = null }) {
                   </span>
 
                   {/* Title */}
-                  <h3 className="text-[20px] font-semibold text-[#1d1d1f] mb-3 leading-snug group-hover:text-[#0066cc] transition-colors">
+                  <h3 className="text-[20px] font-semibold text-[#1d1d1f] mb-3 leading-snug">
                     {program.title}
                   </h3>
 

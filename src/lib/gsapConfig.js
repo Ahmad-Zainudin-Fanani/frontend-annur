@@ -7,13 +7,14 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Flip } from "gsap/Flip";
 import { SplitText } from "gsap/SplitText";
+import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 
 // Daftarkan plugin GSAP (hanya di client/browser atau aman di universal)
 if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger, Flip, SplitText);
+  gsap.registerPlugin(ScrollTrigger, Flip, SplitText, MotionPathPlugin);
 }
 
-export { gsap, ScrollTrigger, Flip, SplitText };
+export { gsap, ScrollTrigger, Flip, SplitText, MotionPathPlugin };
 
 /**
  * Ease presets konsisten dengan desain An-Nur.

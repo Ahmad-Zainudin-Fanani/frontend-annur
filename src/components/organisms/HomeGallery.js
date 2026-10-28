@@ -255,7 +255,7 @@ export default function HomeGallery({ galleries = [], error = null }) {
           <div className="max-w-2xl">
             <span
               ref={eyebrowRef}
-              className="inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.2em] text-[#0066cc] mb-3 px-3.5 py-1 rounded-full border border-[#0066cc]/20 bg-[#f5f5f7]"
+              className="inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.2em] text-[#7a7a7a] mb-3 px-3.5 py-1 rounded-full border border-[#333333]/20 bg-[#f5f5f7]"
             >
               Galeri Kegiatan
             </span>
@@ -272,10 +272,10 @@ export default function HomeGallery({ galleries = [], error = null }) {
 
           <Link
             href="/galeri"
-            className="shrink-0 inline-flex items-center gap-2 text-[14px] font-medium text-[#0066cc] hover:text-[#1d1d1f] transition-colors group apple-press-action"
+            className="shrink-0 inline-flex items-center gap-2 text-[14px] font-medium text-[#333333] hover:text-[#1d1d1f] transition-colors group apple-press-action"
           >
             <span>Lihat Semua Galeri</span>
-            <span className="w-7 h-7 rounded-full border border-[#0066cc]/30 group-hover:border-[#1d1d1f]/50 flex items-center justify-center text-xs transition-colors">
+            <span className="w-7 h-7 rounded-full border border-[#333333]/30 group-hover:border-[#1d1d1f]/50 flex items-center justify-center text-xs transition-colors">
               →
             </span>
           </Link>

@@ -104,7 +104,7 @@ const [currentPage, setCurrentPage] = useState(1);
             <button
               type="button"
               onClick={() => handleSearchChange("")}
-              className="text-[14px] text-[#0066cc] hover:underline font-medium cursor-pointer"
+              className="text-[14px] text-[#333333] hover:underline font-medium cursor-pointer"
             >
               Tampilkan Semua Guru
             </button>

@@ -153,7 +153,7 @@ export default function HomeContactSection({ profile, error = null }) {
         <div className="max-w-3xl mb-14 sm:mb-18">
           <span
             ref={eyebrowRef}
-            className="inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.2em] text-[#0066cc] mb-3 px-3.5 py-1 rounded-full border border-[#0066cc]/20 bg-[#f5f5f7]"
+            className="inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.2em] text-[#7a7a7a] mb-3 px-3.5 py-1 rounded-full border border-[#333333]/20 bg-[#f5f5f7]"
           >
             Lokasi &amp; Kontak Resmi
           </span>
@@ -217,7 +217,7 @@ export default function HomeContactSection({ profile, error = null }) {
           <div ref={infoColRef} className="lg:col-span-5 flex flex-col space-y-6">
             {/* 1. Location Description Card */}
             <div className="bg-[#f5f5f7] border border-[#e0e0e0] rounded-[22px] p-6 sm:p-7 shadow-sm">
-              <div className="flex items-center gap-2.5 mb-3 text-[#0066cc]">
+              <div className="flex items-center gap-2.5 mb-3 text-[#333333]">
                 <MapPinIcon className="w-5 h-5 shrink-0" />
                 <h3 className="text-[17px] font-semibold text-[#1d1d1f] tracking-tight">
                   Alamat Kampus
@@ -242,7 +242,7 @@ export default function HomeContactSection({ profile, error = null }) {
               {/* Phone / WhatsApp */}
               {(profile.whatsapp || profile.phone) ? (
                 <div className="flex items-start gap-3.5">
-                  <div className="w-10 h-10 rounded-xl bg-[#f5f5f7] text-[#0066cc] flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-[#f5f5f7] text-[#333333] flex items-center justify-center shrink-0">
                     <PhoneIcon className="w-5 h-5" />
                   </div>
                   <div>
@@ -253,7 +253,7 @@ export default function HomeContactSection({ profile, error = null }) {
                       href={whatsappNumber ? `https://wa.me/${whatsappNumber}` : undefined}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[16px] font-semibold text-[#1d1d1f] hover:text-[#0066cc] transition-colors"
+                      className="text-[16px] font-semibold text-[#1d1d1f] hover:text-[#1d1d1f] transition-colors"
                     >
                       {profile.whatsapp || profile.phone}
                     </a>
@@ -264,7 +264,7 @@ export default function HomeContactSection({ profile, error = null }) {
               {/* Email */}
               {profile.email ? (
                 <div className="flex items-start gap-3.5 pt-1">
-                  <div className="w-10 h-10 rounded-xl bg-[#f5f5f7] text-[#0066cc] flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-[#f5f5f7] text-[#333333] flex items-center justify-center shrink-0">
                     <MailIcon className="w-5 h-5" />
                   </div>
                   <div>
@@ -273,7 +273,7 @@ export default function HomeContactSection({ profile, error = null }) {
                     </span>
                     <a
                       href={profile.email ? `mailto:${profile.email}` : undefined}
-                      className="text-[16px] font-semibold text-[#1d1d1f] hover:text-[#0066cc] transition-colors"
+                      className="text-[16px] font-semibold text-[#1d1d1f] hover:text-[#1d1d1f] transition-colors"
                     >
                       {profile.email}
                     </a>
@@ -284,7 +284,7 @@ export default function HomeContactSection({ profile, error = null }) {
               {/* Schedule */}
               {(profile.utilities?.schedule || profile.utilities?.service_hours) ? (
                 <div className="flex items-start gap-3.5 pt-1">
-                  <div className="w-10 h-10 rounded-xl bg-[#f5f5f7] text-[#0066cc] flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-[#f5f5f7] text-[#333333] flex items-center justify-center shrink-0">
                     <ClockIcon className="w-5 h-5" />
                   </div>
                   <div>

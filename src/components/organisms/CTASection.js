@@ -14,20 +14,35 @@ export default function CTASection({
   secondaryHref = "/profil",
 }) {
   const isDark = theme === "dark";
+  const isNeutral = theme === "neutral";
 
   return (
     <section
       className={`py-20 lg:py-28 px-4 sm:px-6 lg:px-8 text-center ${
-        isDark ? "bg-[#272729] text-white" : "bg-[#f5f5f7] text-[#1d1d1f]"
+        isDark
+          ? "bg-[#272729] text-white"
+          : isNeutral
+            ? "bg-white text-[#1d1d1f]"
+            : "bg-[#f5f5f7] text-[#1d1d1f]"
       }`}
     >
       <div className="max-w-3xl mx-auto flex flex-col items-center">
         {eyebrow && (
           <span
-            className={`text-[13px] sm:text-[14px] font-semibold uppercase tracking-wider mb-3 select-none ${
-              isDark ? "text-[#2997ff]" : "text-[#0066cc]"
+            className={`mb-3 flex items-center justify-center gap-2 text-[13px] sm:text-[14px] font-semibold uppercase tracking-wider select-none ${
+              isDark
+                ? "text-[#d2d2d7]"
+                : isNeutral
+                  ? "text-[#7a7a7a]"
+                  : "text-[#7a7a7a]"
             }`}
           >
+            {isNeutral && (
+              <span
+                aria-hidden="true"
+                className="h-1.5 w-1.5 rotate-45 rounded-[1px] bg-[#7a7a7a]"
+              />
+            )}
             {eyebrow}
           </span>
         )}
@@ -35,7 +50,7 @@ export default function CTASection({
         <Heading
           as="h2"
           variant="display-lg"
-          theme={theme}
+          theme={isDark ? "dark" : "light"}
           className="mb-4"
         >
           {title}
@@ -43,7 +58,7 @@ export default function CTASection({
 
         <Text
           variant="body"
-          theme={theme}
+          theme={isDark ? "dark" : "light"}
           muted={true}
           className="mb-8 max-w-2xl text-[17px] leading-[1.6]"
         >
@@ -51,12 +66,22 @@ export default function CTASection({
         </Text>
 
         <div className="flex flex-wrap items-center justify-center gap-4">
-          <Button href={primaryHref} variant="primary" size="lg">
+          <Button
+            href={primaryHref}
+            variant={isNeutral ? "neutral-pill" : "primary"}
+            size="lg"
+          >
             {primaryText}
           </Button>
           <Button
             href={secondaryHref}
-            variant={isDark ? "text-link-on-dark" : "secondary-pill"}
+            variant={
+              isDark
+                ? "text-link-on-dark"
+                : isNeutral
+                  ? "neutral-outline"
+                  : "secondary-pill"
+            }
             size="lg"
           >
             {secondaryText}

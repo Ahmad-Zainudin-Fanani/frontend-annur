@@ -17,7 +17,7 @@ export default function SubNav({
         <div className="flex items-center space-x-2 truncate">
           <Link
             href="/"
-            className="text-[18px] sm:text-[21px] font-semibold text-[#1d1d1f] tracking-[0.231px] truncate hover:text-[#0066cc] transition-colors"
+            className="text-[18px] sm:text-[21px] font-semibold text-[#1d1d1f] tracking-[0.231px] truncate hover:text-[#1d1d1f] transition-colors"
           >
             {title}
           </Link>
@@ -31,7 +31,7 @@ export default function SubNav({
                 <Link
                   key={idx}
                   href={link.href}
-                  className="hover:text-[#0066cc] transition-colors"
+                  className="hover:text-[#1d1d1f] transition-colors"
                 >
                   {link.label}
                 </Link>

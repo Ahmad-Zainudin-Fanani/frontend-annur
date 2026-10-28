@@ -15,7 +15,7 @@ export default function CurriculumCard({ pillar, level }) {
     return (
       <div className="bg-white border border-[#e0e0e0] rounded-[18px] p-6 lg:p-8 flex flex-col justify-between transition-all hover:border-[#1d1d1f]">
         <div>
-          <div className="w-12 h-12 rounded-xl bg-[#f5f5f7] border border-[#e0e0e0] flex items-center justify-center text-[#0066cc] mb-5">
+          <div className="w-12 h-12 rounded-xl bg-[#f5f5f7] border border-[#e0e0e0] flex items-center justify-center text-[#333333] mb-5">
             <IconComponent className="w-6 h-6" />
           </div>
 
@@ -34,7 +34,7 @@ export default function CurriculumCard({ pillar, level }) {
           <ul className="space-y-3">
             {pillar.points.map((pt, idx) => (
               <li key={idx} className="flex items-start gap-2.5 text-[14px] text-[#333333] leading-[1.4]">
-                <span className="text-[#0066cc] mt-0.5 shrink-0">
+                <span className="text-[#333333] mt-0.5 shrink-0">
                   <CheckIcon className="w-4 h-4" />
                 </span>
                 <span>{pt}</span>
@@ -48,7 +48,7 @@ export default function CurriculumCard({ pillar, level }) {
 
   if (level) {
     return (
-      <div className="bg-white border border-[#e0e0e0] rounded-[18px] p-6 lg:p-8 flex flex-col justify-between transition-all hover:border-[#0066cc]">
+      <div className="bg-white border border-[#e0e0e0] rounded-[18px] p-6 lg:p-8 flex flex-col justify-between transition-all hover:border-[#333333]">
         <div>
           <div className="flex items-center justify-between gap-2 mb-3">
             <Badge variant="dark" size="sm">
@@ -61,7 +61,7 @@ export default function CurriculumCard({ pillar, level }) {
             {level.title}
           </h3>
 
-          <p className="text-[14px] font-medium text-[#0066cc] mb-3">
+          <p className="text-[14px] font-medium text-[#333333] mb-3">
             Fokus: {level.focus}
           </p>
 
@@ -76,7 +76,7 @@ export default function CurriculumCard({ pillar, level }) {
             <ul className="space-y-2">
               {level.keyCompetencies.map((comp, idx) => (
                 <li key={idx} className="flex items-start gap-2 text-[13px] text-[#333333] leading-[1.35]">
-                  <span className="text-[#0066cc] mt-0.5 shrink-0">
+                  <span className="text-[#333333] mt-0.5 shrink-0">
                     <CheckIcon className="w-3.5 h-3.5" />
                   </span>
                   <span>{comp}</span>

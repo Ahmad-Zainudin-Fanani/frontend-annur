@@ -74,7 +74,7 @@ export default function ProfileHighlights({
                       <span className="text-[13px] text-[#7a7a7a] block mb-1">
                         {label}
                       </span>
-                      <span className="text-[28px] font-semibold text-[#0066cc] leading-none block">
+                      <span className="text-[28px] font-semibold text-[#333333] leading-none block">
                         {value}
                       </span>
                       <span className="text-[11px] text-[#7a7a7a] mt-1 block">
@@ -118,7 +118,7 @@ export default function ProfileHighlights({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             <div className="lg:col-span-7">
-              <span className="text-[13px] font-semibold text-[#0066cc] uppercase tracking-wider">
+              <span className="text-[13px] font-semibold text-[#7a7a7a] uppercase tracking-wider">
                 Profil Lembaga
               </span>
               <h2 className="mt-3 text-[34px] sm:text-[40px] font-semibold leading-[1.1] text-[#1d1d1f] tracking-tight">
@@ -145,7 +145,7 @@ export default function ProfileHighlights({
                 ) : null}
                 {profile.location.coordinates ? (
                   <span className="inline-flex items-center gap-1">
-                    <MapPinIcon className="w-4 h-4 text-[#0066cc]" />
+                    <MapPinIcon className="w-4 h-4 text-[#333333]" />
                     {profile.location.coordinates}
                   </span>
                 ) : null}
@@ -154,7 +154,7 @@ export default function ProfileHighlights({
                     href={profile.location.mapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#0066cc] hover:underline"
+                    className="text-[#333333] hover:underline"
                   >
                     Buka Google Maps
                   </a>
@@ -188,7 +188,7 @@ export default function ProfileHighlights({
                   <ol className="mt-4 space-y-3 text-sm text-[#333333]">
                     {profile.mission.map((mission, index) => (
                       <li key={`${index}-${mission}`} className="flex gap-3">
-                        <span className="font-semibold text-[#0066cc]">
+                        <span className="font-semibold text-[#333333]">
                           {index + 1}.
                         </span>
                         <span>{mission}</span>
@@ -202,7 +202,7 @@ export default function ProfileHighlights({
 
               {leadership[0] ? (
                 <div className="rounded-2xl bg-white border border-[#e0e0e0] p-6">
-                  <p className="text-xs font-semibold uppercase text-[#0066cc]">
+                  <p className="text-xs font-semibold uppercase text-[#333333]">
                     Kepala Sekolah
                   </p>
                   <h3 className="mt-2 text-lg font-semibold text-[#1d1d1f]">
@@ -237,7 +237,7 @@ export default function ProfileHighlights({
                     key={value.code || value.title}
                     className="rounded-xl bg-[#f5f5f7] border border-[#e0e0e0] p-5"
                   >
-                    <span className="text-xs font-semibold text-[#0066cc]">
+                    <span className="text-xs font-semibold text-[#333333]">
                       {value.code}
                     </span>
                     <h4 className="mt-2 font-semibold text-[#1d1d1f]">
@@ -265,7 +265,7 @@ export default function ProfileHighlights({
                       {facility.name}
                     </h4>
                     {facility.capacity ? (
-                      <p className="mt-1 text-xs text-[#0066cc]">
+                      <p className="mt-1 text-xs text-[#333333]">
                         {facility.capacity}
                       </p>
                     ) : null}

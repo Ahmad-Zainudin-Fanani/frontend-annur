@@ -7,7 +7,7 @@ export default function AchievementCard({ achievement }) {
       <div>
         {/* Top Meta: Level & Year */}
         <div className="flex items-center justify-between gap-2 mb-4">
-          <span className="text-[12px] font-semibold uppercase tracking-wider text-[#0066cc]">
+          <span className="text-[12px] font-semibold uppercase tracking-wider text-[#7a7a7a]">
             Tingkat {achievement.level}
           </span>
           <span className="text-[13px] font-semibold text-[#7a7a7a]">
@@ -21,7 +21,7 @@ export default function AchievementCard({ achievement }) {
         </h3>
 
         {/* Student Name */}
-        <p className="text-[14px] text-[#0066cc] font-medium mb-3">
+        <p className="text-[14px] text-[#333333] font-medium mb-3">
           {achievement.studentName}
         </p>
 

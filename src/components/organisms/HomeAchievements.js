@@ -1,11 +1,13 @@
 "use client";
 
 /**
- * HomeAchievements — Running showcase prestasi siswa SD Plus An-Nur.
- * - Strip berjalan otomatis (marquee) berisi maksimal 4 prestasi terbaru
- * - Tanpa tombol navigasi: bergerak terus ke kanan seperti running text
+ * HomeAchievements — Showcase prestasi siswa SD Plus An-Nur.
+ * - Section di-pin sementara saat masuk viewport, lalu deretan kartu
+ *   bergeser horizontal mengikuti scroll (scrub, bisa dibalik)
+ * - Setelah kartu terakhir tampil penuh, pin dilepas dan halaman
+ *   kembali scroll vertikal seperti biasa
+ * - Jarak scroll dihitung dinamis dari lebar track dikurangi lebar viewport
  * - Memakai CardPrestasi yang sama dengan halaman /prestasi
- * - Marquee sengaja selalu berjalan, termasuk saat reduced motion
  * - SplitText & ScrollTrigger untuk judul dan kemunculan strip
  */
 
@@ -17,23 +19,20 @@ import { ArrowUpRightIcon } from "@/components/atoms/Icons";
 import CardPrestasi from "@/components/molecules/CardPrestasi";
 import ApiState from "@/components/atoms/ApiState";
 
-const MAX_ITEMS = 4;
+const MAX_ITEMS = 8;
 
-// Kecepatan geser (piksel per detik) dan durasi minimum.
-const MARQUEE_SPEED = 75;
-const MARQUEE_MIN_DURATION = 24;
-
-// Jumlah grup identik agar strip selalu menutup layar lebar.
-const MARQUEE_GROUPS = 3;
+// Jarak aman agar kartu terakhir tidak menempel tepat di tepi layar.
+const END_GUTTER = 24;
 
 export default function HomeAchievements({ achievements = [], error = null }) {
   const sectionRef  = useRef(null);
   const headingRef  = useRef(null);
   const splitRef    = useRef(null);
   const stripRef    = useRef(null);
+  const viewportRef = useRef(null);
   const trackRef    = useRef(null);
 
-  // Ambil maksimal 4 prestasi terbaru (tahun terbaru, lalu tanggal input)
+  // Ambil maksimal 8 prestasi terbaru (tahun terbaru, lalu tanggal input)
   const latest = useMemo(() => {
     return [...achievements]
       .sort((a, b) => {
@@ -112,27 +111,32 @@ export default function HomeAchievements({ achievements = [], error = null }) {
         );
       }
 
-      // 3. Marquee: grup identik bergerak ke kanan tanpa henti.
-      //    Geser tepat selebar satu grup (-100 / jumlah grup), lalu ulang:
-      //    karena tiap grup identik, titik akhir sama persis dengan titik awal.
+      // 3. Pin section + geser kartu horizontal mengikuti scroll.
+      //    Jarak tempuh = lebar seluruh track dikurangi lebar viewport,
+      //    jadi kartu terakhir berhenti tepat di dalam layar.
       const track = trackRef.current;
-      if (track) {
-        const groupWidth = track.scrollWidth / MARQUEE_GROUPS;
-        const duration = Math.max(
-          MARQUEE_MIN_DURATION,
-          groupWidth / MARQUEE_SPEED
-        );
+      const viewport = viewportRef.current;
 
-        gsap.fromTo(
-          track,
-          { xPercent: -100 / MARQUEE_GROUPS },
-          {
-            xPercent: 0,
-            duration,
-            ease: "none",
-            repeat: -1,
-          }
-        );
+      if (track && viewport) {
+        const getDistance = () => {
+          const scrollable = track.scrollWidth - viewport.clientWidth;
+          return scrollable > 0 ? scrollable + END_GUTTER : 0;
+        };
+
+        gsap.to(track, {
+          x: () => -getDistance(),
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: () => `+=${Math.max(1, getDistance())}`,
+            pin: true,
+            pinSpacing: true,
+            scrub: 0.6,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        });
       }
 
       return () => {
@@ -162,10 +166,10 @@ export default function HomeAchievements({ achievements = [], error = null }) {
 
           <Link
             href="/prestasi"
-            className="shrink-0 inline-flex items-center gap-2 text-[14px] font-medium text-[#0066cc] hover:text-[#1d1d1f] transition-colors group apple-press-action"
+            className="shrink-0 inline-flex items-center gap-2 text-[14px] font-medium text-[#7a7a7a] hover:text-[#1d1d1f] transition-colors group apple-press-action"
           >
             <span>Lihat Semua Prestasi</span>
-            <span className="w-7 h-7 rounded-full border border-[#0066cc]/30 group-hover:border-[#1d1d1f]/50 flex items-center justify-center transition-colors">
+            <span className="w-7 h-7 rounded-full border border-[#d2d2d7] text-[#7a7a7a] group-hover:border-[#8e8e93] group-hover:text-[#1d1d1f] group-hover:bg-[#f5f5f7] flex items-center justify-center transition-colors">
               <ArrowUpRightIcon className="w-3.5 h-3.5" />
             </span>
           </Link>
@@ -184,36 +188,24 @@ export default function HomeAchievements({ achievements = [], error = null }) {
       ) : (
         <div ref={stripRef} className="relative">
           <div
+            ref={viewportRef}
             role="region"
             aria-label="Prestasi terkini siswa SD Plus An-Nur"
             className="overflow-hidden"
           >
             <div
               ref={trackRef}
-              data-marquee-track
-              className="flex w-max will-change-transform"
+              data-prestasi-track
+              className="flex w-max gap-4 will-change-transform sm:gap-5 lg:gap-6"
             >
-              {Array.from({ length: MARQUEE_GROUPS }, (_, groupIndex) => {
-                const isDuplicate = groupIndex > 0;
-
-                return (
-                  <div
-                    key={groupIndex}
-                    aria-hidden={isDuplicate || undefined}
-                    inert={isDuplicate ? true : undefined}
-                    className="flex shrink-0 gap-4 pr-4 sm:gap-5 sm:pr-5 lg:gap-6 lg:pr-6"
-                  >
-                    {latest.map((item) => (
-                      <div
-                        key={`${groupIndex}-${item.id}`}
-                        className="shrink-0 w-[300px] sm:w-[400px] lg:w-[500px]"
-                      >
-                        <CardPrestasi item={item} />
-                      </div>
-                    ))}
-                  </div>
-                );
-              })}
+              {latest.map((item) => (
+                <div
+                  key={item.id}
+                  className="shrink-0 w-[340px] sm:w-[460px] lg:w-[580px]"
+                >
+                  <CardPrestasi item={item} />
+                </div>
+              ))}
             </div>
           </div>
         </div>

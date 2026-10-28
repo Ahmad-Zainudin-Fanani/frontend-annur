@@ -287,7 +287,7 @@ export default function PrestasiWinnersGallery({ achievements = [], error = null
           <div className="max-w-xl">
             <span
               ref={eyebrowRef}
-              className="text-[12px] sm:text-[13px] font-semibold uppercase tracking-[0.25em] text-[#0066cc] block mb-3"
+              className="text-[12px] sm:text-[13px] font-semibold uppercase tracking-[0.25em] text-[#7a7a7a] block mb-3"
             >
               Pemenang Lomba
             </span>
@@ -313,7 +313,7 @@ export default function PrestasiWinnersGallery({ achievements = [], error = null
                 value={searchQuery}
                 onChange={(e) => handleSearchChange(e.target.value)}
                 placeholder="Cari siswa atau lomba..."
-                className="w-full pl-10 pr-9 py-2.5 rounded-full bg-[#f5f5f7] border border-[#e0e0e0] text-[13px] text-[#1d1d1f] placeholder-[#7a7a7a] focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:bg-white transition-all"
+                className="w-full pl-10 pr-9 py-2.5 rounded-full bg-[#f5f5f7] border border-[#e0e0e0] text-[13px] text-[#1d1d1f] placeholder-[#7a7a7a] focus:outline-none focus:ring-2 focus:ring-[#7a7a7a] focus:bg-white transition-all"
               />
               {searchQuery && (
                 <button

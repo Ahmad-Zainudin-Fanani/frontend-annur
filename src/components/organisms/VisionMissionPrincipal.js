@@ -183,7 +183,7 @@ export default function VisionMissionPrincipal({ profile, error = null }) {
         <div className="max-w-3xl mb-14 sm:mb-18">
           <span
             ref={eyebrowRef}
-            className="inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.2em] text-[#0066cc] mb-3 px-3.5 py-1 rounded-full border border-[#0066cc]/20 bg-white"
+            className="inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.2em] text-[#7a7a7a] mb-3 px-3.5 py-1 rounded-full border border-[#333333]/20 bg-white"
           >
             Arah Pendidikan &amp; Kepemimpinan
           </span>
@@ -210,9 +210,9 @@ export default function VisionMissionPrincipal({ profile, error = null }) {
               ref={visionRef}
               className="relative bg-white border border-[#e0e0e0] rounded-[22px] p-7 sm:p-9 shadow-sm"
             >
-              <div className="flex items-center gap-3 mb-5 text-[#0066cc]">
-                <div className="w-10 h-10 rounded-xl bg-[#0066cc]/10 flex items-center justify-center">
-                  <TargetIcon className="w-5 h-5 text-[#0066cc]" />
+              <div className="flex items-center gap-3 mb-5 text-[#333333]">
+                <div className="w-10 h-10 rounded-xl bg-[#333333]/10 flex items-center justify-center">
+                  <TargetIcon className="w-5 h-5 text-[#333333]" />
                 </div>
                 <div>
                   <span className="text-[11px] font-semibold uppercase tracking-wider text-[#7a7a7a] block">
@@ -256,7 +256,7 @@ export default function VisionMissionPrincipal({ profile, error = null }) {
                         data-mission-item
                         className="flex items-start gap-3.5 group"
                       >
-                        <span className="w-7 h-7 rounded-lg bg-[#f5f5f7] group-hover:bg-[#0066cc] group-hover:text-white transition-colors text-[13px] font-bold text-[#0066cc] flex items-center justify-center shrink-0 mt-0.5">
+                        <span className="w-7 h-7 rounded-lg bg-[#f5f5f7] group-hover:bg-[#333333] group-hover:text-white transition-colors text-[13px] font-bold text-[#333333] flex items-center justify-center shrink-0 mt-0.5">
                           {String(index + 1).padStart(2, "0")}
                         </span>
                         <p className="text-[15px] sm:text-[16px] text-[#333333] leading-relaxed group-hover:text-[#1d1d1f] transition-colors">
@@ -276,7 +276,7 @@ export default function VisionMissionPrincipal({ profile, error = null }) {
                 <span>Terintegrasi Kurikulum Merdeka &amp; Program Tahfidz</span>
                 <Link
                   href="/kurikulum"
-                  className="inline-flex items-center gap-1 text-[#0066cc] hover:underline font-medium"
+                  className="inline-flex items-center gap-1 text-[#333333] hover:underline font-medium"
                 >
                   Kurikulum <ChevronRightIcon className="w-3.5 h-3.5" />
                 </Link>
@@ -312,8 +312,8 @@ export default function VisionMissionPrincipal({ profile, error = null }) {
 
                 {/* Content Overlay */}
                 <div className="relative z-10 p-6 sm:p-7 bg-white/95 backdrop-blur-md border-t border-[#e0e0e0]">
-                  <div className="flex items-center gap-2 mb-2 text-[#0066cc]">
-                    <span className="text-[11px] font-semibold uppercase tracking-wider bg-[#0066cc]/10 px-2.5 py-0.5 rounded-full">
+                  <div className="flex items-center gap-2 mb-2 text-[#333333]">
+                    <span className="text-[11px] font-semibold uppercase tracking-wider bg-[#333333]/10 px-2.5 py-0.5 rounded-full">
                       Pimpinan Lembaga
                     </span>
                     {principal.period && (
@@ -331,7 +331,7 @@ export default function VisionMissionPrincipal({ profile, error = null }) {
                   </p>
 
                   {principal.bio && (
-                    <blockquote className="text-[14px] text-[#555555] italic leading-relaxed mb-4 pl-3 border-l-2 border-[#0066cc]">
+                    <blockquote className="text-[14px] text-[#555555] italic leading-relaxed mb-4 pl-3 border-l-2 border-[#333333]">
                       “{principal.bio}”
                     </blockquote>
                   )}
@@ -339,7 +339,7 @@ export default function VisionMissionPrincipal({ profile, error = null }) {
                   <div className="pt-3 border-t border-[#f0f0f0] flex items-center justify-between">
                     <Link
                       href="/guru"
-                      className="text-[13px] font-medium text-[#0066cc] hover:underline inline-flex items-center gap-1.5"
+                      className="text-[13px] font-medium text-[#333333] hover:underline inline-flex items-center gap-1.5"
                     >
                       <span>Lihat Dewan Guru</span>
                       <ChevronRightIcon className="w-3.5 h-3.5" />
@@ -356,7 +356,7 @@ export default function VisionMissionPrincipal({ profile, error = null }) {
             ) : (
               /* Fallback if principal data is empty */
               <div className="h-full min-h-[400px] rounded-[22px] border border-[#e0e0e0] bg-white p-8 flex flex-col justify-center items-center text-center">
-                <UsersIcon className="w-12 h-12 text-[#0066cc]/40 mb-3" />
+                <UsersIcon className="w-12 h-12 text-[#333333]/40 mb-3" />
                 <h4 className="text-[18px] font-semibold text-[#1d1d1f] mb-1">
                   Kepemimpinan Lembaga
                 </h4>
@@ -365,7 +365,7 @@ export default function VisionMissionPrincipal({ profile, error = null }) {
                 </p>
                 <Link
                   href="/guru"
-                  className="text-[14px] font-medium text-[#0066cc] hover:underline inline-flex items-center gap-1"
+                  className="text-[14px] font-medium text-[#333333] hover:underline inline-flex items-center gap-1"
                 >
                   Lihat Direktori Guru &amp; Tenaga Kependidikan <ChevronRightIcon className="w-3.5 h-3.5" />
                 </Link>

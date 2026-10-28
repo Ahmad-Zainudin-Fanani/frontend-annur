@@ -57,8 +57,8 @@ export default async function HomePage() {
       <HeroCarousel slides={heroSlides} error={heroSlidesError} />
 
       {/* ========================================================
-          SECTION 2: Prestasi Siswa (Running showcase)
-          Marquee berjalan otomatis, 4 prestasi terbaru + CardPrestasi
+          SECTION 2: Prestasi Siswa (Pinned horizontal showcase)
+          Pin section + geser kartu horizontal mengikuti scroll
           ======================================================== */}
       <HomeAchievements achievements={achievements} error={achievementsError} />
 

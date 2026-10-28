@@ -97,7 +97,7 @@ export default function PinnedStats({ profile }) {
     <section
       ref={sectionRef}
       className="relative py-20 lg:py-28 overflow-hidden"
-      style={{ background: "linear-gradient(135deg, #0a0a0b 0%, #1a1a2e 50%, #0d1117 100%)" }}
+      style={{ background: "linear-gradient(135deg, #0a0a0b 0%, #1a1a1c 50%, #0d0d0f 100%)" }}
     >
       {/* Dekorasi grid line */}
       <div
@@ -105,19 +105,19 @@ export default function PinnedStats({ profile }) {
         aria-hidden="true"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(41,151,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(41,151,255,0.04) 1px, transparent 1px)",
+            "linear-gradient(rgba(122,122,122,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(122,122,122,0.04) 1px, transparent 1px)",
           backgroundSize: "60px 60px",
         }}
       />
       {/* Glow orb */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(0,102,204,0.12) 0%, transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, rgba(51,51,51,0.12) 0%, transparent 70%)" }}
       />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Headline */}
         <div className="text-center mb-14">
-          <span className="inline-block text-[12px] font-bold uppercase tracking-[0.2em] text-[#2997ff] mb-4 px-4 py-1.5 rounded-full border border-[#2997ff]/30 bg-[#2997ff]/10">
+          <span className="inline-block text-[12px] font-bold uppercase tracking-[0.2em] text-[#d2d2d7] mb-4 px-4 py-1.5 rounded-full border border-[#d2d2d7]/30 bg-[#d2d2d7]/10">
             An-Nur dalam Angka
           </span>
           <h2 className="text-[28px] sm:text-[36px] lg:text-[48px] font-semibold text-white leading-tight tracking-tight">
@@ -142,13 +142,13 @@ export default function PinnedStats({ profile }) {
             >
               {/* Hover glow */}
               <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                style={{ background: "linear-gradient(135deg, rgba(41,151,255,0.08) 0%, transparent 60%)" }} />
+                style={{ background: "linear-gradient(135deg, rgba(122,122,122,0.08) 0%, transparent 60%)" }} />
 
               {/* Icon */}
               {stat.icon && (
                 <div className="w-9 h-9 rounded-xl flex items-center justify-center mb-3"
-                  style={{ background: "rgba(41,151,255,0.15)" }}>
-                  <svg viewBox="0 0 24 24" className="w-5 h-5 fill-[#2997ff]" aria-hidden="true">
+                  style={{ background: "rgba(122,122,122,0.15)" }}>
+                  <svg viewBox="0 0 24 24" className="w-5 h-5 fill-[#d2d2d7]" aria-hidden="true">
                     <path d={stat.icon} />
                   </svg>
                 </div>
@@ -160,7 +160,7 @@ export default function PinnedStats({ profile }) {
                   {stat.value.toLocaleString("id-ID")}
                 </span>
                 {stat.suffix && (
-                  <span className="text-[#2997ff] text-[0.7em]">{stat.suffix}</span>
+                  <span className="text-[#d2d2d7] text-[0.7em]">{stat.suffix}</span>
                 )}
               </div>
 
@@ -171,7 +171,7 @@ export default function PinnedStats({ profile }) {
 
               {/* Accent bar bawah */}
               <div className="absolute bottom-0 left-0 h-[2px] w-0 group-hover:w-full transition-all duration-500 rounded-b-2xl"
-                style={{ background: "linear-gradient(90deg, #0066cc, #2997ff)" }} />
+                style={{ background: "linear-gradient(90deg, #333333, #d2d2d7)" }} />
             </div>
           ))}
         </div>

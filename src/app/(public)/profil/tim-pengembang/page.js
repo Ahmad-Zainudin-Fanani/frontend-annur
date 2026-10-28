@@ -44,7 +44,7 @@ export default function TimPengembangPage() {
       <section id="tim" className="py-16 lg:py-20 bg-[#f5f5f7] border-b border-[#e0e0e0]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mb-12">
-            <span className="text-[13px] font-semibold uppercase tracking-[0.2px] text-[#0066cc] mb-2 block">
+            <span className="text-[13px] font-semibold uppercase tracking-[0.2px] text-[#7a7a7a] mb-2 block">
               Kolaborasi &amp; Arsitektur
             </span>
             <h2 className="text-[28px] sm:text-[34px] font-semibold text-[#1d1d1f] tracking-tight">
@@ -65,7 +65,7 @@ export default function TimPengembangPage() {
                 {/* Top: Portrait Placeholder (3:4 aspect ratio) identical to Teacher Card */}
                 <div className="relative aspect-[3/4] w-full bg-gradient-to-b from-[#f0f4f8] via-[#e8eff8] to-[#dce7f5] flex items-center justify-center overflow-hidden border-b border-[#e0e0e0]">
                   <div className="flex flex-col items-center justify-center text-center select-none">
-                    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-white border border-[#e0e0e0] shadow-xs flex items-center justify-center mb-2.5 text-[#0066cc] font-bold text-3xl">
+                    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-white border border-[#e0e0e0] shadow-xs flex items-center justify-center mb-2.5 text-[#333333] font-bold text-3xl">
                       {member.name.slice(0, 2).toUpperCase()}
                     </div>
                     <span className="text-[12px] font-medium text-[#7a7a7a]">
@@ -79,7 +79,7 @@ export default function TimPengembangPage() {
                   <h3 className="text-[17px] font-bold text-[#1d1d1f] leading-snug tracking-[-0.2px] mb-1.5">
                     {member.name}
                   </h3>
-                  <p className="text-[14px] text-[#0066cc] font-medium leading-snug">
+                  <p className="text-[14px] text-[#333333] font-medium leading-snug">
                     {member.role}
                   </p>
                 </div>

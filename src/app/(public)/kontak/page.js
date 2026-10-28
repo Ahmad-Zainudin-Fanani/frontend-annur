@@ -101,7 +101,7 @@ export default function KontakPage() {
                 </div>
 
                 <div className="flex items-start gap-3 text-[15px] text-[#333333] mb-4">
-                  <MapPinIcon className="w-5 h-5 text-[#0066cc] shrink-0 mt-0.5" />
+                  <MapPinIcon className="w-5 h-5 text-[#333333] shrink-0 mt-0.5" />
                   <div>
                     <span className="font-semibold block text-[#1d1d1f]">Alamat Kampus:</span>
                     <span>{profile?.location.fullAddress || ""}</span>
@@ -136,13 +136,13 @@ export default function KontakPage() {
                 <div className="space-y-4 pt-6 border-t border-[#f0f0f0] text-[15px]">
                   {(profile?.whatsapp || profile?.phone) ? (
                     <div className="flex items-center gap-3 text-[#333333]">
-                      <PhoneIcon className="w-5 h-5 text-[#0066cc] shrink-0" />
+                      <PhoneIcon className="w-5 h-5 text-[#333333] shrink-0" />
                       <span>WhatsApp / Telepon: {profile.whatsapp || profile.phone}</span>
                     </div>
                   ) : null}
                   {profile?.email ? (
                     <div className="flex items-center gap-3 text-[#333333]">
-                      <MailIcon className="w-5 h-5 text-[#0066cc] shrink-0" />
+                      <MailIcon className="w-5 h-5 text-[#333333] shrink-0" />
                       <span>{profile.email}</span>
                     </div>
                   ) : null}
@@ -252,7 +252,7 @@ export default function KontakPage() {
                     <select
                       id="gradeTarget"
                       name="gradeTarget"
-                      className="w-full h-[44px] px-5 bg-white text-[#1d1d1f] text-[15px] rounded-full border border-[#e0e0e0] focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[#0071e3]/20 transition-all cursor-pointer"
+                      className="w-full h-[44px] px-5 bg-white text-[#1d1d1f] text-[15px] rounded-full border border-[#e0e0e0] focus:outline-none focus:border-[#7a7a7a] focus:ring-2 focus:ring-[#7a7a7a]/25 transition-all cursor-pointer"
                       value={formData.gradeTarget}
                       onChange={(event) => setFormData({ ...formData, gradeTarget: event.target.value })}
                     >
@@ -276,7 +276,7 @@ export default function KontakPage() {
                       required
                       minLength={10}
                       maxLength={3000}
-                      className="w-full p-4 bg-white text-[#1d1d1f] text-[15px] rounded-2xl border border-[#e0e0e0] focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[#0071e3]/20 transition-all"
+                      className="w-full p-4 bg-white text-[#1d1d1f] text-[15px] rounded-2xl border border-[#e0e0e0] focus:outline-none focus:border-[#7a7a7a] focus:ring-2 focus:ring-[#7a7a7a]/25 transition-all"
                       value={formData.message}
                       onChange={(event) => setFormData({ ...formData, message: event.target.value })}
                     />

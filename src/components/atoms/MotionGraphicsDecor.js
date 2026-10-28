@@ -84,19 +84,19 @@ export default function MotionGraphicsDecor() {
       {/* 1. Orb kiri atas */}
       <div
         data-orb="1"
-        className="absolute -top-32 -left-32 w-[550px] h-[550px] rounded-full bg-gradient-to-br from-[#0066cc]/10 via-[#2997ff]/5 to-transparent blur-3xl hidden md:block"
+        className="absolute -top-32 -left-32 w-[550px] h-[550px] rounded-full bg-gradient-to-br from-[#333333]/10 via-[#d2d2d7]/5 to-transparent blur-3xl hidden md:block"
       />
 
       {/* 2. Orb kanan tengah */}
       <div
         data-orb="2"
-        className="absolute top-[40%] -right-40 w-[600px] h-[600px] rounded-full bg-gradient-to-bl from-[#38bdf8]/10 via-[#0066cc]/5 to-transparent blur-3xl hidden md:block"
+        className="absolute top-[40%] -right-40 w-[600px] h-[600px] rounded-full bg-gradient-to-bl from-[#c7c7cc]/10 via-[#333333]/5 to-transparent blur-3xl hidden md:block"
       />
 
       {/* 3. Orb kiri bawah */}
       <div
         data-orb="3"
-        className="absolute top-[75%] -left-32 w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-[#6366f1]/8 via-[#0066cc]/5 to-transparent blur-3xl hidden md:block"
+        className="absolute top-[75%] -left-32 w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-[#7a7a7a]/8 via-[#333333]/5 to-transparent blur-3xl hidden md:block"
       />
 
       {/* 4. Bintang Islam 8 sudut */}
@@ -106,7 +106,7 @@ export default function MotionGraphicsDecor() {
       >
         <svg
           viewBox="0 0 100 100"
-          className="w-full h-full text-[#0066cc]"
+          className="w-full h-full text-[#333333]"
           fill="none"
           stroke="currentColor"
           strokeWidth="1.2"
@@ -123,7 +123,7 @@ export default function MotionGraphicsDecor() {
         data-ring
         className="absolute top-[48%] left-6 lg:left-16 w-52 h-52 opacity-15 hidden lg:block"
       >
-        <svg viewBox="0 0 120 120" className="w-full h-full text-[#2997ff]" fill="none" stroke="currentColor" strokeWidth="1">
+        <svg viewBox="0 0 120 120" className="w-full h-full text-[#d2d2d7]" fill="none" stroke="currentColor" strokeWidth="1">
           <circle cx="60" cy="60" r="54" strokeDasharray="6 6" />
           <circle cx="60" cy="60" r="38" />
           <circle cx="60" cy="60" r="22" strokeDasharray="4 4" />
@@ -136,7 +136,7 @@ export default function MotionGraphicsDecor() {
         data-spark
         className="absolute top-[82%] right-12 lg:right-20 w-32 h-32 opacity-25 hidden sm:block"
       >
-        <svg viewBox="0 0 80 80" className="w-full h-full text-[#0066cc]" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <svg viewBox="0 0 80 80" className="w-full h-full text-[#333333]" fill="none" stroke="currentColor" strokeWidth="1.5">
           <path d="M40 8v64M8 40h64M17.5 17.5l45 45M62.5 17.5l-45 45" strokeLinecap="round" />
         </svg>
       </div>

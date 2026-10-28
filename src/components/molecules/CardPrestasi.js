@@ -17,12 +17,12 @@ import { ArrowUpRightIcon, AwardIcon } from "@/components/atoms/Icons";
 
 export const CATEGORY_ACCENT = {
   "Keagamaan & Tahfidz": "#3ddc97",
-  "Akademik (OSN)": "#2997ff",
+  "Akademik (OSN)": "#d2d2d7",
   "Olahraga (O2SN)": "#ffb340",
-  "Seni & Literasi": "#c084fc",
+  "Seni & Literasi": "#7a7a7a",
 };
 
-const DEFAULT_ACCENT = "#2997ff";
+const DEFAULT_ACCENT = "#d2d2d7";
 
 export default function CardPrestasi({
   item,
@@ -55,7 +55,7 @@ export default function CardPrestasi({
   return (
     <article
       data-winner-card
-      className={`group w-full focus-within:ring-2 focus-within:ring-[#0071e3] rounded-[16px] ${className}`}
+      className={`group w-full focus-within:ring-2 focus-within:ring-[#7a7a7a] rounded-[16px] ${className}`}
       onMouseEnter={() => animateMedia(1.04)}
       onMouseLeave={() => animateMedia(1)}
     >
@@ -140,7 +140,7 @@ export default function CardPrestasi({
           {showArrow && (
             <div className="pointer-events-none absolute top-4 right-4 z-10 opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
               <span className="w-9 h-9 rounded-full bg-white shadow-lg flex items-center justify-center">
-                <ArrowUpRightIcon className="w-4 h-4 text-[#0066cc]" />
+                <ArrowUpRightIcon className="w-4 h-4 text-[#333333]" />
               </span>
             </div>
           )}

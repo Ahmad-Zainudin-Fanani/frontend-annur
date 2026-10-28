@@ -19,7 +19,7 @@ export default function Footer() {
           <div className="shrink-0">
             <Link
               href="/kontak"
-              className="inline-flex items-center gap-1.5 text-[13px] font-medium text-[#0066cc] hover:underline"
+              className="inline-flex items-center gap-1.5 text-[13px] font-medium text-[#333333] hover:underline"
             >
               <span>Hubungi Sekretariat</span>
               <span>→</span>
@@ -36,27 +36,27 @@ export default function Footer() {
             </h4>
             <ul className="text-[13px] sm:text-[14px] space-y-2.5 text-[#555555]">
               <li>
-                <Link href="/profil" className="hover:text-[#0066cc] transition-colors">
+                <Link href="/profil" className="hover:text-[#1d1d1f] transition-colors">
                   Tentang SD Plus An-Nur
                 </Link>
               </li>
               <li>
-                <Link href="/profil/sejarah" className="hover:text-[#0066cc] transition-colors">
+                <Link href="/profil/sejarah" className="hover:text-[#1d1d1f] transition-colors">
                   Sejarah &amp; Rekam Jejak
                 </Link>
               </li>
               <li>
-                <Link href="/profil/kepala-wakil" className="hover:text-[#0066cc] transition-colors">
+                <Link href="/profil/kepala-wakil" className="hover:text-[#1d1d1f] transition-colors">
                   Kepala &amp; Wakil Kepala
                 </Link>
               </li>
               <li>
-                <Link href="/profil#fasilitas" className="hover:text-[#0066cc] transition-colors">
+                <Link href="/profil#fasilitas" className="hover:text-[#1d1d1f] transition-colors">
                   Fasilitas Sekolah
                 </Link>
               </li>
               <li>
-                <Link href="/profil/tim-pengembang" className="hover:text-[#0066cc] transition-colors">
+                <Link href="/profil/tim-pengembang" className="hover:text-[#1d1d1f] transition-colors">
                   Tim Pengembang WEB
                 </Link>
               </li>
@@ -70,22 +70,22 @@ export default function Footer() {
             </h4>
             <ul className="text-[13px] sm:text-[14px] space-y-2.5 text-[#555555]">
               <li>
-                <Link href="/kurikulum" className="hover:text-[#0066cc] transition-colors">
+                <Link href="/kurikulum" className="hover:text-[#1d1d1f] transition-colors">
                   Kurikulum SD Merdeka
                 </Link>
               </li>
               <li>
-                <Link href="/kurikulum#pilar" className="hover:text-[#0066cc] transition-colors">
+                <Link href="/kurikulum#pilar" className="hover:text-[#1d1d1f] transition-colors">
                   Projek Karakter P5
                 </Link>
               </li>
               <li>
-                <Link href="/kurikulum#pilar" className="hover:text-[#0066cc] transition-colors">
+                <Link href="/kurikulum#pilar" className="hover:text-[#1d1d1f] transition-colors">
                   Program Tahfidz Qur&apos;an
                 </Link>
               </li>
               <li>
-                <Link href="/kurikulum#jenjang" className="hover:text-[#0066cc] transition-colors">
+                <Link href="/kurikulum#jenjang" className="hover:text-[#1d1d1f] transition-colors">
                   Fase Pembelajaran
                 </Link>
               </li>
@@ -99,22 +99,22 @@ export default function Footer() {
             </h4>
             <ul className="text-[13px] sm:text-[14px] space-y-2.5 text-[#555555]">
               <li>
-                <Link href="/guru" className="hover:text-[#0066cc] transition-colors">
+                <Link href="/guru" className="hover:text-[#1d1d1f] transition-colors">
                   Direktori Guru
                 </Link>
               </li>
               <li>
-                <Link href="/guru" className="hover:text-[#0066cc] transition-colors">
+                <Link href="/guru" className="hover:text-[#1d1d1f] transition-colors">
                   Guru Kelas 1 s.d 6
                 </Link>
               </li>
               <li>
-                <Link href="/guru" className="hover:text-[#0066cc] transition-colors">
+                <Link href="/guru" className="hover:text-[#1d1d1f] transition-colors">
                   Guru PAI &amp; Tahfidz
                 </Link>
               </li>
               <li>
-                <Link href="/guru" className="hover:text-[#0066cc] transition-colors">
+                <Link href="/guru" className="hover:text-[#1d1d1f] transition-colors">
                   Guru Bidang Studi
                 </Link>
               </li>
@@ -128,17 +128,17 @@ export default function Footer() {
             </h4>
             <ul className="text-[13px] sm:text-[14px] space-y-2.5 text-[#555555]">
               <li>
-                <Link href="/prestasi" className="hover:text-[#0066cc] transition-colors">
+                <Link href="/prestasi" className="hover:text-[#1d1d1f] transition-colors">
                   Torehan Prestasi Siswa
                 </Link>
               </li>
               <li>
-                <Link href="/galeri" className="hover:text-[#0066cc] transition-colors">
+                <Link href="/galeri" className="hover:text-[#1d1d1f] transition-colors">
                   Galeri Dokumentasi
                 </Link>
               </li>
               <li>
-                <Link href="/lomba" className="hover:text-[#0066cc] transition-colors">
+                <Link href="/lomba" className="hover:text-[#1d1d1f] transition-colors">
                   Informasi Lomba Siswa
                 </Link>
               </li>
@@ -155,7 +155,7 @@ export default function Footer() {
             </p>
             <Link
               href="/kontak"
-              className="inline-block text-[13px] font-medium text-[#0066cc] hover:underline"
+              className="inline-block text-[13px] font-medium text-[#333333] hover:underline"
             >
               Konsultasi Pendaftaran →
             </Link>

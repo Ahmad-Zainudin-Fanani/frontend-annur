@@ -58,7 +58,7 @@ export default function AchievementsShowcase({
                 selected={selectedCategory === cat}
                 onClick={() => setSelectedCategory(cat)}
                 size="sm"
-                className={selectedCategory === cat ? "!bg-[#0066cc] !border-[#0066cc]" : ""}
+                className={selectedCategory === cat ? "!bg-[#333333] !border-[#333333]" : ""}
               />
             ))}
           </div>
@@ -86,7 +86,7 @@ export default function AchievementsShowcase({
                 setSearchQuery("");
                 setSelectedCategory("Semua");
               }}
-              className="text-[#0066cc] hover:underline apple-press-action cursor-pointer text-[13px]"
+              className="text-[#333333] hover:underline apple-press-action cursor-pointer text-[13px]"
             >
               Tampilkan Semua
             </button>

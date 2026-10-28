@@ -121,7 +121,7 @@ export default function GlobalNav() {
                     aria-haspopup="true"
                     className={`inline-flex items-center gap-1 transition-colors py-1 cursor-pointer apple-press-action ${
                       isProfilActive
-                        ? "text-white font-semibold border-b-2 border-[#0066cc]"
+                        ? "text-white font-semibold border-b-2 border-[#d2d2d7]"
                         : "text-[#cccccc] hover:text-white"
                     }`}
                   >
@@ -159,7 +159,7 @@ export default function GlobalNav() {
                               <span
                                 className={`text-[13px] font-medium block leading-tight ${
                                   isSubActive
-                                    ? "text-[#2997ff]"
+                                    ? "text-[#d2d2d7]"
                                     : "text-white group-hover:text-white"
                                 }`}
                               >
@@ -191,7 +191,7 @@ export default function GlobalNav() {
                 href={item.href}
                 className={`transition-colors py-1 ${
                   isActive
-                    ? "text-white font-semibold border-b-2 border-[#0066cc]"
+                    ? "text-white font-semibold border-b-2 border-[#d2d2d7]"
                     : "text-[#cccccc] hover:text-white"
                 }`}
               >
@@ -205,7 +205,7 @@ export default function GlobalNav() {
         <div className="flex items-center space-x-3 shrink-0">
           <Button
             href="/kontak"
-            variant="primary"
+            variant="light-pill"
             size="sm"
             className="hidden sm:inline-flex py-2 px-4 text-[13px]"
           >
@@ -243,7 +243,7 @@ export default function GlobalNav() {
                       onClick={closeMobileMenu}
                       className={`block py-2 text-[15px] font-normal tracking-tight transition-colors ${
                         isProfilActive
-                          ? "text-white font-semibold pl-2 border-l-2 border-[#0066cc]"
+                          ? "text-white font-semibold pl-2 border-l-2 border-[#d2d2d7]"
                           : "text-[#cccccc] hover:text-white"
                       }`}
                     >
@@ -274,7 +274,7 @@ export default function GlobalNav() {
                             onClick={closeMobileMenu}
                             className={`block py-1.5 text-[14px] transition-colors ${
                               isSubActive
-                                ? "text-[#2997ff] font-medium"
+                                ? "text-[#d2d2d7] font-medium"
                                 : "text-[#aaaaaa] hover:text-white"
                             }`}
                           >
@@ -303,7 +303,7 @@ export default function GlobalNav() {
                 onClick={closeMobileMenu}
                 className={`block py-2 text-[15px] font-normal tracking-tight transition-colors ${
                   isActive
-                    ? "text-white font-semibold pl-2 border-l-2 border-[#0066cc]"
+                    ? "text-white font-semibold pl-2 border-l-2 border-[#d2d2d7]"
                     : "text-[#cccccc] hover:text-white"
                 }`}
               >
@@ -316,7 +316,7 @@ export default function GlobalNav() {
             <Button
               href="/kontak"
               onClick={closeMobileMenu}
-              variant="primary"
+              variant="light-pill"
               size="md"
               className="w-full text-[14px]"
             >

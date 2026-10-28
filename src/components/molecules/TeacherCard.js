@@ -29,7 +29,7 @@ export default function TeacherCard({ teacher }) {
           />
         ) : (
           <div className="flex flex-col items-center justify-center text-center select-none">
-            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-white border border-[#e0e0e0] shadow-xs flex items-center justify-center mb-2.5 text-[#0066cc] font-bold text-3xl">
+            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-white border border-[#e0e0e0] shadow-xs flex items-center justify-center mb-2.5 text-[#333333] font-bold text-3xl">
               {initials}
             </div>
             <span className="text-[12px] font-medium text-[#7a7a7a]">
@@ -44,7 +44,7 @@ export default function TeacherCard({ teacher }) {
         <h3 className="text-[17px] font-bold text-[#1d1d1f] leading-snug tracking-[-0.2px] mb-1.5">
           {teacher.name}
         </h3>
-        <p className="text-[14px] text-[#0066cc] font-medium leading-snug">
+        <p className="text-[14px] text-[#333333] font-medium leading-snug">
           {teacher.role}
         </p>
       </div>

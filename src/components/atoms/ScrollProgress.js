@@ -53,7 +53,7 @@ export default function ScrollProgress() {
         aria-hidden="true"
       >
         <div
-          className="h-full bg-gradient-to-r from-[#0066cc] via-[#2997ff] to-[#38bdf8] transition-all duration-150 ease-out shadow-[0_0_12px_rgba(41,151,255,0.9)]"
+          className="h-full bg-gradient-to-r from-[#333333] via-[#555555] to-[#7a7a7a] transition-all duration-150 ease-out shadow-[0_0_12px_rgba(0,0,0,0.18)]"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
@@ -68,8 +68,8 @@ export default function ScrollProgress() {
         aria-hidden="true"
       >
         <div className="bg-black/80 backdrop-blur-md text-white border border-white/20 rounded-full px-3.5 py-1.5 shadow-2xl flex items-center gap-2 text-[12px] font-medium tracking-wide">
-          <span className="w-2 h-2 rounded-full bg-[#2997ff] animate-pulse" />
-          <span className="tabular-nums font-mono text-[11px] text-[#2997ff]">
+          <span className="w-2 h-2 rounded-full bg-[#d2d2d7] animate-pulse" />
+          <span className="tabular-nums font-mono text-[11px] text-[#d2d2d7]">
             {Math.round(scrollProgress)}%
           </span>
           <span className="text-[10px] text-gray-400 uppercase tracking-wider hidden sm:inline">

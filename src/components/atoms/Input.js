@@ -26,7 +26,7 @@ export default function Input({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className={`w-full h-[44px] bg-white text-[#1d1d1f] placeholder-[#7a7a7a] text-[17px] leading-[1.47] tracking-[-0.374px] rounded-full border border-[#e0e0e0] focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[#0071e3]/20 transition-all ${
+        className={`w-full h-[44px] bg-white text-[#1d1d1f] placeholder-[#7a7a7a] text-[17px] leading-[1.47] tracking-[-0.374px] rounded-full border border-[#e0e0e0] focus:outline-none focus:border-[#7a7a7a] focus:ring-2 focus:ring-[#7a7a7a]/25 transition-all ${
           icon ? "pl-11 pr-10" : "px-5"
         } ${className}`.trim()}
         {...props}

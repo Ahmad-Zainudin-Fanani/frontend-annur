@@ -22,7 +22,7 @@ export default function SectionHeader({
       {eyebrow && (
         <span
           className={`inline-block text-[13px] sm:text-[14px] font-semibold tracking-[0.2px] uppercase mb-3 ${
-            isDark ? "text-[#2997ff]" : "text-[#0066cc]"
+            isDark ? "text-[#d2d2d7]" : "text-[#7a7a7a]"
           }`}
         >
           {eyebrow}

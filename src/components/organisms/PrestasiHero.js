@@ -91,7 +91,7 @@ export default function PrestasiHero() {
       <div className="max-w-4xl mx-auto flex flex-col items-center text-center">
         {/* Eyebrow Editorial — Bersih tanpa pill badge berbingkai */}
         <div ref={eyebrowRef} className="mb-3">
-          <span className="text-[12px] sm:text-[13px] font-semibold uppercase tracking-[0.25em] text-[#0066cc]">
+          <span className="text-[12px] sm:text-[13px] font-semibold uppercase tracking-[0.25em] text-[#7a7a7a]">
             Galeri Prestasi Siswa
           </span>
         </div>

@@ -31,7 +31,7 @@ export default function HeroTile({
         {eyebrow && (
           <span
             className={`text-[13px] sm:text-[14px] font-semibold uppercase tracking-[0.2px] mb-3.5 select-none ${
-              isDark ? "text-[#2997ff]" : "text-[#0066cc]"
+              isDark ? "text-[#d2d2d7]" : "text-[#333333]"
             }`}
           >
             {eyebrow}

@@ -15,7 +15,7 @@ export default function Button({
   ...props
 }) {
   const baseClasses =
-    "inline-flex items-center justify-center text-center font-normal transition-all apple-press-action focus:outline-none focus:ring-2 focus:ring-[#0071e3] focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none cursor-pointer";
+    "inline-flex items-center justify-center text-center font-normal transition-all apple-press-action focus:outline-none focus:ring-2 focus:ring-[#7a7a7a] focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none cursor-pointer";
 
   let variantClasses = "";
   let sizeClasses = "";
@@ -23,11 +23,23 @@ export default function Button({
   switch (variant) {
     case "primary":
       variantClasses =
-        "bg-[#0066cc] text-white hover:bg-[#0071e3] active:bg-[#005bb5] rounded-full";
+        "bg-[#333333] text-white hover:bg-[#1d1d1f] active:bg-[#000000] rounded-full";
       break;
     case "secondary-pill":
       variantClasses =
-        "bg-transparent text-[#0066cc] border border-[#0066cc] hover:bg-[#0066cc]/5 active:bg-[#0066cc]/10 rounded-full";
+        "bg-transparent text-[#333333] border border-[#d2d2d7] hover:bg-[#f5f5f7] active:bg-[#e8e8ed] rounded-full";
+      break;
+    case "neutral-pill":
+      variantClasses =
+        "bg-[#333333] text-white hover:bg-[#1d1d1f] active:bg-black rounded-full";
+      break;
+    case "light-pill":
+      variantClasses =
+        "bg-[#f5f5f7] text-[#1d1d1f] hover:bg-white active:bg-[#e8e8ed] rounded-full";
+      break;
+    case "neutral-outline":
+      variantClasses =
+        "bg-transparent text-[#1d1d1f] border border-[#d2d2d7] hover:bg-[#f5f5f7] active:bg-[#e8e8ed] rounded-full";
       break;
     case "dark-utility":
       variantClasses =
@@ -39,19 +51,19 @@ export default function Button({
       break;
     case "hero":
       variantClasses =
-        "bg-[#0066cc] text-white hover:bg-[#0071e3] rounded-full font-light";
+        "bg-[#333333] text-white hover:bg-[#1d1d1f] rounded-full font-light";
       break;
     case "text-link":
       variantClasses =
-        "bg-transparent text-[#0066cc] hover:underline p-0 inline-flex items-center gap-1 font-normal";
+        "bg-transparent text-[#333333] hover:underline p-0 inline-flex items-center gap-1 font-normal";
       break;
     case "text-link-on-dark":
       variantClasses =
-        "bg-transparent text-[#2997ff] hover:underline p-0 inline-flex items-center gap-1 font-normal";
+        "bg-transparent text-[#d2d2d7] hover:underline p-0 inline-flex items-center gap-1 font-normal";
       break;
     default:
       variantClasses =
-        "bg-[#0066cc] text-white hover:bg-[#0071e3] rounded-full";
+        "bg-[#333333] text-white hover:bg-[#1d1d1f] rounded-full";
   }
 
   // Size styling matching DESIGN.md

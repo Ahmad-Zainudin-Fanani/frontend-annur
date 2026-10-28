@@ -110,11 +110,11 @@ export default function CurriculumOverview({ curriculum, error = null }) {
                   onClick={() => setSelectedLevelIndex(idx)}
                   className={`p-4 rounded-xl border transition-all cursor-pointer ${
                     selectedLevelIndex === idx
-                      ? "bg-white border-[#0066cc] ring-2 ring-[#0066cc]/20 shadow-xs"
+                      ? "bg-white border-[#333333] ring-2 ring-[#333333]/20 shadow-xs"
                       : "bg-[#fafafc] border-[#e0e0e0] hover:bg-white"
                   }`}
                 >
-                  <div className="text-[12px] font-semibold text-[#0066cc] mb-1">
+                  <div className="text-[12px] font-semibold text-[#333333] mb-1">
                     {lvl.level}
                   </div>
                   <div className="text-[14px] font-semibold text-[#1d1d1f] mb-1 truncate">

@@ -77,7 +77,7 @@ export default async function KepalaWakilPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* SECTION HEADER */}
           <div className="max-w-3xl mb-12">
-            <span className="text-[13px] font-semibold uppercase tracking-[0.2px] text-[#0066cc] mb-2 block">
+            <span className="text-[13px] font-semibold uppercase tracking-[0.2px] text-[#7a7a7a] mb-2 block">
               Pimpinan Utama Lembaga
             </span>
             <h2 className="text-[28px] sm:text-[36px] font-semibold text-[#1d1d1f] tracking-tight leading-tight">
@@ -137,12 +137,12 @@ export default async function KepalaWakilPage() {
                   {principal.name}
                 </h3>
 
-                <p className="text-[16px] font-medium text-[#0066cc] mb-6">
+                <p className="text-[16px] font-medium text-[#333333] mb-6">
                   {principal.role}
                 </p>
 
                 {/* Quote Callout */}
-                <div className="bg-white border-l-4 border-[#0066cc] rounded-r-xl p-5 border border-y-[#e0e0e0] border-r-[#e0e0e0] mb-6">
+                <div className="bg-white border-l-4 border-[#333333] rounded-r-xl p-5 border border-y-[#e0e0e0] border-r-[#e0e0e0] mb-6">
                   <p className="text-[15px] sm:text-[16px] italic text-[#333333] leading-relaxed">
                     &ldquo;{principal.bio}&rdquo;
                   </p>
@@ -151,7 +151,7 @@ export default async function KepalaWakilPage() {
                 {/* Key Credentials Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-[#e0e0e0]">
                   <div className="flex items-start gap-3">
-                    <div className="w-9 h-9 rounded-lg bg-[#f0f0f0] flex items-center justify-center text-[#0066cc] shrink-0">
+                    <div className="w-9 h-9 rounded-lg bg-[#f0f0f0] flex items-center justify-center text-[#333333] shrink-0">
                       <GraduationCapIcon className="w-5 h-5" />
                     </div>
                     <div>
@@ -165,7 +165,7 @@ export default async function KepalaWakilPage() {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <div className="w-9 h-9 rounded-lg bg-[#f0f0f0] flex items-center justify-center text-[#0066cc] shrink-0">
+                    <div className="w-9 h-9 rounded-lg bg-[#f0f0f0] flex items-center justify-center text-[#333333] shrink-0">
                       <AwardIcon className="w-5 h-5" />
                     </div>
                     <div>
@@ -185,7 +185,7 @@ export default async function KepalaWakilPage() {
           {/* SECTION: WAKIL KEPALA & KOORDINATOR */}
           <div className="mt-20">
             <div className="max-w-3xl mb-10">
-              <span className="text-[13px] font-semibold uppercase tracking-[0.2px] text-[#0066cc] mb-2 block">
+              <span className="text-[13px] font-semibold uppercase tracking-[0.2px] text-[#7a7a7a] mb-2 block">
                 Jajaran Manajemen Sekolah
               </span>
               <h2 className="text-[26px] sm:text-[32px] font-semibold text-[#1d1d1f] tracking-tight leading-tight">
@@ -208,15 +208,15 @@ export default async function KepalaWakilPage() {
                   >
                     <div>
                       {/* Portrait Header */}
-                      <div className="relative aspect-[4/3] bg-gradient-to-br from-[#f0f4f9] via-[#e8eff8] to-[#d9e5f5] flex items-center justify-center border-b border-[#e0e0e0] overflow-hidden">
-                        <div className="w-24 h-24 rounded-full bg-white shadow-md border border-[#e0e0e0] flex items-center justify-center text-[#0066cc] font-bold text-2xl">
+                      <div className="relative aspect-[4/3] bg-gradient-to-br from-[#f5f5f7] via-[#f0f0f2] to-[#e8e8ed] flex items-center justify-center border-b border-[#e0e0e0] overflow-hidden">
+                        <div className="w-24 h-24 rounded-full bg-white shadow-md border border-[#e0e0e0] flex items-center justify-center text-[#333333] font-bold text-2xl">
                           {vp.name
                             .replace(/^(Ustadz|Ustadzah|Dr\.|Dra\.|H\.|Hj\.)\s+/gi, "")
                             .slice(0, 2)
                             .toUpperCase()}
                         </div>
                         <div className="absolute top-3.5 right-3.5">
-                          <span className="px-3 py-1 rounded-full bg-white/90 backdrop-blur-xs text-[11px] font-semibold text-[#0066cc] border border-[#e0e0e0]">
+                          <span className="px-3 py-1 rounded-full bg-white/90 backdrop-blur-xs text-[11px] font-semibold text-[#333333] border border-[#e0e0e0]">
                             {isFemale ? "Ustadzah" : "Ustadz"}
                           </span>
                         </div>
@@ -224,7 +224,7 @@ export default async function KepalaWakilPage() {
 
                       {/* Content */}
                       <div className="p-6">
-                        <span className="text-[12px] font-semibold text-[#0066cc] uppercase tracking-wide block mb-1">
+                        <span className="text-[12px] font-semibold text-[#7a7a7a] uppercase tracking-wide block mb-1">
                           {vp.role}
                         </span>
                         <h3 className="text-[18px] font-semibold text-[#1d1d1f] leading-snug mb-3">

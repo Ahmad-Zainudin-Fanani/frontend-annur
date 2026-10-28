@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import GSAPProvider from "@/components/atoms/GSAPProvider";
+import SmoothScroll from "@/components/atoms/SmoothScroll";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -34,6 +35,8 @@ export default function RootLayout({ children }) {
       <body className="min-h-full flex flex-col bg-canvas text-ink" suppressHydrationWarning>
         {/* GSAPProvider mendaftarkan ScrollTrigger sekali di client side */}
         <GSAPProvider />
+        {/* Lenis: smooth scroll publik, disinkronkan dengan GSAP ScrollTrigger */}
+        <SmoothScroll />
         {children}
       </body>
     </html>

@@ -10,10 +10,10 @@ export default function Badge({
   let variantStyles = "";
   switch (variant) {
     case "primary":
-      variantStyles = "bg-[#0066cc]/10 text-[#0066cc] border border-[#0066cc]/20";
+      variantStyles = "bg-[#333333]/10 text-[#333333] border border-[#333333]/20";
       break;
     case "primary-on-dark":
-      variantStyles = "bg-[#2997ff]/15 text-[#2997ff] border border-[#2997ff]/30";
+      variantStyles = "bg-[#d2d2d7]/15 text-[#d2d2d7] border border-[#d2d2d7]/30";
       break;
     case "dark":
       variantStyles = "bg-[#272729] text-white border border-[#333333]";

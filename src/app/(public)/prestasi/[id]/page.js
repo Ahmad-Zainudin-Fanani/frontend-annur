@@ -59,7 +59,7 @@ export default async function AchievementDetailPage({ params }) {
           </p>
           <Link
             href="/prestasi"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#0066cc] text-white text-[15px] font-medium hover:bg-[#0071e3] transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#333333] text-white text-[15px] font-medium hover:bg-[#1d1d1f] transition-colors"
           >
             <ChevronLeftIcon className="w-4 h-4" />
             <span>Kembali ke Galeri Prestasi</span>
@@ -86,7 +86,7 @@ export default async function AchievementDetailPage({ params }) {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <Link
               href="/prestasi"
-              className="inline-flex items-center gap-2 text-[14px] font-medium text-[#0066cc] hover:text-[#1d1d1f] transition-colors group"
+              className="inline-flex items-center gap-2 text-[14px] font-medium text-[#333333] hover:text-[#1d1d1f] transition-colors group"
             >
               <ChevronLeftIcon className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
               <span>Kembali ke Galeri Prestasi</span>
@@ -150,7 +150,7 @@ export default async function AchievementDetailPage({ params }) {
                               : "AN"}
                           </span>
                         </div>
-                        <span className="text-[13px] font-medium uppercase tracking-widest text-[#2997ff] block mb-1">
+                        <span className="text-[13px] font-medium uppercase tracking-widest text-[#d2d2d7] block mb-1">
                           {achievement.category}
                         </span>
                         <span className="text-[12px] text-white/50 block">
@@ -173,7 +173,7 @@ export default async function AchievementDetailPage({ params }) {
               <div className="lg:col-span-7 flex flex-col">
                 {/* Level, Year & Category Meta — Tipografi Bersih Tanpa Pill Badge */}
                 <div className="flex flex-wrap items-center gap-3 text-[13px] text-[#7a7a7a] mb-4">
-                  <span className="font-semibold text-[#0066cc] uppercase tracking-wider">
+                  <span className="font-semibold text-[#7a7a7a] uppercase tracking-wider">
                     Tingkat {achievement.level}
                   </span>
                   <span>•</span>
@@ -192,7 +192,7 @@ export default async function AchievementDetailPage({ params }) {
                 </h1>
 
                 {/* 2. NAMA LOMBA / PRESTASI */}
-                <p className="text-[19px] sm:text-[22px] text-[#0066cc] font-medium leading-snug mb-8">
+                <p className="text-[19px] sm:text-[22px] text-[#333333] font-medium leading-snug mb-8">
                   {achievement.title}
                 </p>
 
@@ -240,7 +240,7 @@ export default async function AchievementDetailPage({ params }) {
                       <span className="text-[12px] font-medium text-[#7a7a7a] block uppercase tracking-wider mb-1">
                         Peringkat / Penghargaan
                       </span>
-                      <span className="font-semibold text-[#0066cc] block leading-snug">
+                      <span className="font-semibold text-[#333333] block leading-snug">
                         {awardLabel}
                       </span>
                     </div>
@@ -261,7 +261,7 @@ export default async function AchievementDetailPage({ params }) {
                 <div className="flex flex-wrap items-center gap-4">
                   <Link
                     href="/kontak"
-                    className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-[#0066cc] text-white text-[15px] font-medium hover:bg-[#0071e3] transition-colors"
+                    className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-[#333333] text-white text-[15px] font-medium hover:bg-[#1d1d1f] transition-colors"
                   >
                     Konsultasi Bakat &amp; PPDB
                   </Link>
@@ -286,7 +286,7 @@ export default async function AchievementDetailPage({ params }) {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex items-center justify-between mb-8">
                 <div>
-                  <span className="text-[12px] font-semibold uppercase tracking-wider text-[#0066cc] block mb-1">
+                  <span className="text-[12px] font-semibold uppercase tracking-wider text-[#7a7a7a] block mb-1">
                     Inspirasi Prestasi
                   </span>
                   <h3 className="text-[24px] sm:text-[28px] font-semibold text-[#1d1d1f] tracking-tight">
@@ -295,7 +295,7 @@ export default async function AchievementDetailPage({ params }) {
                 </div>
                 <Link
                   href="/prestasi"
-                  className="text-[14px] font-medium text-[#0066cc] hover:underline inline-flex items-center gap-1"
+                  className="text-[14px] font-medium text-[#333333] hover:underline inline-flex items-center gap-1"
                 >
                   <span>Lihat Semua</span>
                   <ChevronRightIcon className="w-4 h-4" />
@@ -310,18 +310,18 @@ export default async function AchievementDetailPage({ params }) {
                   >
                     <Link href={`/prestasi/${item.id}`} className="block">
                       <div className="flex items-center justify-between mb-3 text-[12px]">
-                        <span className="font-semibold text-[#0066cc] uppercase tracking-wider">
+                        <span className="font-semibold text-[#7a7a7a] uppercase tracking-wider">
                           {item.level}
                         </span>
                         <span className="text-[#7a7a7a]">{item.year}</span>
                       </div>
-                      <h4 className="text-[20px] font-semibold text-[#1d1d1f] group-hover:text-[#0066cc] transition-colors leading-snug mb-1">
+                      <h4 className="text-[20px] font-semibold text-[#1d1d1f] leading-snug mb-1">
                         {item.studentName}
                       </h4>
                       <p className="text-[14px] text-[#7a7a7a] line-clamp-2">
                         {item.title}
                       </p>
-                      <div className="mt-4 pt-3 border-t border-[#f0f0f0] flex items-center justify-between text-[13px] text-[#0066cc] font-medium">
+                      <div className="mt-4 pt-3 border-t border-[#f0f0f0] flex items-center justify-between text-[13px] text-[#333333] font-medium">
                         <span>Lihat Detail</span>
                         <span className="group-hover:translate-x-1 transition-transform">→</span>
                       </div>
