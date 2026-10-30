@@ -155,18 +155,24 @@ export default function VisionMissionPrincipal({ profile, error = null }) {
   return (
     <section
       ref={sectionRef}
-      className="py-6 sm:py-8 lg:py-9 bg-white text-[#1d1d1f] relative overflow-hidden"
+      className="pt-14 sm:pt-18 lg:pt-20 pb-6 sm:pb-8 lg:pb-9 bg-white text-[#1d1d1f] relative overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Transisi halus mengalir dari Hero (gelap) ke Visi Misi (putih) */}
+      <div
+        className="absolute top-0 inset-x-0 h-16 sm:h-20 lg:h-24 pointer-events-none bg-gradient-to-b from-[#000000] via-[#000000]/15 to-transparent z-10"
+        aria-hidden="true"
+      />
+
+      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* ── Section Header ───────────────────────────────────── */}
         <div className="max-w-3xl">
           <h2
             ref={headingRef}
-            className="text-[24px] sm:text-[28px] lg:text-[32px] font-semibold leading-tight tracking-[-0.02em]"
+            className="text-[32px] sm:text-[40px] lg:text-[48px] font-semibold text-[#1d1d1f] leading-[1.08] tracking-[-0.02em]"
           >
             Visi, Misi &amp; Pemimpin Sekolah
           </h2>
-          <p className="mt-1 max-w-2xl text-[13px] sm:text-[14px] leading-normal text-[#7a7a7a]">
+          <p className="mt-3 max-w-2xl text-[15px] sm:text-[17px] leading-[1.47] text-[#7a7a7a]">
             {profile.tagline ||
               "Menyelenggarakan pendidikan dasar unggul yang menyeimbangkan kecerdasan intelektual, kemandirian, dan budi pekerti Qur'ani."}
           </p>

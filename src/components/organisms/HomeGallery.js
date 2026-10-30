@@ -9,11 +9,10 @@
  */
 
 import Link from "next/link";
-import { useState, useRef, useMemo } from "react";
+import { useRef, useMemo } from "react";
 import { useGSAP } from "@gsap/react";
-import { gsap, SplitText, Flip, ease } from "@/lib/gsapConfig";
+import { gsap, SplitText, ease } from "@/lib/gsapConfig";
 import ApiState from "@/components/atoms/ApiState";
-import { ChevronRightIcon } from "@/components/atoms/Icons";
 
 function GalleryCard({ item, isLarge = false }) {
   const cardRef = useRef(null);
@@ -101,21 +100,7 @@ export default function HomeGallery({ galleries = [], error = null }) {
   const gridRef    = useRef(null);
   const splitRef   = useRef(null);
 
-  // Extract unique categories for Flip filter tabs
-  const categories = useMemo(() => {
-    const set = new Set();
-    galleries.forEach((g) => {
-      if (g.category) set.add(g.category);
-    });
-    return ["Semua", ...Array.from(set)];
-  }, [galleries]);
-
-  const [activeCategory, setActiveCategory] = useState("Semua");
-
-  const filteredItems = useMemo(() => {
-    if (activeCategory === "Semua") return galleries.slice(0, 6);
-    return galleries.filter((g) => g.category === activeCategory).slice(0, 6);
-  }, [galleries, activeCategory]);
+  const displayItems = useMemo(() => galleries.slice(0, 6), [galleries]);
 
   // Entrance animation on mount
   useGSAP(
@@ -213,37 +198,6 @@ export default function HomeGallery({ galleries = [], error = null }) {
     { scope: sectionRef, dependencies: [galleries.length] }
   );
 
-  // GSAP Flip animation when category changes
-  const handleCategoryChange = (newCat) => {
-    if (newCat === activeCategory) return;
-
-    if (!gridRef.current) {
-      setActiveCategory(newCat);
-      return;
-    }
-
-    const cards = gridRef.current.querySelectorAll("[data-gallery-item]");
-    const state = Flip.getState(cards);
-
-    setActiveCategory(newCat);
-
-    // Apply Flip animation immediately after react re-renders DOM
-    requestAnimationFrame(() => {
-      Flip.from(state, {
-        duration: 0.55,
-        ease: "power2.inOut",
-        stagger: 0.04,
-        scale: true,
-        fade: true,
-        onComplete: () => {
-          if (typeof window !== "undefined" && window.ScrollTrigger) {
-            window.ScrollTrigger.refresh();
-          }
-        },
-      });
-    });
-  };
-
   return (
     <section
       ref={sectionRef}
@@ -281,40 +235,17 @@ export default function HomeGallery({ galleries = [], error = null }) {
           </Link>
         </div>
 
-        {/* Filter Tabs using GSAP Flip */}
-        {categories.length > 2 && (
-          <div className="flex flex-wrap items-center gap-2 mb-8">
-            {categories.map((cat) => {
-              const isActive = cat === activeCategory;
-              return (
-                <button
-                  key={cat}
-                  type="button"
-                  onClick={() => handleCategoryChange(cat)}
-                  className={`px-4 py-2 rounded-full text-[13px] font-medium transition-all duration-200 cursor-pointer apple-press-action ${
-                    isActive
-                      ? "bg-[#1d1d1f] text-white shadow-sm"
-                      : "bg-[#f5f5f7] text-[#555555] hover:text-[#1d1d1f] hover:bg-[#e8e8ed]"
-                  }`}
-                >
-                  {cat}
-                </button>
-              );
-            })}
-          </div>
-        )}
-
         {/* Dynamic Bento Editorial Grid */}
         {error ? (
           <ApiState error={error} />
-        ) : filteredItems.length === 0 ? (
+        ) : displayItems.length === 0 ? (
           <ApiState empty />
         ) : (
           <div
             ref={gridRef}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 auto-rows-fr"
           >
-            {filteredItems.map((item, index) => {
+            {displayItems.map((item, index) => {
               // Item pertama dibuat large untuk variasi bento editorial
               const isLarge = index === 0;
               return (

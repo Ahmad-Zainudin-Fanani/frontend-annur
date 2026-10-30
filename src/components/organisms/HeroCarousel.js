@@ -287,7 +287,7 @@ export default function HeroCarousel({ slides = [], error = null }) {
           2. OVERLAY — subtle visual depth
           ===================================================== */}
       <div className="absolute inset-0 z-10 bg-black/40 pointer-events-none" aria-hidden="true" />
-      <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/75 via-transparent to-black/20 pointer-events-none" aria-hidden="true" />
+      <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" aria-hidden="true" />
 
       {/* =====================================================
           3. HERO CONTENT — Hierarki animasi jelas
@@ -362,7 +362,7 @@ export default function HeroCarousel({ slides = [], error = null }) {
           5. SLIDE DOTS
           ===================================================== */}
       {slides.length > 1 && (
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2">
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/25 backdrop-blur-md border border-white/10 shadow-sm">
           {slides.map((slide, idx) => (
             <button
               key={slide.id}
@@ -371,7 +371,7 @@ export default function HeroCarousel({ slides = [], error = null }) {
               aria-label={`Pindah ke slide ${idx + 1}`}
               aria-current={idx === currentIndex ? "true" : undefined}
               className={`w-2 h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                idx === currentIndex ? "bg-white scale-125" : "bg-white/40 hover:bg-white/70"
+                idx === currentIndex ? "bg-white scale-125" : "bg-white/50 hover:bg-white/80"
               }`}
             />
           ))}

@@ -53,6 +53,7 @@ export default function GlobalNav() {
   // Menahan panel agar tidak langsung terbuka lagi saat fokus dikembalikan
   // ke trigger setelah tombol Escape ditekan.
   const suppressProfileOpenUntilRef = useRef(0);
+  const isMouseDownRef = useRef(false);
   const pathname = usePathname();
   const mobileMenuOpen = mobileMenuRoute === pathname;
   // Diikat ke pathname supaya panel otomatis tertutup saat pindah halaman.
@@ -79,6 +80,16 @@ export default function GlobalNav() {
     clearCloseTimeout();
     setProfileOpenRoute(null);
   }, [clearCloseTimeout]);
+
+  const toggleProfileMenu = useCallback(() => {
+    if (Date.now() < suppressProfileOpenUntilRef.current) return;
+    clearCloseTimeout();
+    if (profileOpen) {
+      closeProfileMenu();
+    } else {
+      openProfileMenu();
+    }
+  }, [clearCloseTimeout, closeProfileMenu, openProfileMenu, profileOpen]);
 
   // Pindahkan fokus keyboard dari trigger ke tautan pertama di panel.
   const handleProfileTriggerKeyDown = (event) => {
@@ -314,9 +325,21 @@ export default function GlobalNav() {
                       aria-expanded={profileOpen}
                       aria-haspopup="true"
                       aria-controls="profile-mega-menu"
-                      onFocus={openProfileMenu}
+                      onMouseDown={() => {
+                        isMouseDownRef.current = true;
+                      }}
+                      onFocus={() => {
+                        if (isMouseDownRef.current) {
+                          isMouseDownRef.current = false;
+                          return;
+                        }
+                        openProfileMenu();
+                      }}
                       onKeyDown={handleProfileTriggerKeyDown}
-                      onClick={openProfileMenu}
+                      onClick={() => {
+                        isMouseDownRef.current = false;
+                        toggleProfileMenu();
+                      }}
                       className={`inline-flex items-center gap-1 transition-colors py-1 apple-press-action cursor-pointer ${
                         isProfilActive
                           ? "text-white font-semibold border-b-2 border-[#d2d2d7]"

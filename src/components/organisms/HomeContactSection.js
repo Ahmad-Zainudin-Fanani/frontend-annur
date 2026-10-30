@@ -175,7 +175,7 @@ export default function HomeContactSection({ profile, error = null }) {
               ======================================================== */}
           <div ref={mapColRef} className="lg:col-span-7 flex flex-col h-full">
             {profile.mapsEmbedUrl ? (
-              <div className="relative rounded-[22px] overflow-hidden border border-[#e0e0e0] bg-[#f5f5f7] w-full flex-1 h-full min-h-100 sm:min-h-120 lg:min-h-0 shadow-sm">
+              <div className="relative rounded-[22px] overflow-hidden border border-[#e0e0e0] bg-[#f5f5f7] w-full flex-1 min-h-100 sm:min-h-120 lg:min-h-0 shadow-sm">
                 <iframe
                   title={`Peta Lokasi ${profile.institutionName}`}
                   src={profile.mapsEmbedUrl}
@@ -187,28 +187,28 @@ export default function HomeContactSection({ profile, error = null }) {
                   referrerPolicy="no-referrer-when-downgrade"
                   className="w-full h-full absolute inset-0"
                 />
-
-                {/* Direct Google Maps Action Button at Bottom Right */}
-                {mapsExternalUrl ? (
-                  <div className="absolute bottom-5 right-5 z-10">
-                    <Button
-                      href={mapsExternalUrl}
-                      target="_blank"
-                      variant="primary"
-                      size="sm"
-                      className="inline-flex items-center gap-1.5 shadow-lg backdrop-blur-md"
-                    >
-                      <span>Buka Google Maps</span>
-                      <ChevronRightIcon className="w-3.5 h-3.5" />
-                    </Button>
-                  </div>
-                ) : null}
               </div>
             ) : (
               <div className="rounded-[22px] border border-[#e0e0e0] bg-[#f5f5f7] min-h-64 flex items-center justify-center flex-1 h-full">
                 <ApiState empty />
               </div>
             )}
+
+            {/* Direct Google Maps Action Button (Outside map, bottom-right) */}
+            {mapsExternalUrl ? (
+              <div className="mt-4 flex items-center justify-end">
+                <Button
+                  href={mapsExternalUrl}
+                  target="_blank"
+                  variant="primary"
+                  size="md"
+                  className="inline-flex items-center gap-2"
+                >
+                  <span>Buka Google Maps</span>
+                  <ChevronRightIcon className="w-4 h-4" />
+                </Button>
+              </div>
+            ) : null}
           </div>
 
           {/* ========================================================
