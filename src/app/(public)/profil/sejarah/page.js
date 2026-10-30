@@ -43,11 +43,7 @@ export default async function SejarahPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="mb-12 max-w-2xl">
-            <span className="mb-2 flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#7a7a7a]">
-              <span
-                aria-hidden="true"
-                className="h-1.5 w-1.5 rotate-45 rounded-[1px] bg-[#7a7a7a]"
-              />
+            <span className="mb-2 block text-[12px] font-semibold uppercase tracking-[0.16em] text-[#7a7a7a]">
               Sejarah Berdiri
             </span>
             <h1 className="text-[28px] sm:text-[38px] font-semibold leading-tight tracking-tight text-[#1d1d1f]">
@@ -66,7 +62,7 @@ export default async function SejarahPage() {
                 aria-hidden="true"
                 className="pointer-events-none absolute left-0 top-0 z-20 block opacity-0"
               >
-                <span className="block h-[24px] w-[24px] rotate-45 rounded-[6px] bg-[#1d1d1f] shadow-[0_8px_22px_rgba(0,0,0,0.24)] sm:h-[26px] sm:w-[26px]" />
+                <span className="block h-6 w-6 rotate-45 rounded-md bg-[#1d1d1f] shadow-[0_8px_22px_rgba(0,0,0,0.24)] sm:h-6.5 sm:w-6.5" />
               </span>
 
               <ol data-history-journey className="relative flex flex-col gap-12 md:gap-16 lg:gap-20">
@@ -90,7 +86,7 @@ export default async function SejarahPage() {
                         <div
                           data-history-marker
                           aria-hidden="true"
-                          className={`absolute top-1/2 z-10 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-[16px] border border-[#e0e0e0] bg-[#f5f5f7] transition-colors duration-500 group-data-[active=true]:border-[#d2d2d7] group-data-[active=true]:bg-white sm:h-16 sm:w-16 sm:rounded-[18px] ${
+                          className={`absolute top-1/2 z-10 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-2xl border border-[#e0e0e0] bg-[#f5f5f7] transition-colors duration-500 group-data-[active=true]:border-[#d2d2d7] group-data-[active=true]:bg-white sm:h-16 sm:w-16 sm:rounded-[18px] ${
                             alignLeft
                               ? "left-4 sm:left-6"
                               : "right-4 sm:right-6"
@@ -98,15 +94,15 @@ export default async function SejarahPage() {
                         >
                           <span
                             data-history-glyph
-                            className="h-3 w-3 rotate-45 rounded-[2px] bg-[#c7c7cc] sm:h-3.5 sm:w-3.5"
+                            className="h-3 w-3 rotate-45 rounded-xs bg-[#c7c7cc] sm:h-3.5 sm:w-3.5"
                           />
                         </div>
 
                         <div
                           className={
                             alignLeft
-                              ? "w-full pl-[64px] sm:pl-[88px]"
-                              : "w-full pr-[64px] sm:pr-[88px]"
+                              ? "w-full pl-16 sm:pl-22"
+                              : "w-full pr-16 sm:pr-22"
                           }
                         >
                           <div
@@ -117,7 +113,7 @@ export default async function SejarahPage() {
                               Tonggak {number}
                             </span>
                             {item.badge ? (
-                              <span className="inline-flex items-center rounded-full border border-[#e0e0e0] bg-[#f5f5f7] px-3 py-1 text-[10.5px] font-semibold uppercase tracking-[0.1em] text-[#555555]">
+                              <span className="inline-flex items-center rounded-full border border-[#e0e0e0] bg-[#f5f5f7] px-3 py-1 text-[10.5px] font-semibold uppercase tracking-widest text-[#555555]">
                                 {item.badge}
                               </span>
                             ) : null}
@@ -157,11 +153,7 @@ export default async function SejarahPage() {
           {/* Ringkasan latar belakang */}
           <div className="mt-16 grid gap-5 rounded-[22px] border border-[#e0e0e0] bg-[#f5f5f7] p-6 sm:p-8 md:grid-cols-[220px_1fr] md:gap-10 lg:p-10">
             <div>
-              <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#7a7a7a]">
-                <span
-                  aria-hidden="true"
-                  className="h-1.5 w-1.5 rotate-45 rounded-[1px] bg-[#7a7a7a]"
-                />
+              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#7a7a7a]">
                 Ikhtisar Ringkas
               </p>
               {history.foundingYear ? (
@@ -183,11 +175,7 @@ export default async function SejarahPage() {
           {/* Header */}
           <div className="mb-12 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
             <div className="max-w-2xl">
-              <span className="mb-2 flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#7a7a7a]">
-                <span
-                  aria-hidden="true"
-                  className="h-1.5 w-1.5 rotate-45 rounded-[1px] bg-[#7a7a7a]"
-                />
+              <span className="mb-2 block text-[12px] font-semibold uppercase tracking-[0.16em] text-[#7a7a7a]">
                 Kepemimpinan
               </span>
               <h2 className="text-[28px] font-semibold leading-tight tracking-tight text-[#1d1d1f] sm:text-[38px]">
@@ -215,7 +203,7 @@ export default async function SejarahPage() {
                   >
                     <span
                       aria-hidden="true"
-                      className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-[12px] border border-[#e0e0e0] bg-[#f5f5f7] text-[12px] font-semibold tabular-nums text-[#7a7a7a] sm:mt-0 sm:h-12 sm:w-12 sm:rounded-[14px]"
+                      className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#e0e0e0] bg-[#f5f5f7] text-[12px] font-semibold tabular-nums text-[#7a7a7a] sm:mt-0 sm:h-12 sm:w-12 sm:rounded-[14px]"
                     >
                       {String(record.no ?? "").padStart(2, "0")}
                     </span>

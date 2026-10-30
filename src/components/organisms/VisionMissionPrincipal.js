@@ -2,14 +2,13 @@
 
 /**
  * VisionMissionPrincipal — Arah Pendidikan & Kepemimpinan
- * Menyajikan narasi terpadu:
- * 1. Visi & Misi Sekolah (Tipografi editorial, bukan sekadar kartu generik)
- * 2. Pemimpin Sekolah (Kepala sekolah resmi, foto resmi, jabatan, pesan pimpinan)
+ * Komposisi dua kolom:
+ * - Kiri (7/12): Visi (card) di atas, Misi (card) di bawah
+ * - Kanan (5/12): Pemimpin Sekolah dalam satu card tinggi
  *
  * GSAP Animations:
  * - SplitText pada heading section
- * - ScrollTrigger stagger pada pilar visi & butir-butir misi
- * - Parallax / floating entrance pada kartu pimpinan
+ * - Fade-up ScrollTrigger untuk visi, misi (stagger), dan card pimpinan
  */
 
 import Image from "next/image";
@@ -19,16 +18,15 @@ import { useGSAP } from "@gsap/react";
 import { gsap, SplitText, ease } from "@/lib/gsapConfig";
 import ApiState from "@/components/atoms/ApiState";
 import {
-  TargetIcon,
   ChevronRightIcon,
   UsersIcon,
+  ArrowRightIcon,
 } from "@/components/atoms/Icons";
 
 export default function VisionMissionPrincipal({ profile, error = null }) {
   const [failedPrincipalPhoto, setFailedPrincipalPhoto] = useState(null);
   const sectionRef    = useRef(null);
   const headingRef    = useRef(null);
-  const eyebrowRef    = useRef(null);
   const visionRef     = useRef(null);
   const missionListRef = useRef(null);
   const leaderCardRef = useRef(null);
@@ -80,29 +78,11 @@ export default function VisionMissionPrincipal({ profile, error = null }) {
         }
       }
 
-      // Eyebrow reveal
-      if (eyebrowRef.current) {
-        gsap.fromTo(
-          eyebrowRef.current,
-          { opacity: 0, y: 18 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            ease: ease.enter,
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top 82%",
-            },
-          }
-        );
-      }
-
-      // 2. Vision card reveal
+      // 2. Vision reveal
       if (visionRef.current) {
         gsap.fromTo(
           visionRef.current,
-          { opacity: 0, y: 40 },
+          { opacity: 0, y: 28 },
           {
             opacity: 1,
             y: 0,
@@ -110,48 +90,47 @@ export default function VisionMissionPrincipal({ profile, error = null }) {
             ease: ease.enter,
             scrollTrigger: {
               trigger: visionRef.current,
-              start: "top 85%",
+              start: "top 88%",
             },
           }
         );
       }
 
-      // 3. Stagger mission items
+      // 3. Stagger mission items — fade-up halus, angka & narasi tampil berurutan
       if (missionListRef.current) {
         const items = missionListRef.current.querySelectorAll("[data-mission-item]");
         if (items.length) {
           gsap.fromTo(
             items,
-            { opacity: 0, x: -20 },
+            { opacity: 0, y: 22 },
             {
               opacity: 1,
-              x: 0,
-              duration: 0.6,
+              y: 0,
+              duration: 0.65,
               ease: ease.enter,
               stagger: 0.08,
               scrollTrigger: {
                 trigger: missionListRef.current,
-                start: "top 85%",
+                start: "top 90%",
               },
             }
           );
         }
       }
 
-      // 4. Leader card reveal
+      // 4. Leader card reveal — fade sederhana, tanpa scale berlebihan
       if (leaderCardRef.current) {
         gsap.fromTo(
           leaderCardRef.current,
-          { opacity: 0, y: 50, scale: 0.98 },
+          { opacity: 0, y: 28 },
           {
             opacity: 1,
             y: 0,
-            scale: 1,
-            duration: 0.85,
+            duration: 0.8,
             ease: ease.enter,
             scrollTrigger: {
               trigger: leaderCardRef.current,
-              start: "top 85%",
+              start: "top 90%",
             },
           }
         );
@@ -171,204 +150,158 @@ export default function VisionMissionPrincipal({ profile, error = null }) {
   if (!profile) return <ApiState empty />;
 
   const principal = profile.principal;
-  const hasPrincipalPhoto = principal?.photo && failedPrincipalPhoto !== principal.photo;
+  const hasPrincipalPhoto = Boolean(principal?.photo && failedPrincipalPhoto !== principal.photo);
 
   return (
     <section
       ref={sectionRef}
-      className="py-24 sm:py-32 bg-[#f5f5f7] border-b border-[#e0e0e0] text-[#1d1d1f] relative overflow-hidden"
+      className="py-12 sm:py-16 lg:py-18 bg-[#f5f5f7] border-b border-[#e0e0e0] text-[#1d1d1f] relative overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="max-w-3xl mb-14 sm:mb-18">
-          <span
-            ref={eyebrowRef}
-            className="inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.2em] text-[#7a7a7a] mb-3 px-3.5 py-1 rounded-full border border-[#333333]/20 bg-white"
-          >
-            Arah Pendidikan &amp; Kepemimpinan
-          </span>
+        {/* ── Section Header ───────────────────────────────────── */}
+        <div className="max-w-3xl">
           <h2
             ref={headingRef}
-            className="text-[32px] sm:text-[40px] lg:text-[48px] font-semibold text-[#1d1d1f] leading-[1.08] tracking-[-0.02em]"
+            className="text-[28px] sm:text-[36px] lg:text-[42px] font-semibold leading-[1.1] tracking-[-0.02em]"
           >
             Visi, Misi &amp; Pemimpin Sekolah
           </h2>
-          <p className="mt-4 text-[17px] text-[#7a7a7a] leading-[1.47]">
+          <p className="mt-2.5 max-w-2xl text-[15px] sm:text-[16px] leading-[1.5] text-[#7a7a7a]">
             {profile.tagline ||
               "Menyelenggarakan pendidikan dasar unggul yang menyeimbangkan kecerdasan intelektual, kemandirian, dan budi pekerti Qur'ani."}
           </p>
         </div>
 
-        {/* Narrative Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          {/* ========================================================
-              LEFT COLUMN: Visi & Misi Sekolah (Col 7)
-              ======================================================== */}
-          <div className="lg:col-span-7 flex flex-col gap-6 justify-between">
-            {/* 1. VISI SEKOLAH — Heroic Quote Format */}
+        {/* ── Komposisi dua kolom ──────────────────────────────── */}
+        <div className="mt-8 sm:mt-10 grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-stretch">
+          {/* KIRI: Visi + Misi */}
+          <div className="lg:col-span-6 flex flex-col gap-4 sm:gap-5">
+            {/* VISI */}
             <article
               ref={visionRef}
-              className="relative bg-white border border-[#e0e0e0] rounded-[22px] p-7 sm:p-9 shadow-sm"
+              className="rounded-[22px] border border-[#e0e0e0] bg-white p-5 sm:p-6"
             >
-              <div className="flex items-center gap-3 mb-5 text-[#333333]">
-                <div className="w-10 h-10 rounded-xl bg-[#333333]/10 flex items-center justify-center">
-                  <TargetIcon className="w-5 h-5 text-[#333333]" />
-                </div>
-                <div>
-                  <span className="text-[11px] font-semibold uppercase tracking-wider text-[#7a7a7a] block">
-                    Landasan Utama
-                  </span>
-                  <h3 className="text-[19px] sm:text-[21px] font-semibold text-[#1d1d1f]">
-                    {profile.visionTitle || "Visi Sekolah"}
-                  </h3>
-                </div>
+              <div className="pb-3 border-b border-[#e0e0e0]">
+                <h3 className="text-[18px] sm:text-[20px] font-semibold tracking-[-0.02em] text-[#86868b]">
+                  {profile.visionTitle || "Visi Sekolah"}
+                </h3>
               </div>
-
-              {/* Visi Text with Editorial Emphasis */}
-              <blockquote className="text-[18px] sm:text-[22px] font-medium text-[#1d1d1f] leading-[1.4] tracking-tight">
+              <blockquote className="mt-3.5 text-pretty text-[17px] sm:text-[19px] lg:text-[21px] font-semibold leading-[1.35] tracking-[-0.015em] text-[#1d1d1f]">
                 “{profile.vision || "Membentuk Generasi Cerdas, Qur'ani, Berkarakter, dan Mandiri."}”
               </blockquote>
-
-              {profile.overview && (
-                <p className="mt-4 pt-4 border-t border-[#f0f0f0] text-[15px] text-[#7a7a7a] leading-relaxed">
-                  {profile.overview}
-                </p>
-              )}
             </article>
 
-            {/* 2. MISI SEKOLAH — Numbered Editorial List */}
-            <article className="bg-white border border-[#e0e0e0] rounded-[22px] p-7 sm:p-9 shadow-sm flex-1 flex flex-col justify-between">
-              <div>
-                <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#f0f0f0]">
-                  <h3 className="text-[19px] sm:text-[21px] font-semibold text-[#1d1d1f] tracking-tight">
-                    {profile.missionTitle || "Misi & Langkah Strategis"}
-                  </h3>
-                  <span className="text-[12px] font-medium text-[#7a7a7a] bg-[#f5f5f7] px-2.5 py-1 rounded-full">
-                    {profile.mission?.length || 0} Pokok Misi
-                  </span>
-                </div>
-
-                {profile.mission && profile.mission.length > 0 ? (
-                  <ol ref={missionListRef} className="space-y-4">
-                    {profile.mission.map((item, index) => (
-                      <li
-                        key={`${index}-${item.slice(0, 15)}`}
-                        data-mission-item
-                        className="flex items-start gap-3.5 group"
-                      >
-                        <span className="w-7 h-7 rounded-lg bg-[#f5f5f7] group-hover:bg-[#333333] group-hover:text-white transition-colors text-[13px] font-bold text-[#333333] flex items-center justify-center shrink-0 mt-0.5">
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
-                        <p className="text-[15px] sm:text-[16px] text-[#333333] leading-relaxed group-hover:text-[#1d1d1f] transition-colors">
-                          {item}
-                        </p>
-                      </li>
-                    ))}
-                  </ol>
-                ) : (
-                  <p className="text-[14px] text-[#7a7a7a]">
-                    Butir misi sekolah belum dimuat.
-                  </p>
-                )}
+            {/* MISI */}
+            <article className="flex-1 flex flex-col rounded-[22px] border border-[#e0e0e0] bg-white p-5 sm:p-6">
+              <div className="pb-3 border-b border-[#e0e0e0]">
+                <h3 className="text-[18px] sm:text-[20px] font-semibold tracking-[-0.02em] text-[#86868b]">
+                  {profile.missionTitle || "Misi & Langkah Strategis"}
+                </h3>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-[#f0f0f0] flex items-center justify-between text-[13px] text-[#7a7a7a]">
-                <span>Terintegrasi Kurikulum Merdeka &amp; Program Tahfidz</span>
+              {profile.mission && profile.mission.length > 0 ? (
+                <ol ref={missionListRef} className="divide-y divide-[#e0e0e0]">
+                  {profile.mission.map((item, index) => (
+                    <li
+                      key={`${index}-${item.slice(0, 15)}`}
+                      data-mission-item
+                      className="group"
+                    >
+                      <div className="grid grid-cols-[1.75rem_1fr] sm:grid-cols-[2rem_1fr] items-center gap-x-2.5 sm:gap-x-3 py-2.5 sm:py-3">
+                        <span
+                          aria-hidden="true"
+                          className="select-none font-display text-[20px] sm:text-[24px] font-bold leading-none tracking-[-0.04em] tabular-nums text-[#1d1d1f] transition-colors duration-500 group-hover:text-[#424245]"
+                        >
+                          {index + 1}.
+                        </span>
+                        <p className="max-w-[58ch] text-[13.5px] sm:text-[14.5px] font-medium leading-[1.5] text-[#1d1d1f]">
+                          {item}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              ) : (
+                <p className="py-4 text-[13px] text-[#7a7a7a]">
+                  Butir misi sekolah belum dimuat.
+                </p>
+              )}
+
+              <div className="mt-auto flex justify-end pt-3 text-[13px] text-[#7a7a7a]">
                 <Link
                   href="/kurikulum"
-                  className="inline-flex items-center gap-1 text-[#333333] hover:underline font-medium"
+                  className="inline-flex items-center gap-1 font-medium text-[#1d1d1f] hover:text-[#6e6e73] transition-colors"
                 >
-                  Kurikulum <ChevronRightIcon className="w-3.5 h-3.5" />
+                  Kurikulum <ChevronRightIcon className="h-3.5 w-3.5" />
                 </Link>
               </div>
             </article>
           </div>
 
-          {/* ========================================================
-              RIGHT COLUMN: Pemimpin Sekolah (Col 5)
-              ======================================================== */}
-          <div ref={leaderCardRef} className="lg:col-span-5">
+          {/* KANAN: Pemimpin Sekolah */}
+          <div className="lg:col-span-6">
             {principal ? (
-              <article className="relative h-full min-h-[500px] rounded-[22px] overflow-hidden border border-[#e0e0e0] bg-[#1d1d1f] flex flex-col justify-end shadow-sm group">
-                {/* Official Leader Photo */}
+              <article
+                ref={leaderCardRef}
+                className="relative h-full min-h-[460px] rounded-[22px] overflow-hidden border border-[#e0e0e0] bg-white flex flex-col justify-end shadow-sm group"
+              >
+                {/* Foto resmi pimpinan di bagian atas/latar belakang */}
                 {hasPrincipalPhoto ? (
                   <Image
                     src={principal.photo}
                     alt={principal.name}
                     fill
                     unoptimized
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                     className="object-cover object-top filter brightness-[0.95] group-hover:scale-102 transition-transform duration-700"
-                    sizes="(max-width: 1024px) 100vw, 42vw"
                     onError={() => setFailedPrincipalPhoto(principal.photo)}
                   />
                 ) : (
                   <div className="absolute inset-0 bg-gradient-to-br from-[#272729] to-[#161617] flex items-center justify-center text-white/20">
-                    <UsersIcon className="w-32 h-32" />
+                    <UsersIcon className="w-24 h-24" />
                   </div>
                 )}
 
-                {/* Subtle gradient scrim */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent pointer-events-none" />
+                {/* Subtle gradient scrim (dibatasi agar tidak bocor ke sudut bawah kartu) */}
+                <div className="absolute inset-x-0 top-0 bottom-32 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
-                {/* Content Overlay */}
-                <div className="relative z-10 p-6 sm:p-7 bg-white/95 backdrop-blur-md border-t border-[#e0e0e0]">
-                  <div className="flex items-center gap-2 mb-2 text-[#333333]">
-                    <span className="text-[11px] font-semibold uppercase tracking-wider bg-[#333333]/10 px-2.5 py-0.5 rounded-full">
+                {/* Kotak konten overlay di bagian bawah dengan warna putih solid persis visi misi */}
+                <div className="relative z-10 bg-white rounded-t-[20px] rounded-b-[21px] border-t border-[#e0e0e0] p-5 sm:p-6">
+                  <div>
+                    <p className="text-[18px] sm:text-[20px] font-semibold tracking-[-0.02em] text-[#86868b]">
                       Pimpinan Lembaga
-                    </span>
-                    {principal.period && (
-                      <span className="text-[12px] text-[#7a7a7a]">
-                        Masa Bakti: {principal.period}
-                      </span>
-                    )}
+                    </p>
+                    <h3 className="mt-1 text-[19px] sm:text-[21px] lg:text-[22px] font-semibold leading-tight text-[#1d1d1f] tracking-tight whitespace-nowrap overflow-hidden text-ellipsis">
+                      {principal.name}
+                    </h3>
+                    <p className="mt-0.5 text-[14px] sm:text-[15px] font-medium text-[#7a7a7a]">
+                      {principal.role || "Kepala SD Plus An-Nur"}
+                    </p>
+
+                    {principal.bio ? (
+                      <blockquote className="mt-2.5 text-[13px] sm:text-[14px] leading-[1.55] text-[#555555] line-clamp-3">
+                        “{principal.bio}”
+                      </blockquote>
+                    ) : null}
                   </div>
 
-                  <h3 className="text-[20px] sm:text-[22px] font-semibold text-[#1d1d1f] leading-tight mb-1">
-                    {principal.name}
-                  </h3>
-                  <p className="text-[14px] font-medium text-[#7a7a7a] mb-4">
-                    {principal.role || "Kepala SD Plus An-Nur"}
-                  </p>
-
-                  {principal.bio && (
-                    <blockquote className="text-[14px] text-[#555555] italic leading-relaxed mb-4 pl-3 border-l-2 border-[#333333]">
-                      “{principal.bio}”
-                    </blockquote>
-                  )}
-
-                  <div className="pt-3 border-t border-[#f0f0f0] flex items-center justify-between">
-                    <Link
-                      href="/guru"
-                      className="text-[13px] font-medium text-[#333333] hover:underline inline-flex items-center gap-1.5"
-                    >
-                      <span>Lihat Dewan Guru</span>
-                      <ChevronRightIcon className="w-3.5 h-3.5" />
-                    </Link>
+                  <div className="mt-3.5 pt-3 border-t border-[#e0e0e0] flex justify-end">
                     <Link
                       href="/profil/kepala-wakil"
-                      className="text-[13px] text-[#7a7a7a] hover:text-[#1d1d1f] transition-colors"
+                      className="inline-flex items-center gap-1.5 text-[13px] font-medium text-[#1d1d1f] hover:text-[#6e6e73] transition-colors"
                     >
-                      Profil Pimpinan →
+                      Profil Pimpinan
+                      <ArrowRightIcon className="h-3.5 w-3.5" />
                     </Link>
                   </div>
                 </div>
               </article>
             ) : (
-              /* Fallback if principal data is empty */
-              <div className="h-full min-h-[400px] rounded-[22px] border border-[#e0e0e0] bg-white p-8 flex flex-col justify-center items-center text-center">
-                <UsersIcon className="w-12 h-12 text-[#333333]/40 mb-3" />
-                <h4 className="text-[18px] font-semibold text-[#1d1d1f] mb-1">
-                  Kepemimpinan Lembaga
-                </h4>
-                <p className="text-[14px] text-[#7a7a7a] max-w-xs mb-4">
-                  SD Plus An-Nur dikelola oleh tenaga pendidik dan pimpinan berdedikasi tinggi.
+              <div className="h-full min-h-[320px] rounded-[22px] border border-[#e0e0e0] bg-white px-6 py-10 text-center flex flex-col items-center justify-center">
+                <UsersIcon className="h-8 w-8 text-[#c7c7cc]" />
+                <p className="mt-3 text-[14px] text-[#7a7a7a]">
+                  Informasi pimpinan belum tersedia.
                 </p>
-                <Link
-                  href="/guru"
-                  className="text-[14px] font-medium text-[#333333] hover:underline inline-flex items-center gap-1"
-                >
-                  Lihat Direktori Guru &amp; Tenaga Kependidikan <ChevronRightIcon className="w-3.5 h-3.5" />
-                </Link>
               </div>
             )}
           </div>

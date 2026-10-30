@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { ArrowRightIcon } from "@/components/atoms/Icons";
 
 export default function Footer() {
   return (
@@ -22,7 +23,7 @@ export default function Footer() {
               className="inline-flex items-center gap-1.5 text-[13px] font-medium text-[#333333] hover:underline"
             >
               <span>Hubungi Sekretariat</span>
-              <span>→</span>
+              <ArrowRightIcon className="h-3.5 w-3.5" />
             </Link>
           </div>
         </div>
@@ -155,9 +156,10 @@ export default function Footer() {
             </p>
             <Link
               href="/kontak"
-              className="inline-block text-[13px] font-medium text-[#333333] hover:underline"
+              className="inline-flex items-center gap-1.5 text-[13px] font-medium text-[#333333] hover:underline"
             >
-              Konsultasi Pendaftaran →
+              <span>Konsultasi Pendaftaran</span>
+              <ArrowRightIcon className="h-3.5 w-3.5" />
             </Link>
           </div>
         </div>

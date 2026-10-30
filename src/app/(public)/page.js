@@ -57,17 +57,16 @@ export default async function HomePage() {
       <HeroCarousel slides={heroSlides} error={heroSlidesError} />
 
       {/* ========================================================
-          SECTION 2: Prestasi Siswa (Pinned horizontal showcase)
-          Pin section + geser kartu horizontal mengikuti scroll
-          ======================================================== */}
-      <HomeAchievements achievements={achievements} error={achievementsError} />
-
-      {/* ========================================================
-          SECTION 3: Arah Pendidikan & Kepemimpinan
-          (Menggantikan statistik angka "Dedikasi yang Terukur")
+          SECTION 2: Arah Pendidikan & Kepemimpinan
           Visi, Misi & Kepala Sekolah dalam satu narasi terpadu
           ======================================================== */}
       <VisionMissionPrincipal profile={profile} error={profileError} />
+
+      {/* ========================================================
+          SECTION 3: Prestasi Siswa (Pinned horizontal showcase)
+          Pin section + geser kartu horizontal mengikuti scroll
+          ======================================================== */}
+      <HomeAchievements achievements={achievements} error={achievementsError} />
 
       {/* ========================================================
           SECTION 4: Galeri Kegiatan

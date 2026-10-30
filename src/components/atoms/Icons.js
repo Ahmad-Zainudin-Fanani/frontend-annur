@@ -261,6 +261,26 @@ export function ArrowUpRightIcon({ className = "w-4 h-4", ...props }) {
   );
 }
 
+export function ArrowRightIcon({ className = "w-4 h-4", ...props }) {
+  return (
+    <svg
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      {...props}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M5 12h14m-6-6l6 6-6 6"
+      />
+    </svg>
+  );
+}
+
 export function MenuIcon({ className = "w-5 h-5", ...props }) {
   return (
     <svg
