@@ -146,17 +146,17 @@ export default function HomeContactSection({ profile, error = null }) {
   return (
     <section
       ref={sectionRef}
-      className="py-24 sm:py-32 bg-white border-b border-[#e0e0e0] relative"
+      className="pt-8 sm:pt-12 pb-20 sm:pb-28 bg-white relative"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="max-w-3xl mb-14 sm:mb-18">
-          <span
+        <div className="max-w-3xl mb-12 sm:mb-14">
+          <p
             ref={eyebrowRef}
-            className="inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.2em] text-[#7a7a7a] mb-3 px-3.5 py-1 rounded-full border border-[#333333]/20 bg-[#f5f5f7]"
+            className="text-[15px] sm:text-[16px] font-semibold tracking-[-0.02em] text-[#86868b] mb-2"
           >
             Lokasi &amp; Kontak Resmi
-          </span>
+          </p>
           <h2
             ref={headingRef}
             className="text-[32px] sm:text-[40px] lg:text-[48px] font-semibold text-[#1d1d1f] leading-[1.08] tracking-[-0.02em]"
@@ -169,13 +169,13 @@ export default function HomeContactSection({ profile, error = null }) {
         </div>
 
         {/* 2-Column Responsive Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           {/* ========================================================
               LEFT COLUMN: Interactive Google Maps Frame (Col 7)
               ======================================================== */}
-          <div ref={mapColRef} className="lg:col-span-7">
+          <div ref={mapColRef} className="lg:col-span-7 flex flex-col h-full">
             {profile.mapsEmbedUrl ? (
-              <div className="relative rounded-[22px] overflow-hidden border border-[#e0e0e0] bg-[#f5f5f7] h-[400px] sm:h-[480px] lg:h-[520px] w-full shadow-sm">
+              <div className="relative rounded-[22px] overflow-hidden border border-[#e0e0e0] bg-[#f5f5f7] w-full flex-1 h-full min-h-100 sm:min-h-120 lg:min-h-0 shadow-sm">
                 <iframe
                   title={`Peta Lokasi ${profile.institutionName}`}
                   src={profile.mapsEmbedUrl}
@@ -185,7 +185,7 @@ export default function HomeContactSection({ profile, error = null }) {
                   allowFullScreen=""
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  className="w-full h-full"
+                  className="w-full h-full absolute inset-0"
                 />
 
                 {/* Direct Google Maps Action Button at Bottom Right */}
@@ -205,7 +205,7 @@ export default function HomeContactSection({ profile, error = null }) {
                 ) : null}
               </div>
             ) : (
-              <div className="rounded-[22px] border border-[#e0e0e0] bg-[#f5f5f7] min-h-64 flex items-center justify-center">
+              <div className="rounded-[22px] border border-[#e0e0e0] bg-[#f5f5f7] min-h-64 flex items-center justify-center flex-1 h-full">
                 <ApiState empty />
               </div>
             )}
@@ -216,7 +216,7 @@ export default function HomeContactSection({ profile, error = null }) {
               ======================================================== */}
           <div ref={infoColRef} className="lg:col-span-5 flex flex-col space-y-6">
             {/* 1. Location Description Card */}
-            <div className="bg-[#f5f5f7] border border-[#e0e0e0] rounded-[22px] p-6 sm:p-7 shadow-sm">
+            <div className="bg-white border border-[#e0e0e0] rounded-[22px] p-6 sm:p-7 shadow-sm">
               <div className="flex items-center gap-2.5 mb-3 text-[#333333]">
                 <MapPinIcon className="w-5 h-5 shrink-0" />
                 <h3 className="text-[17px] font-semibold text-[#1d1d1f] tracking-tight">

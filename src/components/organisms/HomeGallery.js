@@ -247,18 +247,18 @@ export default function HomeGallery({ galleries = [], error = null }) {
   return (
     <section
       ref={sectionRef}
-      className="py-24 sm:py-32 bg-white border-b border-[#e0e0e0] relative"
+      className="pt-8 sm:pt-12 pb-10 sm:pb-14 bg-white relative"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div className="max-w-2xl">
-            <span
+            <p
               ref={eyebrowRef}
-              className="inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.2em] text-[#7a7a7a] mb-3 px-3.5 py-1 rounded-full border border-[#333333]/20 bg-[#f5f5f7]"
+              className="text-[15px] sm:text-[16px] font-semibold tracking-[-0.02em] text-[#86868b] mb-2"
             >
               Galeri Kegiatan
-            </span>
+            </p>
             <h2
               ref={headingRef}
               className="text-[32px] sm:text-[40px] lg:text-[48px] font-semibold text-[#1d1d1f] leading-[1.08] tracking-[-0.02em]"

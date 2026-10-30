@@ -110,7 +110,7 @@ export default function PinnedStats({ profile }) {
         }}
       />
       {/* Glow orb */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 rounded-full pointer-events-none"
         style={{ background: "radial-gradient(circle, rgba(51,51,51,0.12) 0%, transparent 70%)" }}
       />
 
@@ -170,7 +170,7 @@ export default function PinnedStats({ profile }) {
               </p>
 
               {/* Accent bar bawah */}
-              <div className="absolute bottom-0 left-0 h-[2px] w-0 group-hover:w-full transition-all duration-500 rounded-b-2xl"
+              <div className="absolute bottom-0 left-0 h-0.5 w-0 group-hover:w-full transition-all duration-500 rounded-b-2xl"
                 style={{ background: "linear-gradient(90deg, #333333, #d2d2d7)" }} />
             </div>
           ))}

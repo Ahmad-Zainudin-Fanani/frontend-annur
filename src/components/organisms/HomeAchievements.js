@@ -152,7 +152,7 @@ export default function HomeAchievements({ achievements = [], error = null }) {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden py-24 sm:py-32 bg-white border-b border-[#e0e0e0] text-[#1d1d1f]"
+      className="relative overflow-hidden pt-10 sm:pt-14 pb-10 sm:pb-14 bg-white text-[#1d1d1f]"
     >
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* ── Header ── */}

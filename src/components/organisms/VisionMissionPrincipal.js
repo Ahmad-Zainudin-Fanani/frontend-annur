@@ -155,46 +155,46 @@ export default function VisionMissionPrincipal({ profile, error = null }) {
   return (
     <section
       ref={sectionRef}
-      className="py-12 sm:py-16 lg:py-18 bg-[#f5f5f7] border-b border-[#e0e0e0] text-[#1d1d1f] relative overflow-hidden"
+      className="py-6 sm:py-8 lg:py-9 bg-white text-[#1d1d1f] relative overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* ── Section Header ───────────────────────────────────── */}
         <div className="max-w-3xl">
           <h2
             ref={headingRef}
-            className="text-[28px] sm:text-[36px] lg:text-[42px] font-semibold leading-[1.1] tracking-[-0.02em]"
+            className="text-[24px] sm:text-[28px] lg:text-[32px] font-semibold leading-tight tracking-[-0.02em]"
           >
             Visi, Misi &amp; Pemimpin Sekolah
           </h2>
-          <p className="mt-2.5 max-w-2xl text-[15px] sm:text-[16px] leading-[1.5] text-[#7a7a7a]">
+          <p className="mt-1 max-w-2xl text-[13px] sm:text-[14px] leading-normal text-[#7a7a7a]">
             {profile.tagline ||
               "Menyelenggarakan pendidikan dasar unggul yang menyeimbangkan kecerdasan intelektual, kemandirian, dan budi pekerti Qur'ani."}
           </p>
         </div>
 
-        {/* ── Komposisi dua kolom ──────────────────────────────── */}
-        <div className="mt-8 sm:mt-10 grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-stretch">
+        {/* ── Komposisi dua kolom (Disesuaikan agar muat utuh 1 layar di browser 100%) ── */}
+        <div className="mt-4 sm:mt-5 grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-5 items-stretch">
           {/* KIRI: Visi + Misi */}
-          <div className="lg:col-span-6 flex flex-col gap-4 sm:gap-5">
+          <div className="lg:col-span-6 flex flex-col gap-3 sm:gap-3.5">
             {/* VISI */}
             <article
               ref={visionRef}
-              className="rounded-[22px] border border-[#e0e0e0] bg-white p-5 sm:p-6"
+              className="rounded-[20px] border border-[#e0e0e0] bg-white p-4 sm:p-4.5 shadow-sm"
             >
-              <div className="pb-3 border-b border-[#e0e0e0]">
-                <h3 className="text-[18px] sm:text-[20px] font-semibold tracking-[-0.02em] text-[#86868b]">
+              <div className="pb-2 border-b border-[#e0e0e0]">
+                <h3 className="text-[15px] sm:text-[16px] font-semibold tracking-[-0.02em] text-[#86868b]">
                   {profile.visionTitle || "Visi Sekolah"}
                 </h3>
               </div>
-              <blockquote className="mt-3.5 text-pretty text-[17px] sm:text-[19px] lg:text-[21px] font-semibold leading-[1.35] tracking-[-0.015em] text-[#1d1d1f]">
+              <blockquote className="mt-2 text-pretty text-[14px] sm:text-[15px] lg:text-[16px] font-semibold leading-[1.35] tracking-[-0.015em] text-[#1d1d1f]">
                 “{profile.vision || "Membentuk Generasi Cerdas, Qur'ani, Berkarakter, dan Mandiri."}”
               </blockquote>
             </article>
 
             {/* MISI */}
-            <article className="flex-1 flex flex-col rounded-[22px] border border-[#e0e0e0] bg-white p-5 sm:p-6">
-              <div className="pb-3 border-b border-[#e0e0e0]">
-                <h3 className="text-[18px] sm:text-[20px] font-semibold tracking-[-0.02em] text-[#86868b]">
+            <article className="flex-1 flex flex-col rounded-[20px] border border-[#e0e0e0] bg-white p-4 sm:p-4.5 shadow-sm">
+              <div className="pb-2 border-b border-[#e0e0e0]">
+                <h3 className="text-[15px] sm:text-[16px] font-semibold tracking-[-0.02em] text-[#86868b]">
                   {profile.missionTitle || "Misi & Langkah Strategis"}
                 </h3>
               </div>
@@ -207,14 +207,14 @@ export default function VisionMissionPrincipal({ profile, error = null }) {
                       data-mission-item
                       className="group"
                     >
-                      <div className="grid grid-cols-[1.75rem_1fr] sm:grid-cols-[2rem_1fr] items-center gap-x-2.5 sm:gap-x-3 py-2.5 sm:py-3">
+                      <div className="grid grid-cols-[1.5rem_1fr] sm:grid-cols-[1.75rem_1fr] items-center gap-x-2 py-1.5 sm:py-2">
                         <span
                           aria-hidden="true"
-                          className="select-none font-display text-[20px] sm:text-[24px] font-bold leading-none tracking-[-0.04em] tabular-nums text-[#1d1d1f] transition-colors duration-500 group-hover:text-[#424245]"
+                          className="select-none font-display text-[16px] sm:text-[18px] font-bold leading-none tracking-[-0.04em] tabular-nums text-[#1d1d1f] transition-colors duration-500 group-hover:text-[#424245]"
                         >
                           {index + 1}.
                         </span>
-                        <p className="max-w-[58ch] text-[13.5px] sm:text-[14.5px] font-medium leading-[1.5] text-[#1d1d1f]">
+                        <p className="max-w-[58ch] text-[12.5px] sm:text-[13px] font-medium leading-[1.4] text-[#1d1d1f]">
                           {item}
                         </p>
                       </div>
@@ -222,12 +222,12 @@ export default function VisionMissionPrincipal({ profile, error = null }) {
                   ))}
                 </ol>
               ) : (
-                <p className="py-4 text-[13px] text-[#7a7a7a]">
+                <p className="py-3 text-[12.5px] text-[#7a7a7a]">
                   Butir misi sekolah belum dimuat.
                 </p>
               )}
 
-              <div className="mt-auto flex justify-end pt-3 text-[13px] text-[#7a7a7a]">
+              <div className="mt-auto flex justify-end pt-2 text-[12px] text-[#7a7a7a]">
                 <Link
                   href="/kurikulum"
                   className="inline-flex items-center gap-1 font-medium text-[#1d1d1f] hover:text-[#6e6e73] transition-colors"
@@ -243,7 +243,7 @@ export default function VisionMissionPrincipal({ profile, error = null }) {
             {principal ? (
               <article
                 ref={leaderCardRef}
-                className="relative h-full min-h-[460px] rounded-[22px] overflow-hidden border border-[#e0e0e0] bg-white flex flex-col justify-end shadow-sm group"
+                className="relative h-full min-h-[380px] lg:min-h-0 rounded-[20px] overflow-hidden border border-[#e0e0e0] bg-white flex flex-col justify-end shadow-sm group"
               >
                 {/* Foto resmi pimpinan di bagian atas/latar belakang */}
                 {hasPrincipalPhoto ? (
@@ -257,47 +257,47 @@ export default function VisionMissionPrincipal({ profile, error = null }) {
                     onError={() => setFailedPrincipalPhoto(principal.photo)}
                   />
                 ) : (
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#272729] to-[#161617] flex items-center justify-center text-white/20">
-                    <UsersIcon className="w-24 h-24" />
+                  <div className="absolute inset-0 bg-linear-to-br from-[#272729] to-[#161617] flex items-center justify-center text-white/20">
+                    <UsersIcon className="w-20 h-20" />
                   </div>
                 )}
 
                 {/* Subtle gradient scrim (dibatasi agar tidak bocor ke sudut bawah kartu) */}
-                <div className="absolute inset-x-0 top-0 bottom-32 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+                <div className="absolute inset-x-0 top-0 bottom-24 bg-linear-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
                 {/* Kotak konten overlay di bagian bawah dengan warna putih solid persis visi misi */}
-                <div className="relative z-10 bg-white rounded-t-[20px] rounded-b-[21px] border-t border-[#e0e0e0] p-5 sm:p-6">
+                <div className="relative z-10 bg-white rounded-t-[18px] rounded-b-[19px] border-t border-[#e0e0e0] p-4 sm:p-4.5">
                   <div>
-                    <p className="text-[18px] sm:text-[20px] font-semibold tracking-[-0.02em] text-[#86868b]">
+                    <p className="text-[15px] sm:text-[16px] font-semibold tracking-[-0.02em] text-[#86868b]">
                       Pimpinan Lembaga
                     </p>
-                    <h3 className="mt-1 text-[19px] sm:text-[21px] lg:text-[22px] font-semibold leading-tight text-[#1d1d1f] tracking-tight whitespace-nowrap overflow-hidden text-ellipsis">
+                    <h3 className="mt-1 text-[17px] sm:text-[18px] lg:text-[19px] font-semibold leading-tight text-[#1d1d1f] tracking-tight whitespace-nowrap overflow-hidden text-ellipsis">
                       {principal.name}
                     </h3>
-                    <p className="mt-0.5 text-[14px] sm:text-[15px] font-medium text-[#7a7a7a]">
+                    <p className="mt-0.5 text-[13px] sm:text-[13.5px] font-medium text-[#7a7a7a]">
                       {principal.role || "Kepala SD Plus An-Nur"}
                     </p>
 
                     {principal.bio ? (
-                      <blockquote className="mt-2.5 text-[13px] sm:text-[14px] leading-[1.55] text-[#555555] line-clamp-3">
+                      <blockquote className="mt-2 text-[12px] sm:text-[12.5px] leading-[1.45] text-[#555555] line-clamp-2">
                         “{principal.bio}”
                       </blockquote>
                     ) : null}
                   </div>
 
-                  <div className="mt-3.5 pt-3 border-t border-[#e0e0e0] flex justify-end">
+                  <div className="mt-2.5 pt-2 border-t border-[#e0e0e0] flex justify-end">
                     <Link
                       href="/profil/kepala-wakil"
-                      className="inline-flex items-center gap-1.5 text-[13px] font-medium text-[#1d1d1f] hover:text-[#6e6e73] transition-colors"
+                      className="inline-flex items-center gap-1 text-[12px] font-medium text-[#1d1d1f] hover:text-[#6e6e73] transition-colors"
                     >
                       Profil Pimpinan
-                      <ArrowRightIcon className="h-3.5 w-3.5" />
+                      <ArrowRightIcon className="h-3 w-3" />
                     </Link>
                   </div>
                 </div>
               </article>
             ) : (
-              <div className="h-full min-h-[320px] rounded-[22px] border border-[#e0e0e0] bg-white px-6 py-10 text-center flex flex-col items-center justify-center">
+              <div className="h-full min-h-80 rounded-[22px] border border-[#e0e0e0] bg-white px-6 py-10 text-center flex flex-col items-center justify-center">
                 <UsersIcon className="h-8 w-8 text-[#c7c7cc]" />
                 <p className="mt-3 text-[14px] text-[#7a7a7a]">
                   Informasi pimpinan belum tersedia.
