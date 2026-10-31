@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "@/components/atoms/Button";
+import InteractiveButton from "@/components/atoms/InteractiveButton";
 import Heading from "@/components/atoms/Heading";
 import Text from "@/components/atoms/Text";
 
@@ -12,6 +13,7 @@ export default function CTASection({
   primaryHref = "/kontak",
   secondaryText = "Unduh Brosur Informasi",
   secondaryHref = "/profil",
+  showDiamond = false,
 }) {
   const isDark = theme === "dark";
   const isNeutral = theme === "neutral";
@@ -32,12 +34,10 @@ export default function CTASection({
             className={`mb-3 flex items-center justify-center gap-2 text-[13px] sm:text-[14px] font-semibold uppercase tracking-wider select-none ${
               isDark
                 ? "text-[#d2d2d7]"
-                : isNeutral
-                  ? "text-[#7a7a7a]"
-                  : "text-[#7a7a7a]"
+                : "text-[#7a7a7a]"
             }`}
           >
-            {isNeutral && (
+            {showDiamond && (
               <span
                 aria-hidden="true"
                 className="h-1.5 w-1.5 rotate-45 rounded-[1px] bg-[#7a7a7a]"
@@ -66,27 +66,44 @@ export default function CTASection({
         </Text>
 
         <div className="flex flex-wrap items-center justify-center gap-4">
-          <Button
-            href={primaryHref}
-            variant={isNeutral ? "neutral-pill" : "primary"}
-            size="lg"
-          >
-            {primaryText}
-          </Button>
-          <Button
-            href={secondaryHref}
-            variant={
-              isDark
-                ? "text-link-on-dark"
-                : isNeutral
-                  ? "neutral-outline"
-                  : "secondary-pill"
-            }
-            size="lg"
-          >
-            {secondaryText}
-            {isDark ? " →" : ""}
-          </Button>
+          {isNeutral ? (
+            <>
+              {primaryText && primaryHref && (
+                <InteractiveButton
+                  href={primaryHref}
+                  variant="outline"
+                >
+                  {primaryText}
+                </InteractiveButton>
+              )}
+              {secondaryText && secondaryHref && (
+                <InteractiveButton
+                  href={secondaryHref}
+                  variant="outline"
+                >
+                  {secondaryText}
+                </InteractiveButton>
+              )}
+            </>
+          ) : (
+            <>
+              <Button
+                href={primaryHref}
+                variant="primary"
+                size="lg"
+              >
+                {primaryText}
+              </Button>
+              <Button
+                href={secondaryHref}
+                variant={isDark ? "text-link-on-dark" : "secondary-pill"}
+                size="lg"
+              >
+                {secondaryText}
+                {isDark ? " →" : ""}
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </section>

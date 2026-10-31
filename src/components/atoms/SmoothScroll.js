@@ -15,6 +15,7 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
 import { gsap, ScrollTrigger } from "@/lib/gsapConfig";
+import { setLenisInstance } from "@/lib/smoothScroll";
 import "lenis/dist/lenis.css";
 
 // Lerp ringan: cukup untuk menghaluskan wheel/trackpad tanpa lag terasa.
@@ -44,6 +45,9 @@ export default function SmoothScroll() {
     // Sinkronkan posisi scroll Lenis dengan ScrollTrigger (pin & scrub).
     lenis.on("scroll", ScrollTrigger.update);
 
+    // Bagikan instance agar navigasi programatik memakai animasi yang sama.
+    setLenisInstance(lenis);
+
     const raf = (time) => {
       lenis.raf(time * 1000);
     };
@@ -55,6 +59,7 @@ export default function SmoothScroll() {
     return () => {
       gsap.ticker.remove(raf);
       gsap.ticker.lagSmoothing(500, 33);
+      setLenisInstance(null);
       lenis.destroy();
     };
   }, []);

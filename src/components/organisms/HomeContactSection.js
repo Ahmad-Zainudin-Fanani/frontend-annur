@@ -7,7 +7,7 @@
  * - Animasi GSAP SplitText & ScrollTrigger yang tidak mengganggu interaktivitas peta
  */
 
-import React, { useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import Button from "@/components/atoms/Button";
 import { useGSAP } from "@gsap/react";
 import { gsap, SplitText, ease } from "@/lib/gsapConfig";
@@ -16,9 +16,10 @@ import {
   PhoneIcon,
   MailIcon,
   ClockIcon,
-  ChevronRightIcon,
 } from "@/components/atoms/Icons";
 import ApiState from "@/components/atoms/ApiState";
+
+const CTA_LABEL = "Formulir Kontak";
 
 export default function HomeContactSection({ profile, error = null }) {
   const sectionRef   = useRef(null);
@@ -27,6 +28,102 @@ export default function HomeContactSection({ profile, error = null }) {
   const mapColRef    = useRef(null);
   const infoColRef   = useRef(null);
   const splitRef     = useRef(null);
+  const ctaFillRef   = useRef(null);
+  const ctaClipRef   = useRef(null);
+  const ctaStateRef  = useRef({ x: 0, y: 0, radius: 0 });
+
+  // Terapkan lingkaran clip yang sama ke lapisan putih dan teks hitam,
+  // sehingga warna teks tampak berubah tepat mengikuti tepi lingkaran.
+  const applyCtaClip = useCallback(() => {
+    const { x, y, radius } = ctaStateRef.current;
+    const clipPath = `circle(${radius}px at ${x}px ${y}px)`;
+
+    if (ctaFillRef.current) ctaFillRef.current.style.clipPath = clipPath;
+    if (ctaClipRef.current) ctaClipRef.current.style.clipPath = clipPath;
+  }, []);
+
+  const handleCtaEnter = useCallback(
+    (event) => {
+      const button = event.currentTarget;
+      if (!button) return;
+
+      // Koordinat dihitung terhadap padding box (di dalam border 1px),
+      // karena lapisan fill dan label overlay diposisikan inset-0 di sana.
+      const rect = button.getBoundingClientRect();
+      const offsetX = button.clientLeft || 0;
+      const offsetY = button.clientTop || 0;
+      const width = button.clientWidth || rect.width;
+      const height = button.clientHeight || rect.height;
+      const x = event.clientX - rect.left - offsetX;
+      const y = event.clientY - rect.top - offsetY;
+      // Radius = jarak terjauh dari titik cursor ke sudut button.
+      const radius =
+        Math.hypot(
+          Math.max(x, width - x),
+          Math.max(y, height - y)
+        ) + 2;
+
+      const state = ctaStateRef.current;
+      gsap.killTweensOf(state);
+      state.x = x;
+      state.y = y;
+      state.radius = 0;
+      applyCtaClip();
+
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        state.radius = radius;
+        applyCtaClip();
+        return;
+      }
+
+      gsap.to(state, {
+        radius,
+        duration: 0.6,
+        ease: "power3.out",
+        onUpdate: applyCtaClip,
+      });
+    },
+    [applyCtaClip]
+  );
+
+  const handleCtaLeave = useCallback(
+    (event) => {
+      const button = event.currentTarget;
+      if (!button) return;
+
+      const rect = button.getBoundingClientRect();
+      const offsetX = button.clientLeft || 0;
+      const offsetY = button.clientTop || 0;
+      const state = ctaStateRef.current;
+
+      gsap.killTweensOf(state);
+
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        state.x = event.clientX - rect.left - offsetX;
+        state.y = event.clientY - rect.top - offsetY;
+        state.radius = 0;
+        applyCtaClip();
+        return;
+      }
+
+      gsap.to(state, {
+        x: event.clientX - rect.left - offsetX,
+        y: event.clientY - rect.top - offsetY,
+        radius: 0,
+        duration: 0.45,
+        ease: "power3.inOut",
+        onUpdate: applyCtaClip,
+      });
+    },
+    [applyCtaClip]
+  );
+
+  useEffect(() => {
+    const state = ctaStateRef.current;
+    return () => {
+      gsap.killTweensOf(state);
+    };
+  }, []);
 
   useGSAP(
     () => {
@@ -137,7 +234,6 @@ export default function HomeContactSection({ profile, error = null }) {
   if (error) return <ApiState error={error} />;
   if (!profile) return <ApiState empty />;
 
-  const mapsExternalUrl = profile.location.mapsUrl;
   const whatsapp = (profile.whatsapp || profile.phone || "").replace(/\D/g, "");
   const whatsappNumber = whatsapp.startsWith("0")
     ? `62${whatsapp.slice(1)}`
@@ -173,9 +269,9 @@ export default function HomeContactSection({ profile, error = null }) {
           {/* ========================================================
               LEFT COLUMN: Interactive Google Maps Frame (Col 7)
               ======================================================== */}
-          <div ref={mapColRef} className="lg:col-span-7 flex flex-col h-full">
+          <div ref={mapColRef} className="lg:col-span-7 h-full">
             {profile.mapsEmbedUrl ? (
-              <div className="relative rounded-[22px] overflow-hidden border border-[#e0e0e0] bg-[#f5f5f7] w-full flex-1 min-h-100 sm:min-h-120 lg:min-h-0 shadow-sm">
+              <div className="relative rounded-[22px] overflow-hidden border border-[#e0e0e0] bg-[#f5f5f7] w-full h-full min-h-100 sm:min-h-120 lg:min-h-0 shadow-sm">
                 <iframe
                   title={`Peta Lokasi ${profile.institutionName}`}
                   src={profile.mapsEmbedUrl}
@@ -189,26 +285,10 @@ export default function HomeContactSection({ profile, error = null }) {
                 />
               </div>
             ) : (
-              <div className="rounded-[22px] border border-[#e0e0e0] bg-[#f5f5f7] min-h-64 flex items-center justify-center flex-1 h-full">
+              <div className="rounded-[22px] border border-[#e0e0e0] bg-[#f5f5f7] min-h-64 flex items-center justify-center h-full">
                 <ApiState empty />
               </div>
             )}
-
-            {/* Direct Google Maps Action Button (Outside map, bottom-right) */}
-            {mapsExternalUrl ? (
-              <div className="mt-4 flex items-center justify-end">
-                <Button
-                  href={mapsExternalUrl}
-                  target="_blank"
-                  variant="primary"
-                  size="md"
-                  className="inline-flex items-center gap-2"
-                >
-                  <span>Buka Google Maps</span>
-                  <ChevronRightIcon className="w-4 h-4" />
-                </Button>
-              </div>
-            ) : null}
           </div>
 
           {/* ========================================================
@@ -303,27 +383,37 @@ export default function HomeContactSection({ profile, error = null }) {
                 </div>
               ) : null}
 
-              {/* CTA Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 pt-3">
-                {whatsappNumber && (
-                  <Button
-                    href={`https://wa.me/${whatsappNumber}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    variant="primary"
-                    size="md"
-                    className="flex-1 text-center"
-                  >
-                    Chat WhatsApp
-                  </Button>
-                )}
+              {/* CTA Action Button */}
+              <div className="flex justify-start pt-3">
                 <Button
                   href="/kontak"
                   variant="secondary"
                   size="md"
-                  className="flex-1 text-center"
+                  className="relative w-fit border border-black"
+                  style={{
+                    backgroundColor: "#ffffff",
+                    color: "#000000",
+                    paddingLeft: "28px",
+                    paddingRight: "28px",
+                  }}
+                  onMouseEnter={handleCtaEnter}
+                  onMouseLeave={handleCtaLeave}
                 >
-                  Formulir Kontak
+                  <span
+                    ref={ctaFillRef}
+                    aria-hidden="true"
+                    style={{ clipPath: "circle(0px at 50% 50%)" }}
+                    className="pointer-events-none absolute inset-0 z-0 rounded-full bg-[#000000]"
+                  />
+                  <span className="relative z-10 font-semibold">{CTA_LABEL}</span>
+                  <span
+                    ref={ctaClipRef}
+                    aria-hidden="true"
+                    style={{ clipPath: "circle(0px at 50% 50%)" }}
+                    className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center font-semibold text-white"
+                  >
+                    {CTA_LABEL}
+                  </span>
                 </Button>
               </div>
             </div>

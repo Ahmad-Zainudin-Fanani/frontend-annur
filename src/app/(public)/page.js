@@ -70,7 +70,7 @@ export default async function HomePage() {
 
       {/* ========================================================
           SECTION 4: Galeri Kegiatan
-          Bento layout dinamis + GSAP Flip filter & ScrollTrigger
+          Vertical pinned stacked cards + GSAP ScrollTrigger
           ======================================================== */}
       <HomeGallery galleries={galleries} error={galleriesError} />
 

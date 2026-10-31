@@ -63,6 +63,67 @@ body {
   scrollbar-width: none;
 }
 
+/* Galeri Kegiatan — fallback tanpa pin/animasi.
+   Kartu ditampilkan sebagai daftar vertikal yang tetap bisa dibaca. */
+@media (prefers-reduced-motion: reduce) {
+  .gallery-stack {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible;
+    background: #ffffff;
+  }
+
+  .gallery-stack-inner {
+    height: auto !important;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .gallery-stack-layer {
+    position: relative !important;
+    inset: auto !important;
+    display: block !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .gallery-stack-card {
+    height: 70svh !important;
+    margin-inline: auto;
+    transform: none !important;
+  }
+}
+
+/* Sejarah Berdiri — fallback tanpa pin/animasi.
+   Slide ditumpuk vertikal dan tetap terbaca. */
+@media (prefers-reduced-motion: reduce) {
+  .history-stage {
+    display: block !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  .history-track {
+    display: flex !important;
+    flex: none !important;
+    flex-direction: column !important;
+    height: auto !important;
+    transform: none !important;
+  }
+
+  .history-slide {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding-block: 3.5rem !important;
+  }
+
+  .history-controls {
+    display: none !important;
+  }
+}
+
 /* Reduced motion — matikan semua CSS transition & animation */
 @media (prefers-reduced-motion: reduce) {
   *,

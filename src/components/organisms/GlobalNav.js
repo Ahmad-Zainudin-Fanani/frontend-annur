@@ -14,7 +14,6 @@ import {
   XIcon,
   ChevronDownIcon,
 } from "@/components/atoms/Icons";
-import Button from "@/components/atoms/Button";
 import { gsap } from "@/lib/gsapConfig";
 
 // Primary navigation structure as specified
@@ -296,13 +295,13 @@ export default function GlobalNav() {
         onBlur={handleHeaderBlur}
         className="sticky top-0 z-50 bg-[#000000]/90 backdrop-blur-md text-white select-none border-b border-[#222222]/80 transition-colors duration-300"
       >
-        <div className="max-w-7xl mx-auto h-[60px] px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto h-[60px] px-4 sm:px-6 lg:px-8 grid grid-cols-[1fr_auto_1fr] items-center">
           {/* Left: Brand Identity */}
           <Link
             href="/"
             onMouseEnter={closeProfileMenu}
             onFocus={closeProfileMenu}
-            className="text-[16px] sm:text-[17px] font-semibold tracking-[-0.2px] text-white hover:text-[#cccccc] transition-colors apple-press-action shrink-0"
+            className="justify-self-start text-[16px] sm:text-[17px] font-semibold tracking-[-0.2px] text-white hover:text-[#cccccc] transition-colors apple-press-action shrink-0"
           >
             SD PLUS AN-NUR
           </Link>
@@ -380,19 +379,8 @@ export default function GlobalNav() {
             })}
           </nav>
   
-          {/* Right: Primary Action Button (PPDB) & Mobile Trigger */}
-          <div className="flex items-center space-x-3 shrink-0">
-            <Button
-              href="/kontak"
-              variant="light-pill"
-              size="sm"
-              onMouseEnter={closeProfileMenu}
-              onFocus={closeProfileMenu}
-              className="hidden sm:inline-flex py-2 px-4 text-[13px]"
-            >
-              Daftar Siswa (PPDB)
-            </Button>
-  
+          {/* Right: Mobile Trigger */}
+          <div className="flex items-center justify-self-end space-x-3 shrink-0">
             {/* Mobile Hamburger Toggle */}
             <button
               type="button"
@@ -498,18 +486,6 @@ export default function GlobalNav() {
                 </Link>
               );
             })}
-  
-            <div className="pt-3 border-t border-[#222222] space-y-2">
-              <Button
-                href="/kontak"
-                onClick={closeMobileMenu}
-                variant="light-pill"
-                size="md"
-                className="w-full text-[14px]"
-              >
-                Pendaftaran Siswa Baru (PPDB)
-              </Button>
-            </div>
           </div>
         )}
       </header>
@@ -578,7 +554,8 @@ export default function GlobalNav() {
             </div>
           </div>
 
-          {/* Spacer penyeimbang tombol CTA PPDB di kanan */}
+          {/* Spacer penyeimbang lebar kolom kanan agar menu tetap sejajar
+              dengan trigger Profil setelah tombol CTA PPDB dihapus. */}
           <div
             className="hidden lg:flex items-center space-x-3 shrink-0 invisible pointer-events-none select-none"
             aria-hidden="true"
