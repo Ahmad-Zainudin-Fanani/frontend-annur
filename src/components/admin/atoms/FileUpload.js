@@ -23,7 +23,7 @@ export default function FileUpload({
     async (file) => {
       if (!file) return;
 
-      const MAX_SIZE = 10 * 1024 * 1024; // 10 MB – allow high‑resolution images
+      const MAX_SIZE = 5 * 1024 * 1024;
       const ALLOWED = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif", "image/avif", "application/pdf"];
 
       if (file.size > MAX_SIZE) {
@@ -129,7 +129,7 @@ export default function FileUpload({
             </svg>
             <div className="text-center">
               <p className="text-sm font-medium text-ink">Klik atau seret file ke sini</p>
-              <p className="text-xs text-ink-soft">JPG, PNG, WEBP, GIF, AVIF — maks. 10 MB (gambar kualitas tinggi)</p>
+              <p className="text-xs text-ink-soft">JPG, PNG, WEBP, GIF, AVIF — maks. 5 MB</p>
             </div>
           </div>
         )}

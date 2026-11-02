@@ -13,6 +13,8 @@ const ALLOWED_PREFIXES = [
   "/admin/phases",
   "/admin/hero-slides",
   "/admin/galleries",
+  "/admin/extracurriculars",
+  "/admin/organization-structures",
   "/admin/contacts",
   "/admin/upload",
 ];

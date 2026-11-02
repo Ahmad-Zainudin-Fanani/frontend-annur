@@ -89,6 +89,27 @@ const navItems = [
           </svg>
         ),
       },
+      {
+        label: "Ekstrakurikuler",
+        href: "/admin/ekstrakurikuler",
+        icon: (
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4 5h16v14H4zM8 9h8M8 13h8M8 17h4" />
+          </svg>
+        ),
+      },
+      {
+        label: "Struktur Yayasan",
+        href: "/admin/struktur-organisasi",
+        icon: (
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v5m0 0H6v5m6-5h6v5M6 13v3m12-3v3M4 19h4m8 0h4" />
+            <circle cx="12" cy="5" r="2" />
+            <circle cx="6" cy="11" r="2" />
+            <circle cx="18" cy="11" r="2" />
+          </svg>
+        ),
+      },
     ],
   },
   {

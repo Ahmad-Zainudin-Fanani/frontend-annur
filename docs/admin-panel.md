@@ -62,6 +62,10 @@ Semua resource di tabel berikut memiliki pola `apiResource`: `GET` daftar, `POST
 | Fase — `/api/admin/phases` | `title`, `phase_name`, `description`, `status` | `code`, `features` (object/array), `order` |
 | Slide hero — `/api/admin/hero-slides` | `image`, `heading`, `subheading`, `caption`, `status` | `order`, `button_label` dan `button_url` (keduanya kosong atau keduanya terisi) |
 | Galeri — `/api/admin/galleries` | `title`, `category`, `image`, `status` | `description`, `event_date` |
+| Ekstrakurikuler — `/api/admin/extracurriculars` | `title`, `status` | `description`, `order`, `images[]` (`path`, `alt_text`, `order`) |
+| Struktur yayasan — `/api/admin/organization-structures` | `name`, `position`, `status` | `parent_id` (UUID atau `null`), `order` |
+
+Pada form ekstrakurikuler, wizard mengunggah satu foto setiap langkah dan mengirim seluruh daftar saat disimpan. Unggah foto lewat `/api/admin/upload`, lalu kirim `path` hasil upload dalam `images`; kirim `images: []` untuk menghapus semua foto saat mengedit. Struktur yayasan menggunakan `parent_id` untuk membentuk hierarki.
 
 Untuk resource yang memiliki `status`, nilai yang diterima adalah `draft` atau `published`. Guru memakai `is_active`, bukan field `status`. Gunakan nilai `order` untuk urutan tampil. Pada CTA slide hero, URL harus berupa path internal (`/kontak`) atau URL HTTP(S); path yang diawali `//` tidak valid.
 
