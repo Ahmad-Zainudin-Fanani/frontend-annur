@@ -7,6 +7,7 @@ import Select from "@/components/admin/atoms/Select";
 import Input from "@/components/admin/atoms/Input";
 import Textarea from "@/components/admin/atoms/Textarea";
 import DataTable from "@/components/admin/organisms/DataTable";
+import Pagination from "@/components/admin/molecules/Pagination";
 import Modal from "@/components/admin/organisms/Modal";
 import { ConfirmDialog } from "@/components/admin/organisms/Modal";
 import FileUpload from "@/components/admin/atoms/FileUpload";
@@ -26,6 +27,8 @@ const STATUS_OPTIONS = [
   { value: "draft", label: "Draf" },
 ];
 
+const PER_PAGE = 10;
+
 const EMPTY_FORM = {
   title: "", category: "", image: "", status: "published", description: "", event_date: "",
 };
@@ -37,6 +40,8 @@ export default function GaleriPage() {
   const [error, setError] = useState(null);
   const [filterStatus, setFilterStatus] = useState("all");
   const [filterCategory, setFilterCategory] = useState("");
+  const [page, setPage] = useState(1);
+  const [meta, setMeta] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [editItem, setEditItem] = useState(null);
   const [form, setForm] = useState(EMPTY_FORM);
@@ -51,16 +56,24 @@ export default function GaleriPage() {
     setError(null);
     try {
       const params = new URLSearchParams();
+      params.set("page", String(page));
+      params.set("per_page", String(PER_PAGE));
       if (filterStatus !== "all") params.set("status", filterStatus);
       if (filterCategory) params.set("category", filterCategory);
-      const res = await apiFetch(`/galleries?${params}`);
+      const res = await apiFetch("/galleries?" + params);
+      const responseMeta = res.meta ?? null;
+      if (responseMeta && responseMeta.current_page > responseMeta.last_page) {
+        setPage(responseMeta.last_page || 1);
+        return;
+      }
       setData(res.data ?? []);
+      setMeta(responseMeta);
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
-  }, [filterStatus, filterCategory]);
+  }, [filterStatus, filterCategory, page]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- Starts an async request and updates its loading state.
@@ -137,14 +150,15 @@ export default function GaleriPage() {
         actions={<Button onClick={openCreate} size="sm">+ Tambah Foto</Button>}
       />
       <div className="flex flex-wrap gap-3 mb-4">
-        <Select id="galeri-status" value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}
+        <Select id="galeri-status" value={filterStatus} onChange={(e) => { setFilterStatus(e.target.value); setPage(1); }}
           options={[{ value: "all", label: "Semua Status" }, ...STATUS_OPTIONS]} placeholder="" className="w-40" />
-        <Select id="galeri-category" value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)}
+        <Select id="galeri-category" value={filterCategory} onChange={(e) => { setFilterCategory(e.target.value); setPage(1); }}
           options={[{ value: "", label: "Semua Kategori" }, ...CATEGORIES]} placeholder="" className="w-44" />
       </div>
       {error ? <ErrorState message={error} onRetry={load} /> : (
         <DataTable columns={columns} data={data} keyExtractor={(r) => r.id} loading={loading}
           emptyState={<EmptyState title="Belum ada item galeri" action={<Button onClick={openCreate} size="sm">+ Tambah</Button>} />}
+          footer={meta && <Pagination meta={meta} onPageChange={setPage} />}
         />
       )}
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={editItem ? "Edit Galeri" : "Tambah Galeri"} size="md">

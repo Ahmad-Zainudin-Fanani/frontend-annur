@@ -8,6 +8,7 @@ import Select from "@/components/admin/atoms/Select";
 import Input from "@/components/admin/atoms/Input";
 import Textarea from "@/components/admin/atoms/Textarea";
 import DataTable from "@/components/admin/organisms/DataTable";
+import Pagination from "@/components/admin/molecules/Pagination";
 import Modal from "@/components/admin/organisms/Modal";
 import { ConfirmDialog } from "@/components/admin/organisms/Modal";
 import FileUpload from "@/components/admin/atoms/FileUpload";
@@ -27,6 +28,7 @@ const EMPTY_FORM = {
   order: "",
 };
 
+const PER_PAGE = 10;
 const WIZARD_STEPS = ["Informasi", "Foto", "Ringkasan"];
 
 function getImageError(errors) {
@@ -41,6 +43,14 @@ export default function EkstrakurikulerPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filterStatus, setFilterStatus] = useState("all");
+  const [page, setPage] = useState(1);
+  const [meta, setMeta] = useState(null);
+  const [imageViewerItem, setImageViewerItem] = useState(null);
+  const [imageViewerData, setImageViewerData] = useState([]);
+  const [imageViewerMeta, setImageViewerMeta] = useState(null);
+  const [imageViewerPage, setImageViewerPage] = useState(1);
+  const [imageViewerLoading, setImageViewerLoading] = useState(false);
+  const [imageViewerError, setImageViewerError] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [wizardStep, setWizardStep] = useState(1);
   const [editItem, setEditItem] = useState(null);
@@ -61,20 +71,65 @@ export default function EkstrakurikulerPage() {
 
     try {
       const params = new URLSearchParams();
+      params.set("page", String(page));
+      params.set("per_page", String(PER_PAGE));
       if (filterStatus !== "all") params.set("status", filterStatus);
 
-      const response = await apiFetch(`/extracurriculars?${params}`);
+      const response = await apiFetch("/extracurriculars?" + params);
+      const responseMeta = response.meta ?? null;
+      if (responseMeta && responseMeta.current_page > responseMeta.last_page) {
+        setPage(responseMeta.last_page || 1);
+        return;
+      }
       setData(response.data ?? []);
+      setMeta(responseMeta);
     } catch (loadError) {
       setError(loadError.message);
     } finally {
       setLoading(false);
     }
-  }, [filterStatus]);
+  }, [filterStatus, page]);
 
   useEffect(() => {
     load();
   }, [load]);
+
+  const loadImageViewer = useCallback(async () => {
+    if (!imageViewerItem) {
+      return;
+    }
+
+    setImageViewerLoading(true);
+    setImageViewerError(null);
+
+    try {
+      const params = new URLSearchParams({ page: String(imageViewerPage), per_page: String(PER_PAGE) });
+      const response = await apiFetch("/extracurriculars/" + imageViewerItem.id + "/images?" + params);
+      const responseMeta = response.meta ?? null;
+      if (responseMeta && responseMeta.current_page > responseMeta.last_page) {
+        setImageViewerPage(responseMeta.last_page || 1);
+        return;
+      }
+      setImageViewerData(response.data ?? []);
+      setImageViewerMeta(responseMeta);
+    } catch (loadError) {
+      setImageViewerError(loadError.message);
+    } finally {
+      setImageViewerLoading(false);
+    }
+  }, [imageViewerItem, imageViewerPage]);
+
+  useEffect(() => {
+    loadImageViewer();
+  }, [loadImageViewer]);
+
+  const openImageViewer = (item) => {
+    setImageViewerItem(item);
+    setImageViewerData([]);
+    setImageViewerMeta(null);
+    setImageViewerPage(1);
+    setImageViewerError(null);
+  };
 
   const openCreate = () => {
     setEditItem(null);
@@ -227,6 +282,7 @@ export default function EkstrakurikulerPage() {
       key: "images",
       header: "Foto",
       render: (row) => {
+        const imageCount = row.images?.length ?? 0;
         const cover = row.images?.[0];
         return cover?.url || cover?.path ? (
           <div className="flex items-center gap-2">
@@ -235,9 +291,15 @@ export default function EkstrakurikulerPage() {
               alt={cover.alt_text || row.title}
               className="h-12 w-16 rounded-lg border border-divider object-cover"
             />
-            <span className="text-xs text-ink-soft">{row.images.length} foto</span>
+            <button type="button" onClick={() => openImageViewer(row)} className="text-xs font-medium text-primary hover:underline">
+              {imageCount} foto
+            </button>
           </div>
-        ) : <span className="text-xs text-ink-soft">Belum ada foto</span>;
+        ) : (
+          <button type="button" onClick={() => openImageViewer(row)} className="text-xs font-medium text-primary hover:underline">
+            0 foto
+          </button>
+        );
       },
     },
     { key: "title", header: "Nama", render: (row) => <p className="font-medium text-ink">{row.title}</p> },
@@ -269,7 +331,7 @@ export default function EkstrakurikulerPage() {
         <Select
           id="ekstrakurikuler-status"
           value={filterStatus}
-          onChange={(event) => setFilterStatus(event.target.value)}
+          onChange={(event) => { setFilterStatus(event.target.value); setPage(1); }}
           options={[{ value: "all", label: "Semua Status" }, ...STATUS_OPTIONS]}
           placeholder=""
           className="w-44"
@@ -290,8 +352,36 @@ export default function EkstrakurikulerPage() {
               action={<Button onClick={openCreate} size="sm">+ Tambah</Button>}
             />
           )}
+          footer={meta && <Pagination meta={meta} onPageChange={setPage} />}
         />
       )}
+
+      <Modal
+        open={Boolean(imageViewerItem)}
+        onClose={() => setImageViewerItem(null)}
+        title={"Foto " + (imageViewerItem?.title ?? "Ekstrakurikuler")}
+        size="lg"
+      >
+        {imageViewerError ? (
+          <ErrorState message={imageViewerError} onRetry={loadImageViewer} />
+        ) : imageViewerLoading ? (
+          <p role="status" className="py-8 text-center text-sm text-ink-soft">Memuat foto...</p>
+        ) : imageViewerData.length > 0 ? (
+          <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {imageViewerData.map((image) => (
+              <li key={image.id} className="overflow-hidden rounded-lg border border-divider">
+                <img src={image.url || image.path} alt={image.alt_text || "Foto ekstrakurikuler"} className="h-48 w-full object-cover" />
+                <p className="truncate px-3 py-2 text-sm text-ink-soft">{image.alt_text || image.path}</p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <EmptyState title="Belum ada foto" description="Ekstrakurikuler ini belum memiliki gambar." />
+        )}
+        {!imageViewerLoading && !imageViewerError && imageViewerMeta && (
+          <Pagination meta={imageViewerMeta} onPageChange={setImageViewerPage} />
+        )}
+      </Modal>
 
       <Modal
         open={modalOpen}

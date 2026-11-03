@@ -6,6 +6,7 @@ export default function DataTable({
   keyExtractor,
   loading = false,
   emptyState,
+  footer = null,
   className = "",
 }) {
   return (
@@ -61,6 +62,7 @@ export default function DataTable({
           </tbody>
         </table>
       </div>
+      {footer}
     </div>
   );
 }

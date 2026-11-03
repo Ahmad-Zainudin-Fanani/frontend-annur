@@ -7,6 +7,7 @@ import Input from "@/components/admin/atoms/Input";
 import Select from "@/components/admin/atoms/Select";
 import Textarea from "@/components/admin/atoms/Textarea";
 import DataTable from "@/components/admin/organisms/DataTable";
+import Pagination from "@/components/admin/molecules/Pagination";
 import Modal from "@/components/admin/organisms/Modal";
 import { ConfirmDialog } from "@/components/admin/organisms/Modal";
 import FileUpload from "@/components/admin/atoms/FileUpload";
@@ -36,6 +37,8 @@ const STATUS_OPTIONS = [
   { value: "draft", label: "Draf" },
 ];
 
+const PER_PAGE = 10;
+
 const EMPTY_FORM = {
   title: "", category: "", level: "", year: "", recipient_name: "",
   status: "published", organizer: "", description: "", image: "",
@@ -49,6 +52,8 @@ export default function PrestasiPage() {
   const [filterStatus, setFilterStatus] = useState("all");
   const [filterCategory, setFilterCategory] = useState("");
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [meta, setMeta] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [editItem, setEditItem] = useState(null);
   const [form, setForm] = useState(EMPTY_FORM);
@@ -63,17 +68,25 @@ export default function PrestasiPage() {
     setError(null);
     try {
       const params = new URLSearchParams();
+      params.set("page", String(page));
+      params.set("per_page", String(PER_PAGE));
       if (search) params.set("search", search);
       if (filterStatus !== "all") params.set("status", filterStatus);
       if (filterCategory) params.set("category", filterCategory);
-      const res = await apiFetch(`/achievements?${params}`);
+      const res = await apiFetch("/achievements?" + params);
+      const responseMeta = res.meta ?? null;
+      if (responseMeta && responseMeta.current_page > responseMeta.last_page) {
+        setPage(responseMeta.last_page || 1);
+        return;
+      }
       setData(res.data ?? []);
+      setMeta(responseMeta);
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
-  }, [search, filterStatus, filterCategory]);
+  }, [page, search, filterStatus, filterCategory]);
 
   useEffect(() => {
     const t = setTimeout(load, 300);
@@ -168,11 +181,11 @@ export default function PrestasiPage() {
       />
 
       <div className="flex flex-wrap gap-3 mb-4">
-        <Input id="prestasi-search" placeholder="Cari judul..." value={search} onChange={(e) => setSearch(e.target.value)} className="max-w-xs" />
-        <Select id="prestasi-status" value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}
+        <Input id="prestasi-search" placeholder="Cari judul..." value={search} onChange={(e) => { setSearch(e.target.value); setPage(1); }} className="max-w-xs" />
+        <Select id="prestasi-status" value={filterStatus} onChange={(e) => { setFilterStatus(e.target.value); setPage(1); }}
           options={[{ value: "all", label: "Semua Status" }, { value: "published", label: "Terbit" }, { value: "draft", label: "Draf" }]}
           placeholder="" className="w-40" />
-        <Select id="prestasi-category" value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)}
+        <Select id="prestasi-category" value={filterCategory} onChange={(e) => { setFilterCategory(e.target.value); setPage(1); }}
           options={[{ value: "", label: "Semua Kategori" }, ...CATEGORIES]}
           placeholder="" className="w-44" />
       </div>
@@ -182,6 +195,7 @@ export default function PrestasiPage() {
       ) : (
         <DataTable columns={columns} data={data} keyExtractor={(r) => r.id} loading={loading}
           emptyState={<EmptyState title="Belum ada prestasi" action={<Button onClick={openCreate} size="sm">+ Tambah</Button>} />}
+          footer={meta && <Pagination meta={meta} onPageChange={setPage} />}
         />
       )}
 

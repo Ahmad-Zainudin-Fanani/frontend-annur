@@ -113,8 +113,8 @@ export default function ProfilPage() {
         npsn: data.npsn ?? "",
         public_sections: JSON.stringify(data.public_sections ?? {}, null, 2),
       });
-      // Load guru list for principal_name select (simple GET /teachers?search=) – limit to name field
-      const gRes = await apiFetch("/teachers?search=");
+      // Load guru options beyond the paginated list default.
+      const gRes = await apiFetch("/teachers?per_page=100");
       const teachers = gRes.data ?? [];
       setPrincipalOptions(teachers.map((t) => ({ value: t.name, label: t.name })));
     } catch (err) {

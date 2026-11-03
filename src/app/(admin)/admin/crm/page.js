@@ -27,7 +27,7 @@ const PRIORITY_OPTS = [
   { value: "urgent", label: "Mendesak" },
 ];
 
-const PER_PAGE = 15;
+const PER_PAGE = 20;
 
 export default function CRMPage() {
   const [contacts, setContacts] = useState([]);

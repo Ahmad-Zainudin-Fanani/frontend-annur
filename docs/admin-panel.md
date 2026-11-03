@@ -6,7 +6,7 @@ Panduan ini menjadi acuan saat membuat panel admin yang memakai API Laravel An-N
 
 - Admin panel dan website company profile berjalan dalam satu aplikasi Next.js di root repo. Website berada di route group `src/app/(public)` dan admin di `src/app/(admin)`; nama route group tidak mengubah URL. Halaman admin tersedia di `/admin`, login di `/login`, dan website tetap memakai URL publik yang ada.
 - Jalankan satu aplikasi dari root repo dengan `npm run dev` (atau `npm run build` dan `npm run start`). Gunakan Next.js App Router dan Tailwind sesuai stack proyek. Terapkan Atomic Design; komponen khusus admin berada di `src/components/admin/`.
-- Kelompok halaman panel: dashboard, profil sekolah, guru, prestasi, lomba, pilar kurikulum, fase, slide hero, galeri, dan CRM kontak.
+- Kelompok halaman panel: dashboard, profil sekolah, guru, prestasi, lomba, pilar kurikulum, fase, slide hero, galeri, ekstrakurikuler, struktur yayasan, dan CRM kontak.
 - Gunakan label dan pesan validasi berbahasa Indonesia. Setiap halaman daftar/form memiliki loading, empty, error, dan success state.
 
 ## 2. Integrasi API dan Sesi
@@ -25,6 +25,8 @@ Route berikut adalah route lokal frontend, bukan endpoint Laravel:
 | `GET /api/session` | Validasi token ke Laravel `GET /api/me` dan kembalikan user admin tanpa mengirim token ke browser. |
 | `POST /api/session/logout` | Panggil Laravel `POST /api/logout`, lalu hapus cookie sesi. |
 | `/api/admin/*` | Proxy hanya endpoint admin yang diizinkan; teruskan method, query, dan body yang sesuai. |
+
+Endpoint login Laravel dibatasi 5 request per menit per IP. BFF meneruskan status 429 dan pesan respons agar halaman login dapat menampilkannya.
 
 Simpan token Laravel dalam cookie `HttpOnly`, `SameSite=Lax`, `Path=/`, dan `Secure` di production. Cookie merupakan session cookie; jangan pernah mengirim token di JSON ke browser atau menyimpannya di `localStorage`/`sessionStorage`. Periksa `Origin` pada request mutasi BFF (`POST`, `PUT`, `PATCH`, `DELETE`). Untuk upload, teruskan `FormData` sebagai multipart dan jangan menetapkan header `Content-Type` secara manual.
 
@@ -51,7 +53,7 @@ Field terstruktur dalam `public_sections`: `school_status`, `education_level`, `
 
 ### Resource CMS
 
-Semua resource di tabel berikut memiliki pola `apiResource`: `GET` daftar, `POST` tambah, `GET /{id}` detail, `PUT` atau `PATCH /{id}` ubah, dan `DELETE /{id}` hapus. ID resource berupa UUID. Daftar CMS berupa array di `data` dan tidak memakai pagination.
+Semua resource di tabel berikut memiliki pola `apiResource`: `GET` daftar, `POST` tambah, `GET /{id}` detail, `PUT` atau `PATCH /{id}` ubah, dan `DELETE /{id}` hapus. ID resource berupa UUID. Daftar guru, prestasi, galeri, dan ekstrakurikuler memakai pagination: `data` tetap berupa array, sedangkan `links` dan `meta` berada di tingkat teratas. Default `per_page` adalah 10 dan batasnya 100. Daftar CMS lainnya tetap berupa array di `data` tanpa pagination.
 
 | Halaman / endpoint | Field wajib | Field opsional/khusus |
 |---|---|---|
@@ -65,6 +67,8 @@ Semua resource di tabel berikut memiliki pola `apiResource`: `GET` daftar, `POST
 | Ekstrakurikuler — `/api/admin/extracurriculars` | `title`, `status` | `description`, `order`, `images[]` (`path`, `alt_text`, `order`) |
 | Struktur yayasan — `/api/admin/organization-structures` | `name`, `position`, `status` | `parent_id` (UUID atau `null`), `order` |
 
+Endpoint gambar ekstrakurikuler: `GET /api/admin/extracurriculars/{id}/images`. Respons memakai pagination top-level yang sama, dengan default 10 dan maksimum 100. Daftar ekstrakurikuler tetap menyertakan seluruh gambar bersarang agar wizard edit dapat menyimpan daftar lengkap.
+
 Pada form ekstrakurikuler, wizard mengunggah satu foto setiap langkah dan mengirim seluruh daftar saat disimpan. Unggah foto lewat `/api/admin/upload`, lalu kirim `path` hasil upload dalam `images`; kirim `images: []` untuk menghapus semua foto saat mengedit. Struktur yayasan menggunakan `parent_id` untuk membentuk hierarki.
 
 Untuk resource yang memiliki `status`, nilai yang diterima adalah `draft` atau `published`. Guru memakai `is_active`, bukan field `status`. Gunakan nilai `order` untuk urutan tampil. Pada CTA slide hero, URL harus berupa path internal (`/kontak`) atau URL HTTP(S); path yang diawali `//` tidak valid.
@@ -73,11 +77,13 @@ Filter daftar yang didukung API:
 
 | Resource | Query |
 |---|---|
-| Guru | `search` |
-| Prestasi | `search`, `category`, `status` |
+| Guru | `search`, `page`, `per_page` |
+| Prestasi | `search`, `category`, `status`, `page`, `per_page` |
 | Lomba | `search`, `status` |
 | Pilar, fase, slide hero | `status` |
-| Galeri | `category`, `status` |
+| Galeri | `category`, `status`, `page`, `per_page` |
+| Ekstrakurikuler | `status`, `page`, `per_page` |
+| Gambar ekstrakurikuler | `page`, `per_page` |
 
 Untuk status draft dan terbit, kirim `status=draft` atau `status=published`; `status=all` menampilkan keduanya. Filter yang tidak tercantum pada tabel per resource jangan diasumsikan diterapkan hanya karena diterima validator umum.
 
@@ -87,7 +93,7 @@ Guru dengan riwayat kepala sekolah tidak dapat dihapus; API mengembalikan 422. T
 
 | Fitur | Endpoint | Kontrak |
 |---|---|---|
-| Daftar kontak | `GET /api/admin/contacts` | Query `status`, `priority`, `search`, `per_page`, dan `page`; respons memakai pagination Laravel di dalam `data`. |
+| Daftar kontak | `GET /api/admin/contacts` | Query `status`, `priority`, `search`, `per_page`, dan `page`; default 20 per halaman dan respons memakai pagination Laravel di dalam `data`. |
 | Detail kontak | `GET /api/admin/contacts/{id}` | Mengembalikan kontak, handler, dan catatan. |
 | Ubah status/prioritas | `PATCH /api/admin/contacts/{id}/status` | `crm_status`: `new`, `contacted`, `in_progress`, `resolved`, `closed`; `priority`: `low`, `normal`, `high`, `urgent`; `handled_by` opsional. |
 | Tambah catatan | `POST /api/admin/contacts/{id}/notes` | Body `{ "note": "..." }`; panjang 3–2000 karakter. |
@@ -101,6 +107,8 @@ Gunakan URL dari respons upload sebagai nilai field gambar/file pada resource. F
 ## 4. Bentuk Respons dan Penanganan Error
 
 Respons sukses umumnya berbentuk `{ "success": true, "data": ... }`, dengan `message` pada operasi tulis tertentu. Login mengembalikan `token` dan `user`; `/api/me` mengembalikan `user`; upload mengembalikan `url` dan `path`. Jangan mengasumsikan semua endpoint menaruh hasil di bentuk yang sama tanpa memeriksa endpoint tersebut.
+
+Untuk daftar konten yang dipaginasi, respons berisi `data` sebagai array dan `links`/`meta` di tingkat teratas. CRM tetap mengembalikan paginator Laravel bersarang di `data`.
 
 Tangani status HTTP berikut di UI:
 

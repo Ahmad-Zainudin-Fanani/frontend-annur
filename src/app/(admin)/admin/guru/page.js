@@ -7,12 +7,15 @@ import Input from "@/components/admin/atoms/Input";
 import Select from "@/components/admin/atoms/Select";
 import Textarea from "@/components/admin/atoms/Textarea";
 import DataTable from "@/components/admin/organisms/DataTable";
+import Pagination from "@/components/admin/molecules/Pagination";
 import Modal from "@/components/admin/organisms/Modal";
 import { ConfirmDialog } from "@/components/admin/organisms/Modal";
 import FileUpload from "@/components/admin/atoms/FileUpload";
 import { EmptyState, ErrorState } from "@/components/admin/atoms/States";
 import { apiFetch } from "@/lib/admin/api";
 import { useToast } from "@/context/admin/ToastContext";
+
+const PER_PAGE = 10;
 
 const EMPTY_FORM = {
   name: "", subject: "", nip: "", role_title: "", education: "",
@@ -26,6 +29,8 @@ export default function GuruPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [meta, setMeta] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [editItem, setEditItem] = useState(null);
   const [form, setForm] = useState(EMPTY_FORM);
@@ -40,15 +45,23 @@ export default function GuruPage() {
     setError(null);
     try {
       const params = new URLSearchParams();
+      params.set("page", String(page));
+      params.set("per_page", String(PER_PAGE));
       if (search) params.set("search", search);
-      const res = await apiFetch(`/teachers?${params}`);
+      const res = await apiFetch("/teachers?" + params);
+      const responseMeta = res.meta ?? null;
+      if (responseMeta && responseMeta.current_page > responseMeta.last_page) {
+        setPage(responseMeta.last_page || 1);
+        return;
+      }
       setData(res.data ?? []);
+      setMeta(responseMeta);
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
-  }, [search]);
+  }, [page, search]);
 
   useEffect(() => {
     const t = setTimeout(load, 300);
@@ -186,7 +199,7 @@ export default function GuruPage() {
           id="guru-search"
           placeholder="Cari nama guru..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => { setSearch(e.target.value); setPage(1); }}
           className="max-w-xs"
         />
       </div>
@@ -200,6 +213,7 @@ export default function GuruPage() {
           keyExtractor={(r) => r.id}
           loading={loading}
           emptyState={<EmptyState title="Belum ada guru" description="Tambahkan data guru pertama." action={<Button onClick={openCreate} size="sm">+ Tambah Guru</Button>} />}
+          footer={meta && <Pagination meta={meta} onPageChange={setPage} />}
         />
       )}
 
