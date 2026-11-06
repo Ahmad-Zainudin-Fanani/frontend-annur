@@ -18,7 +18,7 @@ const devTeam = [
   {
     name: "Adit",
     role: "Galeri & Layanan Informasi",
-    scope: "Galeri Dokumentasi, Informasi Lomba, serta Kontak & Lokasi",
+    scope: "Galeri Dokumentasi, Ekstrakurikuler, serta Kontak & Lokasi",
   },
   {
     name: "Rapi",

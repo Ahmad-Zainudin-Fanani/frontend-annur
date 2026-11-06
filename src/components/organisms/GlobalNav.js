@@ -26,6 +26,7 @@ const navLinks = [
     children: [
       { href: "/profil/sejarah", label: "Sejarah", desc: "Awal pendirian & rekam jejak kepemimpinan" },
       { href: "/profil/kepala-wakil", label: "Kepala & Wakil Kepala", desc: "Pimpinan lembaga dan manajemen" },
+      { href: "/profil/lppm-annur", label: "LPPM ANNUR", desc: "Struktur yayasan dan pengurus" },
       { href: "/guru", label: "Dewan Guru", desc: "Profil tenaga pendidik" },
       { href: "/profil/tim-pengembang", label: "Tim Pengembang WEB", desc: "Tim perancang sistem web" },
     ],
@@ -33,7 +34,7 @@ const navLinks = [
   { href: "/kurikulum", label: "Kurikulum" },
   { href: "/prestasi", label: "Prestasi" },
   { href: "/galeri", label: "Galeri" },
-  { href: "/lomba", label: "Informasi Lomba" },
+  { href: "/ekstrakurikuler", label: "Ekstrakurikuler" },
   { href: "/kontak", label: "Kontak & Lokasi" },
 ];
 

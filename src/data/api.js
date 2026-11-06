@@ -12,17 +12,18 @@ export class ApiError extends Error {
 }
 
 async function request(endpoint, options = {}) {
+  const { includeMeta = false, ...fetchOptions } = options;
   let response;
 
   try {
     response = await fetch(`${API_URL}${endpoint}`, {
-      ...options,
+      ...fetchOptions,
       headers: {
         Accept: "application/json",
-        ...(options.body ? { "Content-Type": "application/json" } : {}),
-        ...options.headers,
+        ...(fetchOptions.body ? { "Content-Type": "application/json" } : {}),
+        ...fetchOptions.headers,
       },
-      cache: options.cache || "no-store",
+      cache: fetchOptions.cache || "no-store",
     });
   } catch (error) {
     throw new ApiError("Backend tidak dapat dihubungi. Coba lagi nanti.", 0, {
@@ -40,7 +41,9 @@ async function request(endpoint, options = {}) {
     );
   }
 
-  return result?.data;
+  return includeMeta
+    ? { data: result?.data, meta: result?.meta ?? null }
+    : result?.data;
 }
 
 function withQuery(params = {}) {
@@ -180,6 +183,49 @@ export function normalizeAchievement(achievement) {
   };
 }
 
+export function normalizeExtracurricular(activity) {
+  return {
+    ...activity,
+    description: activity.description || "",
+    images: (activity.images ?? [])
+      .map((image) => {
+        let url = image.url || image.path || "";
+
+        if (url) {
+          try {
+            const path = !image.url && !/^(https?:\/\/|\/)/.test(url)
+              ? `/storage/${url}`
+              : url;
+            url = new URL(path, `${new URL(API_URL).origin}/`).toString();
+          } catch {
+            url = "";
+          }
+        }
+
+        return { ...image, url, alt_text: image.alt_text || activity.title };
+      })
+      .filter((image) => image.url)
+      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0)),
+  };
+}
+
+export function normalizeOrganizationStructure(member) {
+  let image = "";
+
+  if (member.image) {
+    try {
+      const url = new URL(member.image, `${new URL(API_URL).origin}/`);
+      if (url.protocol === "http:" || url.protocol === "https:") {
+        image = url.toString();
+      }
+    } catch {
+      image = "";
+    }
+  }
+
+  return { ...member, image };
+}
+
 export function normalizeCompetition(competition) {
   return {
     ...competition,
@@ -277,6 +323,34 @@ export const publicApi = {
     (await request(`/competitions${withQuery(params)}`)).map(
       normalizeCompetition
     ),
+
+  extracurriculars: async (params = {}) => {
+    const { data, meta } = await request(
+      `/extracurriculars${withQuery({ ...params, status: "published" })}`,
+      { includeMeta: true }
+    );
+
+    return {
+      data: (data ?? [])
+        .filter((activity) => !activity.status || activity.status === "published")
+        .map(normalizeExtracurricular)
+        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0)),
+      meta,
+    };
+  },
+
+  organizationStructures: async () => {
+    const data = await request("/organization-structures?status=published");
+
+    if (!Array.isArray(data)) {
+      throw new ApiError("Format data pengurus yayasan tidak valid.", 502);
+    }
+
+    return data
+      .filter((member) => member.status === "published")
+      .map(normalizeOrganizationStructure)
+      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+  },
 
   curriculums: (params = {}) =>
     request(`/curriculums${withQuery(params)}`),

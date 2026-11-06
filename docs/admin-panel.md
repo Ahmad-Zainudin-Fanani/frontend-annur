@@ -7,6 +7,8 @@ Panduan ini menjadi acuan saat membuat panel admin yang memakai API Laravel An-N
 - Admin panel dan website company profile berjalan dalam satu aplikasi Next.js di root repo. Website berada di route group `src/app/(public)` dan admin di `src/app/(admin)`; nama route group tidak mengubah URL. Halaman admin tersedia di `/admin`, login di `/login`, dan website tetap memakai URL publik yang ada.
 - Jalankan satu aplikasi dari root repo dengan `npm run dev` (atau `npm run build` dan `npm run start`). Gunakan Next.js App Router dan Tailwind sesuai stack proyek. Terapkan Atomic Design; komponen khusus admin berada di `src/components/admin/`.
 - Kelompok halaman panel: dashboard, profil sekolah, guru, prestasi, lomba, pilar kurikulum, fase, slide hero, galeri, ekstrakurikuler, struktur yayasan, dan CRM kontak.
+- Struktur yayasan berada di `/admin/struktur-yayasan`. Rename folder halaman tidak mengubah kontrak backend: CRUD tetap melalui `/api/admin/organization-structures`.
+- Halaman publik `/profil/lppm-annur` mengambil pengurus dari `GET /api/organization-structures?status=published` tanpa token admin. Respons `data` berupa array dengan `id`, `name`, `position`, `image` (URL atau `null`), `parent_id`, `order`, dan `status`. Backend harus membatasi endpoint publik ke pengurus berstatus `published`; foto kosong ditampilkan sebagai keterangan, bukan foto dummy.
 - Gunakan label dan pesan validasi berbahasa Indonesia. Setiap halaman daftar/form memiliki loading, empty, error, dan success state.
 
 ## 2. Integrasi API dan Sesi

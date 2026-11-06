@@ -139,8 +139,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/lomba" className="hover:text-[#1d1d1f] transition-colors">
-                  Informasi Lomba Siswa
+                <Link href="/ekstrakurikuler" className="hover:text-[#1d1d1f] transition-colors">
+                  Ekstrakurikuler Siswa
                 </Link>
               </li>
             </ul>

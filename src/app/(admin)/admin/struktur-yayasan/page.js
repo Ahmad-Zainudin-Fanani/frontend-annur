@@ -26,7 +26,7 @@ const EMPTY_FORM = {
   status: "published",
 };
 
-export default function StrukturOrganisasiPage() {
+export default function StrukturYayasanPage() {
   const toast = useToast();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);

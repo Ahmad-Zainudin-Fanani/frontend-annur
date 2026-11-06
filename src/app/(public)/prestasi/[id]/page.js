@@ -266,10 +266,10 @@ export default async function AchievementDetailPage({ params }) {
                     Konsultasi Bakat &amp; PPDB
                   </Link>
                   <Link
-                    href="/lomba"
+                    href="/ekstrakurikuler"
                     className="inline-flex items-center gap-1.5 px-6 py-3 rounded-full bg-[#f5f5f7] border border-[#e0e0e0] text-[#1d1d1f] text-[15px] font-medium hover:bg-[#e8e8ed] transition-colors"
                   >
-                    <span>Informasi Lomba Siswa</span>
+                    <span>Ekstrakurikuler Siswa</span>
                     <ChevronRightIcon className="w-4 h-4 text-[#7a7a7a]" />
                   </Link>
                 </div>

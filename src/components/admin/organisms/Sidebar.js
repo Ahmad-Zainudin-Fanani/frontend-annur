@@ -100,7 +100,7 @@ const navItems = [
       },
       {
         label: "Struktur Yayasan",
-        href: "/admin/struktur-organisasi",
+        href: "/admin/struktur-yayasan",
         icon: (
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v5m0 0H6v5m6-5h6v5M6 13v3m12-3v3M4 19h4m8 0h4" />
