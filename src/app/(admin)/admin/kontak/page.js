@@ -120,7 +120,7 @@ export default function CRMPage() {
                         {c.created_at ? new Date(c.created_at).toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric" }) : "—"}
                       </td>
                       <td className="px-4 py-3">
-                        <Link href={`/admin/crm/${c.id}`} className="text-xs text-primary font-medium hover:underline">
+                        <Link href={`/admin/kontak/${c.id}`} className="text-xs text-primary font-medium hover:underline">
                           Detail →
                         </Link>
                       </td>

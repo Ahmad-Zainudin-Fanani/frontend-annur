@@ -240,16 +240,6 @@ export function normalizeOrganizationStructure(member) {
   return { ...member, image };
 }
 
-export function normalizeCompetition(competition) {
-  return {
-    ...competition,
-    date: competition.event_date || "",
-    desc: competition.description || "",
-    status: competition.display_status || "",
-    level: competition.level || "",
-  };
-}
-
 export function normalizeGallery(gallery) {
   return {
     ...gallery,
@@ -312,7 +302,6 @@ export function normalizeCurriculums(records = [], profile = null) {
 
 export const publicApi = {
   profile: async () => normalizeProfile(await request("/profile")),
-  stats: () => request("/stats"),
 
   teachers: async (params = {}) =>
     (await request(`/teachers${withQuery(params)}`)).map(normalizeTeacher),
@@ -332,11 +321,6 @@ export const publicApi = {
     const all = await publicApi.achievements();
     return all.find((item) => String(item.id) === String(id)) || null;
   },
-
-  competitions: async (params = {}) =>
-    (await request(`/competitions${withQuery(params)}`)).map(
-      normalizeCompetition
-    ),
 
   extracurriculars: async (params = {}) => {
     const { data, meta } = await request(

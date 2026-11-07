@@ -114,7 +114,7 @@ export default function CRMDetailPage({ params }) {
   if (loading) {
     return (
       <div>
-        <PageHeader title="Detail Kontak" breadcrumb={[{ label: "Admin", href: "/admin" }, { label: "CRM", href: "/admin/crm" }, { label: "Detail" }]} />
+        <PageHeader title="Detail Kontak" breadcrumb={[{ label: "Admin", href: "/admin" }, { label: "Kontak", href: "/admin/kontak" }, { label: "Detail" }]} />
         <div className="space-y-4">
           {Array.from({ length: 3 }).map((_, i) => (
             <div key={i} className="bg-white rounded-xl border border-divider p-5 animate-pulse space-y-3">
@@ -140,9 +140,9 @@ export default function CRMDetailPage({ params }) {
       <PageHeader
         title={contact?.name ?? "Detail Kontak"}
         description={contact?.email}
-        breadcrumb={[{ label: "Admin", href: "/admin" }, { label: "CRM", href: "/admin/crm" }, { label: contact?.name ?? "Detail" }]}
+        breadcrumb={[{ label: "Admin", href: "/admin" }, { label: "Kontak", href: "/admin/kontak" }, { label: contact?.name ?? "Detail" }]}
         actions={
-          <Button variant="secondary" size="sm" onClick={() => router.push("/admin/crm")}>
+          <Button variant="secondary" size="sm" onClick={() => router.push("/admin/kontak")}>
             ← Kembali
           </Button>
         }

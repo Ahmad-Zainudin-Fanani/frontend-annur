@@ -23,8 +23,8 @@ const crmStatuses = [
   { key: "closed", label: "Ditutup", color: "bg-[#8998ad]" },
 ];
 const shortcuts = [
-  { label: "Slide beranda", description: "Perbarui sorotan utama website", href: "/admin/hero-slides", icon: "image" },
-  { label: "Kurikulum", description: "Kelola pilar pembelajaran", href: "/admin/kurikulum", icon: "book" },
+  { label: "Slide beranda", description: "Perbarui sorotan utama website", href: "/admin/slide-hero", icon: "image" },
+  { label: "Kurikulum", description: "Kelola pilar pembelajaran", href: "/admin/pilar-kurikulum", icon: "book" },
   { label: "Galeri sekolah", description: "Bagikan cerita lewat kegiatan", href: "/admin/galeri", icon: "school" },
 ];
 
@@ -108,7 +108,7 @@ export default function DashboardPage() {
             <p className="mb-3 text-xs font-medium uppercase tracking-[0.18em] text-teal-100">Konten yang bermakna</p>
             <h2 id="school-cms-heading" className="max-w-md text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">Cerita baik An-Nur,<br />dimulai dari sini.</h2>
             <p className="mt-4 max-w-md text-sm leading-6 text-teal-50/90">Perbarui profil sekolah, tampilkan prestasi, dan bagikan momen belajar kepada orang tua.</p>
-            <Link href="/admin/profil" className={`mt-6 inline-flex min-h-11 items-center gap-3 rounded-full bg-white px-5 text-sm font-semibold text-[#176575] transition-colors hover:bg-teal-50 ${focusRing} focus-visible:outline-white`}>
+            <Link href="/admin/profil-sekolah" className={`mt-6 inline-flex min-h-11 items-center gap-3 rounded-full bg-white px-5 text-sm font-semibold text-[#176575] transition-colors hover:bg-teal-50 ${focusRing} focus-visible:outline-white`}>
               Kelola profil sekolah <Icon name="arrow" className="h-4 w-4" />
             </Link>
           </div>
@@ -155,7 +155,7 @@ export default function DashboardPage() {
                   <h2 id="crm-stats-heading" className="text-lg font-semibold tracking-tight">Ikhtisar komunikasi</h2>
                   <p className="mt-1 text-xs leading-5 text-slate-500">Setiap pesan adalah awal sebuah hubungan.</p>
                 </div>
-                <Link href="/admin/crm" className={`inline-flex min-h-9 items-center gap-2 rounded-lg text-xs font-semibold text-[#176575] hover:underline ${focusRing}`}>Buka CRM <Icon name="arrow" className="h-4 w-4" /></Link>
+                <Link href="/admin/kontak" className={`inline-flex min-h-9 items-center gap-2 rounded-lg text-xs font-semibold text-[#176575] hover:underline ${focusRing}`}>Buka CRM <Icon name="arrow" className="h-4 w-4" /></Link>
               </div>
               {loading ? <div className="mt-6"><SkeletonCard className="border-0" /></div> : (
                 <>
@@ -201,7 +201,7 @@ export default function DashboardPage() {
           <section aria-labelledby="recent-inquiries-heading" className={`${panel} overflow-hidden`}>
             <div className="flex flex-wrap items-center justify-between gap-3 p-6 sm:p-7">
               <div><h2 id="recent-inquiries-heading" className="text-lg font-semibold tracking-tight">Kontak terbaru</h2><p className="mt-1 text-xs leading-5 text-slate-500">Pesan masuk terbaru untuk ditinjau dan ditindaklanjuti.</p></div>
-              <Link href="/admin/crm" className={`inline-flex min-h-10 items-center gap-2 rounded-full border border-slate-200 px-4 text-xs font-semibold text-[#176575] hover:bg-slate-50 ${focusRing}`}>Lihat semua kontak <Icon name="arrow" className="h-4 w-4" /></Link>
+              <Link href="/admin/kontak" className={`inline-flex min-h-10 items-center gap-2 rounded-full border border-slate-200 px-4 text-xs font-semibold text-[#176575] hover:bg-slate-50 ${focusRing}`}>Lihat semua kontak <Icon name="arrow" className="h-4 w-4" /></Link>
             </div>
             {!loading && inquiries.length === 0 ? <EmptyState title="Belum ada kontak masuk" description="Pesan dari formulir kontak website akan tampil di sini." /> : (
               <div className={`overflow-x-auto ${focusRing}`} tabIndex={0} role="region" aria-label="Tabel kontak terbaru, gulir horizontal pada layar kecil">
@@ -219,7 +219,7 @@ export default function DashboardPage() {
                         <td className="max-w-64 break-words px-6 py-5 text-slate-500">{inq.email || "—"}</td>
                         <td className="whitespace-nowrap px-6 py-5"><Badge status={inq.crm_status} label={inq.crm_status ? undefined : "—"} /></td>
                         <td className="whitespace-nowrap px-6 py-5"><Badge status={inq.priority} label={inq.priority ? undefined : "—"} /></td>
-                        <td className="px-6 py-5"><Link href={`/admin/crm/${inq.id}`} aria-label={`Lihat detail kontak ${inq.name || "tanpa nama"}`} className={`inline-flex min-h-10 items-center gap-2 rounded-lg text-xs font-semibold text-[#176575] hover:underline ${focusRing}`}>Detail <Icon name="arrow" className="h-4 w-4" /></Link></td>
+                        <td className="px-6 py-5"><Link href={`/admin/kontak/${inq.id}`} aria-label={`Lihat detail kontak ${inq.name || "tanpa nama"}`} className={`inline-flex min-h-10 items-center gap-2 rounded-lg text-xs font-semibold text-[#176575] hover:underline ${focusRing}`}>Detail <Icon name="arrow" className="h-4 w-4" /></Link></td>
                       </tr>
                     ))}
                   </tbody>
