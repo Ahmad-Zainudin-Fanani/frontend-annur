@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
-import Badge from "@/components/atoms/Badge";
+
 import ApiState from "@/components/atoms/ApiState";
 
 export default function GalleryShowcase({ galleries = [], error = null }) {
@@ -30,17 +30,18 @@ export default function GalleryShowcase({ galleries = [], error = null }) {
           <ApiState error={error} />
         ) : (
           <>
-            <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
+            <div aria-label="Filter kategori galeri" className="mb-8 flex items-center justify-start gap-6 overflow-x-auto border-b border-[#e0e0e0] sm:mb-10 sm:gap-8">
               {categories.map((item) => (
                 <button
                   key={item}
                   type="button"
                   onClick={() => setCategory(item)}
                   aria-pressed={category === item}
-                  className={`px-4 py-2 rounded-full text-sm transition-colors ${
+                  aria-controls="gallery-results"
+                  className={`shrink-0 border-b-2 px-1 pt-2 pb-4 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#7a7a7a] ${
                     category === item
-                      ? "bg-[#1d1d1f] text-white"
-                      : "bg-white text-[#1d1d1f] border border-[#e0e0e0] hover:bg-[#fafafc]"
+                      ? "border-[#1d1d1f] font-semibold text-[#1d1d1f]"
+                      : "border-transparent font-medium text-[#7a7a7a] hover:border-[#d2d2d7] hover:text-[#1d1d1f]"
                   }`}
                 >
                   {item}
@@ -48,44 +49,47 @@ export default function GalleryShowcase({ galleries = [], error = null }) {
               ))}
             </div>
 
-            {filteredGalleries.length === 0 ? (
-              <ApiState empty />
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredGalleries.map((item) => (
-                  <article
-                    key={item.id}
-                    className="bg-white border border-[#e0e0e0] rounded-[18px] overflow-hidden hover:border-[#1d1d1f] transition-all"
-                  >
-                    <div className="relative h-56 bg-[#e8e8ed]">
-                      {item.imageUrl ? (
-                        <Image
-                          src={item.imageUrl}
-                          alt={item.title}
-                          fill
-                          unoptimized
-                          className="object-cover"
-                          sizes="(max-width: 768px) 100vw, 33vw"
-                        />
-                      ) : null}
-                    </div>
-                    <div className="p-5">
-                      <Badge variant="primary" size="sm" className="mb-2">
-                        {item.category}
-                      </Badge>
-                      <h2 className="text-base font-semibold text-[#1d1d1f] leading-snug">
-                        {item.title}
-                      </h2>
-                      {item.description ? (
-                        <p className="mt-2 text-sm text-[#7a7a7a]">
-                          {item.description}
-                        </p>
-                      ) : null}
-                    </div>
-                  </article>
-                ))}
-              </div>
-            )}
+            <div id="gallery-results" aria-live="polite">
+              {filteredGalleries.length === 0 ? (
+                <ApiState empty />
+              ) : (
+                <div className="grid grid-cols-1 gap-x-6 gap-y-10 md:grid-cols-2 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-14">
+                  {filteredGalleries.map((item) => (
+                    <article key={item.id} aria-labelledby={`gallery-title-${item.id}`} className="min-w-0">
+                      <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-2xl bg-[#f5f5f7] sm:rounded-[24px]">
+                        {item.imageUrl ? (
+                          <Image
+                            src={item.imageUrl}
+                            alt={item.title}
+                            fill
+                            unoptimized
+                            className="object-cover"
+                            sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, (max-width: 1280px) 33vw, 384px"
+                          />
+                        ) : (
+                          <span className="text-sm text-[#7a7a7a]">Foto belum tersedia</span>
+                        )}
+                      </div>
+                      <div className="pt-5 sm:pt-6">
+                        {item.category ? (
+                          <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#7a7a7a]">
+                            {item.category}
+                          </p>
+                        ) : null}
+                        <h2 id={`gallery-title-${item.id}`} className="break-words text-xl font-semibold leading-snug tracking-tight text-[#1d1d1f] sm:text-2xl">
+                          {item.title}
+                        </h2>
+                        {item.description ? (
+                          <p className="mt-3 whitespace-pre-line break-words text-sm leading-relaxed text-[#7a7a7a] sm:text-base">
+                            {item.description}
+                          </p>
+                        ) : null}
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              )}
+            </div>
           </>
         )}
       </div>

@@ -1,6 +1,7 @@
 "use client";
-import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
+import React, { createContext, useContext, useState, useCallback, useLayoutEffect } from "react";
 import { useRouter } from "next/navigation";
+import { setAdminCacheScope } from "@/lib/admin/api";
 
 const AuthContext = createContext(null);
 
@@ -9,24 +10,37 @@ export function AuthProvider({ children, initialUser }) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  // Establish scope before descendant effects can start CMS requests.
+  useLayoutEffect(() => {
+    setAdminCacheScope(user?.id ?? null);
+  }, [user]);
+
   const login = useCallback(async (email, password) => {
+    setAdminCacheScope(null, { broadcast: true });
     setLoading(true);
-    const res = await fetch("/api/session/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-    const data = await res.json();
-    setLoading(false);
-    if (data.success) {
-      setUser(data.user);
-      router.replace("/admin");
+    try {
+      const res = await fetch("/api/session/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+        cache: "no-store",
+      });
+      const data = await res.json();
+      if (data.success) {
+        setAdminCacheScope(data.user?.id ?? null, { broadcast: true });
+        setUser(data.user);
+        router.replace("/admin");
+      }
+      return data;
+    } finally {
+      setLoading(false);
     }
-    return data;
   }, [router]);
 
   const logout = useCallback(async () => {
-    await fetch("/api/session/logout", { method: "POST" });
+    setAdminCacheScope(null, { broadcast: true });
+    await fetch("/api/session/logout", { method: "POST", cache: "no-store" });
+    setAdminCacheScope(null, { broadcast: true });
     setUser(null);
     router.replace("/login");
   }, [router]);

@@ -10,15 +10,16 @@ export default function DataTable({
   className = "",
 }) {
   return (
-    <div className={`bg-white rounded-xl border border-divider overflow-hidden ${className}`}>
-      <div className="overflow-x-auto">
+    <div className={`admin-panel overflow-hidden ${className}`}>
+      <div className="overflow-x-auto p-1.5 sm:p-2.5">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-canvas-secondary border-b border-divider">
+            <tr className="border-b border-divider bg-surface-muted/80">
               {columns.map((col) => (
                 <th
                   key={col.key}
-                  className={`px-4 py-3 text-left text-xs font-semibold text-ink-muted uppercase tracking-wide whitespace-nowrap ${col.headerClassName ?? ""}`}
+                  scope="col"
+                                    className={`px-4 py-3.5 text-left text-[10px] font-semibold text-ink-soft uppercase tracking-[0.08em] whitespace-nowrap first:rounded-tl-xl last:rounded-tr-xl ${col.headerClassName ?? ""}`}
                 >
                   {col.header}
                 </th>
@@ -51,7 +52,7 @@ export default function DataTable({
                   {columns.map((col) => (
                     <td
                       key={col.key}
-                      className={`px-4 py-3 text-ink ${col.className ?? ""}`}
+                      className={`px-4 py-4 text-ink ${col.className ?? ""}`}
                     >
                       {col.render ? col.render(row) : row[col.key]}
                     </td>

@@ -31,7 +31,6 @@ const SECTIONS = [
   { id: "location", title: "Alamat & Lokasi", description: "Alamat sekolah dan peta untuk pengunjung.", fields: ["address", "maps_embed_url"], icon: "M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0ZM15 10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" },
   { id: "social", title: "Media Sosial", description: "Tautan akun resmi dan publikasi sekolah.", fields: ["facebook_url", "instagram_url", "youtube_url"], icon: "M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM3 12h18M12 3a18 18 0 0 1 0 18 18 18 0 0 1 0-18Z" },
   { id: "principal", title: "Kepala Sekolah", description: "Profil, foto, dan sambutan kepala sekolah.", fields: ["principal_name", "principal_title", "principal_message", "principal_education", "principal_experience", "principal_bio", "principal_photo"], icon: "M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0ZM4 21v-2a8 8 0 0 1 16 0v2" },
-  { id: "public", title: "Bagian Publik", description: "Konfigurasi konten terstruktur untuk website publik.", fields: ["public_sections"], icon: "m8 7-5 5 5 5m8-10 5 5-5 5m-3-14-2 18" },
 ];
 
 function normalizeForm(data = {}) {
@@ -42,59 +41,15 @@ function normalizeForm(data = {}) {
   return next;
 }
 
-function hasContent(section, data) {
-  return section.fields.some((field) => {
-    if (field === "public_sections") {
-      try { return Object.keys(JSON.parse(data[field] || "{}") ?? {}).length > 0; } catch { return false; }
-    }
-    return Array.isArray(data[field]) ? data[field].some((value) => value.trim()) : String(data[field] || "").trim();
-  });
+function fieldHasContent(field, data) {
+  if (field === "public_sections") {
+    try { return Object.keys(JSON.parse(data[field] || "{}") ?? {}).length > 0; } catch { return false; }
+  }
+  return Array.isArray(data[field]) ? data[field].some((value) => value.trim()) : Boolean(String(data[field] ?? "").trim());
 }
 
-function SummaryValue({ label, value }) {
-  return (
-    <div className="min-w-0">
-      <dt className="text-xs text-ink-soft">{label}</dt>
-      <dd className={`mt-1 break-words text-sm ${value ? "text-ink" : "text-ink-faint"}`}>{value || "Belum diisi"}</dd>
-    </div>
-  );
-}
-
-function SectionSummary({ section, data }) {
-  if (section.id === "identity") {
-    return (
-      <div className="space-y-4">
-        <div><p className="font-semibold text-ink break-words">{data.name || "Nama sekolah belum diisi"}</p><p className="mt-1 line-clamp-2 text-sm text-ink-soft">{data.tagline || "Tagline belum diisi"}</p></div>
-        <p className="line-clamp-3 text-sm leading-relaxed text-ink-muted">{data.description || "Deskripsi sekolah belum ditambahkan."}</p>
-        <dl className="grid grid-cols-2 gap-4 border-t border-divider pt-4"><SummaryValue label="Akreditasi" value={data.accreditation} /><SummaryValue label="NPSN" value={data.npsn} /></dl>
-      </div>
-    );
-  }
-  if (section.id === "vision-mission") {
-    return (
-      <div className="divide-y divide-divider">
-        {[{ field: "vision", title: data.vision_title || "Visi" }, { field: "missions", title: data.mission_title || "Misi" }].map(({ field, title }) => {
-          const items = data[field].filter((item) => item.trim());
-          return (
-            <div key={field} className="py-4 first:pt-0 last:pb-0">
-              <p className="mb-2 text-sm font-medium text-ink">{title}</p>
-              {items.length ? <p className="line-clamp-2 break-words text-sm leading-relaxed text-ink-muted">{items[0]}</p> : <p className="text-sm text-ink-faint">Belum ada poin {field === "vision" ? "visi" : "misi"}.</p>}
-              <p className="mt-2 text-xs text-ink-soft">{items.length} poin tersimpan{items.length > 1 ? ` · ${items.length - 1} poin lainnya di editor` : ""}</p>
-            </div>
-          );
-        })}
-      </div>
-    );
-  }
-  if (section.id === "contact") return <dl className="space-y-4"><SummaryValue label="Telepon" value={data.phone} /><SummaryValue label="WhatsApp" value={data.whatsapp} /><SummaryValue label="Email" value={data.email} /></dl>;
-  if (section.id === "location") return <dl className="space-y-4"><SummaryValue label="Alamat sekolah" value={data.address} /><SummaryValue label="Google Maps" value={data.maps_embed_url ? "Peta lokasi sudah dikonfigurasi" : ""} /></dl>;
-  if (section.id === "social") return <dl className="space-y-4"><SummaryValue label="Facebook" value={data.facebook_url} /><SummaryValue label="Instagram" value={data.instagram_url} /><SummaryValue label="YouTube" value={data.youtube_url} /></dl>;
-  if (section.id === "principal") {
-    return <div className="space-y-4"><div className="flex items-center gap-4"><div className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-divider bg-surface-muted">{data.principal_photo ? <Image src={data.principal_photo} alt={data.principal_name || "Kepala sekolah"} fill unoptimized sizes="64px" className="object-cover object-top" /> : <span className="text-xs text-ink-faint">Tanpa foto</span>}</div><dl className="min-w-0 space-y-1"><SummaryValue label={data.principal_title || "Kepala sekolah"} value={data.principal_name} /></dl></div><p className="line-clamp-3 text-sm leading-relaxed text-ink-muted">{data.principal_message || "Sambutan kepala sekolah belum ditambahkan."}</p><dl className="grid gap-4 sm:grid-cols-2"><SummaryValue label="Pendidikan" value={data.principal_education} /><SummaryValue label="Pengalaman" value={data.principal_experience} /></dl><p className="line-clamp-2 text-sm text-ink-soft">{data.principal_bio || "Biografi belum diisi."}</p></div>;
-  }
-  let keys = [];
-  try { keys = Object.keys(JSON.parse(data.public_sections || "{}") ?? {}); } catch { /* Invalid JSON is reported in the editor. */ }
-  return <div><span className="inline-flex rounded-md border border-divider bg-surface-muted px-2 py-1 text-xs font-medium text-ink-muted">Editor lanjutan · JSON</span><p className="mt-4 text-sm text-ink-muted">{keys.length ? `${keys.length} kelompok konten dikonfigurasi.` : "Belum ada konfigurasi konten tambahan."}</p>{keys.length > 0 && <p className="mt-2 line-clamp-3 break-words text-xs leading-relaxed text-ink-soft">{keys.join(" · ")}</p>}<p className="mt-4 text-xs leading-relaxed text-ink-soft">Kelola struktur konten tanpa mengubah bagian profil lainnya.</p></div>;
+function ProfileIcon({ path, className = "h-5 w-5" }) {
+  return <svg aria-hidden="true" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d={path} /></svg>;
 }
 
 function ArrayField({ label, name, values, onChange, errors, onRemove }) {
@@ -310,7 +265,15 @@ export default function ProfilPage() {
     onChange: (event) => handleChange(field, event.target.value),
     error: formErrors[field]?.[0],
   });
-  const filledSections = SECTIONS.filter((item) => hasContent(item, profile)).length;
+  const sectionProgress = SECTIONS.map((item) => ({
+    ...item,
+    filled: item.fields.filter((field) => fieldHasContent(field, profile)).length,
+  }));
+  const totalFields = sectionProgress.reduce((total, item) => total + item.fields.length, 0);
+  const filledFields = sectionProgress.reduce((total, item) => total + item.filled, 0);
+  const completion = Math.round((filledFields / totalFields) * 100);
+  const completeSections = sectionProgress.filter((item) => item.filled === item.fields.length).length;
+  const nextSection = sectionProgress.find((item) => item.filled < item.fields.length);
   const teacherOptions = [
     { value: "", label: "Belum dipilih" },
     ...(form.principal_name && !principalOptions.some((option) => option.value === form.principal_name) ? [{ value: form.principal_name, label: form.principal_name }] : []),
@@ -320,28 +283,85 @@ export default function ProfilPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader title="Profil Sekolah" description="Kelola informasi sekolah per bagian, tanpa formulir yang menumpuk." breadcrumb={[{ label: "Admin", href: "/admin" }, { label: "Profil Sekolah" }]} />
+      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+        <PageHeader title="Profil Sekolah" description="Satu ruang untuk merawat cerita dan identitas sekolah." breadcrumb={[{ label: "Admin", href: "/admin" }, { label: "Profil Sekolah" }]} />
+        <Link href="/" target="_blank" rel="noopener noreferrer" className="inline-flex shrink-0 items-center justify-center gap-2 self-start rounded-xl border border-divider bg-white px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary sm:self-auto">Lihat website <span className="sr-only">(tab baru)</span><ProfileIcon path="M14 3h7v7m0-7L10 14M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5" className="h-4 w-4" /></Link>
+      </div>
 
       {error ? <ErrorState message={error} onRetry={load} /> : loading ? (
-        <div role="status" aria-label="Memuat profil sekolah"><span className="sr-only">Memuat profil sekolah…</span><div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">{SECTIONS.map((item) => <SkeletonCard key={item.id} className="min-h-60" />)}</div></div>
+        <div role="status" aria-label="Memuat profil sekolah" className="space-y-6"><span className="sr-only">Memuat profil sekolah…</span><div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]"><SkeletonCard className="min-h-80" /><SkeletonCard className="min-h-80" /></div><SkeletonCard className="min-h-96" /></div>
       ) : (
         <>
-          <section className="flex flex-col justify-between gap-5 rounded-2xl border border-divider bg-white p-5 shadow-sm sm:p-6 lg:flex-row lg:items-center">
-            <div className="min-w-0"><p className="text-xs font-medium uppercase tracking-wider text-ink-soft">Pusat pengelolaan profil</p><h2 className="mt-2 break-words text-xl font-semibold tracking-tight text-ink">{profile.name || "Lengkapi profil sekolah Anda"}</h2><p className="mt-1 text-sm text-ink-soft">{filledSections} dari {SECTIONS.length} bagian memiliki konten. Pilih bagian untuk mengelolanya.</p></div>
-            <Link href="/" target="_blank" rel="noopener noreferrer" className="inline-flex shrink-0 items-center justify-center gap-2 self-start rounded-lg border border-divider bg-white px-4 py-2.5 text-sm font-medium text-ink shadow-sm transition-colors hover:bg-surface-muted focus:outline-none focus:ring-2 focus:ring-primary">Lihat Website <span aria-hidden="true">↗</span></Link>
-          </section>
-          <div className="grid items-stretch gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {SECTIONS.map((item) => {
-              const filled = hasContent(item, profile);
-              return (
-                <section key={item.id} aria-labelledby={`section-${item.id}`} className="flex min-w-0 flex-col rounded-2xl border border-divider bg-white shadow-sm transition-shadow hover:shadow-md">
-                  <div className="flex items-start justify-between gap-3 px-5 pt-5 sm:px-6 sm:pt-6"><span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-surface-muted text-ink-muted"><svg aria-hidden="true" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={item.icon} /></svg></span><span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${filled ? "bg-success-light text-success" : "bg-surface-muted text-ink-soft"}`}><span className={`h-1.5 w-1.5 rounded-full ${filled ? "bg-success" : "bg-ink-faint"}`} />{filled ? "Terisi" : "Belum diisi"}</span></div>
-                  <div className="px-5 pt-4 sm:px-6"><h2 id={`section-${item.id}`} className="text-base font-semibold text-ink">{item.title}</h2><p className="mt-1 text-xs leading-relaxed text-ink-soft">{item.description}</p></div>
-                  <div className="flex-1 px-5 py-5 sm:px-6"><SectionSummary section={item} data={profile} /></div>
-                  <div className="flex items-center justify-between gap-3 rounded-b-2xl border-t border-divider bg-surface-muted/30 px-5 py-3.5 sm:px-6"><span className="text-xs text-ink-soft">{item.id === "public" ? "Pengaturan lanjutan" : "Konten website"}</span><Button variant="secondary" size="sm" onClick={() => openEditor(item.id)} aria-label={`${filled ? "Edit" : "Lengkapi"} ${item.title}`}>{filled ? "Edit Bagian" : "Lengkapi"}<span aria-hidden="true">→</span></Button></div>
-                </section>
-              );
-            })}
+          <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
+            <section aria-labelledby="school-identity" className="relative isolate flex min-w-0 flex-col overflow-hidden rounded-3xl border border-divider bg-white">
+              <div aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 -z-10 h-80 w-80 rounded-full border-[48px] border-primary/5" />
+              <div className="flex-1 p-6 sm:p-8">
+                <div className="mb-7 flex items-center gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary-light text-primary"><ProfileIcon path={SECTIONS[0].icon} /></span><p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">Identitas sekolah</p></div>
+                <h2 id="school-identity" className="max-w-2xl break-words text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-4xl">{profile.name || "Cerita sekolah dimulai di sini."}</h2>
+                <p className="mt-3 break-words text-base font-medium text-primary">{profile.tagline || "Tambahkan tagline yang mencerminkan semangat sekolah."}</p>
+                <p className="mt-4 line-clamp-3 max-w-2xl whitespace-pre-line break-words text-sm leading-7 text-ink-soft">{profile.description || "Perkenalkan karakter, nilai, dan perjalanan sekolah. Identitas yang lengkap membantu orang tua mengenal sekolah lebih dekat."}</p>
+              </div>
+              <div className="flex flex-wrap items-center justify-between gap-5 border-t border-divider bg-surface-muted/30 px-6 py-5 sm:px-8">
+                <dl className="flex flex-wrap gap-x-8 gap-y-4"><div><dt className="text-[10px] font-medium uppercase tracking-widest text-ink-soft">Akreditasi</dt><dd className="mt-1 max-w-48 break-words text-sm font-semibold text-ink">{profile.accreditation || "Belum diisi"}</dd></div><div className="border-l border-divider pl-8"><dt className="text-[10px] font-medium uppercase tracking-widest text-ink-soft">NPSN</dt><dd className="mt-1 max-w-48 break-words text-sm font-semibold text-ink">{profile.npsn || "Belum diisi"}</dd></div></dl>
+                <Button variant="secondary" size="sm" onClick={() => openEditor("identity")} className="rounded-xl">Edit identitas<ProfileIcon path="m16 4 4 4M4 20l4-1L20 7a2.8 2.8 0 0 0-4-4L4 15l-1 6Z" className="h-4 w-4" /></Button>
+              </div>
+            </section>
+
+            <section aria-labelledby="completion-title" className="flex flex-col rounded-3xl border border-divider bg-white p-6 sm:p-7">
+              <div className="flex items-center justify-between gap-3"><h2 id="completion-title" className="text-sm font-semibold text-ink">Kelengkapan profil</h2><ProfileIcon path="M9 12l2 2 4-4M12 3l8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3Z" className="h-5 w-5 text-primary" /></div>
+              <div className="relative mx-auto my-6 flex h-36 w-36 items-center justify-center" role="progressbar" aria-label="Kolom profil terisi" aria-valuemin={0} aria-valuemax={totalFields} aria-valuenow={filledFields} aria-valuetext={`${filledFields} dari ${totalFields} kolom terisi, ${completion} persen`}>
+                <svg aria-hidden="true" className="absolute inset-0 h-full w-full -rotate-90" viewBox="0 0 120 120" fill="none"><circle cx="60" cy="60" r="52" className="stroke-surface-muted" strokeWidth="7" /><circle cx="60" cy="60" r="52" className="stroke-primary" strokeWidth="7" strokeLinecap="round" pathLength="100" strokeDasharray={`${completion} 100`} /></svg>
+                <div aria-hidden="true" className="text-center"><p className="text-3xl font-semibold tracking-tight text-ink">{completion}<span className="text-lg text-ink-soft">%</span></p><p className="mt-1 text-[11px] text-ink-soft">kolom terisi</p></div>
+              </div>
+              <p className="text-center text-sm font-medium text-ink">{filledFields} dari {totalFields} kolom terisi</p>
+              <p className="mt-2 text-center text-xs leading-relaxed text-ink-soft">Berdasarkan data tersimpan, termasuk kolom opsional. Bukan status publikasi.</p>
+              <div className="mt-5 flex items-center justify-between border-t border-divider pt-4 text-xs"><span className="text-ink-soft">Bagian terisi penuh</span><span className="font-semibold tabular-nums text-primary">{completeSections} / {SECTIONS.length}</span></div>
+            </section>
+          </div>
+
+          <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
+            <section aria-labelledby="workspace-title" className="min-w-0 overflow-hidden rounded-3xl border border-divider bg-white">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-divider px-6 py-6 sm:px-8"><div><p className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">Ruang kerja konten</p><h2 id="workspace-title" className="text-lg font-semibold tracking-tight text-ink">Kelola setiap bagian</h2><p className="mt-1 text-xs leading-relaxed text-ink-soft">Pilih bagian untuk meninjau dan memperbarui informasi.</p></div><span className="rounded-full bg-surface-muted px-3 py-1 text-xs font-medium text-ink-muted">{SECTIONS.length} bagian</span></div>
+              <ul className="divide-y divide-divider">
+                {sectionProgress.map((item, index) => {
+                  const complete = item.filled === item.fields.length;
+                  const status = complete ? "Terisi penuh" : item.filled ? "Sebagian terisi" : "Belum diisi";
+                  return (
+                    <li key={item.id}>
+                      <button type="button" onClick={() => openEditor(item.id)} aria-label={`Edit ${item.title}, ${status.toLowerCase()}, ${item.filled} dari ${item.fields.length} kolom terisi`} className="group flex w-full cursor-pointer items-center gap-3 px-5 py-5 text-left transition-colors hover:bg-primary/5 focus-visible:relative focus-visible:z-10 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary sm:gap-4 sm:px-8">
+                        <span aria-hidden="true" className="hidden w-4 shrink-0 text-[10px] font-medium tabular-nums text-ink-faint sm:block">{String(index + 1).padStart(2, "0")}</span>
+                        <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${complete ? "bg-primary-light text-primary" : "bg-surface-muted text-ink-soft"}`}><ProfileIcon path={item.icon} /></span>
+                        <span className="min-w-0 flex-1"><span className="block text-sm font-semibold text-ink group-hover:text-primary">{item.title}</span><span className="mt-1 hidden text-xs leading-relaxed text-ink-soft sm:block">{item.description}</span><span className="mt-1 block text-xs text-ink-soft sm:hidden">{item.filled}/{item.fields.length} kolom · {status}</span></span>
+                        <span className="hidden w-28 shrink-0 space-y-2 sm:block"><span className="flex items-center justify-between gap-2 text-[11px]"><span className={complete ? "font-medium text-primary" : "text-ink-soft"}>{status}</span><span className="tabular-nums text-ink-soft">{item.filled}/{item.fields.length}</span></span><span className="block h-1 overflow-hidden rounded-full bg-surface-muted"><span className="block h-full rounded-full bg-primary" style={{ width: `${(item.filled / item.fields.length) * 100}%` }} /></span></span>
+                        <span className="ml-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-ink-faint transition-colors group-hover:bg-primary-light group-hover:text-primary"><ProfileIcon path="m9 5 7 7-7 7" className="h-4 w-4" /></span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+              <div className="flex items-start gap-2 border-t border-divider bg-surface-muted/30 px-6 py-4 text-xs leading-relaxed text-ink-soft sm:px-8"><ProfileIcon path="M12 8h.01M12 11v5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" className="h-4 w-4 shrink-0" /><p>Kolom opsional boleh tetap kosong. Setiap bagian disimpan melalui editornya.</p></div>
+            </section>
+
+            <aside aria-label="Sorotan profil" className="space-y-6">
+              <section aria-labelledby="principal-title" className="overflow-hidden rounded-3xl border border-divider bg-white">
+                <div className="relative h-20 overflow-hidden bg-primary-light"><svg aria-hidden="true" className="absolute right-0 top-0 h-full w-full text-primary/10" viewBox="0 0 320 80" fill="none"><circle cx="270" cy="0" r="75" stroke="currentColor" strokeWidth="24" /><path d="M0 65c80-70 140 70 240-20s120-20 140 0" stroke="currentColor" strokeWidth="2" /></svg></div>
+                <div className="px-6 pb-6">
+                  <div className="relative -mt-8 mb-4 flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border-4 border-white bg-surface-muted text-primary">{profile.principal_photo ? <Image src={profile.principal_photo} alt={profile.principal_name || "Kepala sekolah"} fill unoptimized sizes="64px" className="object-cover object-top" /> : <ProfileIcon path={SECTIONS[5].icon} className="h-7 w-7" />}</div>
+                  <h2 id="principal-title" className="text-[10px] font-semibold uppercase tracking-[0.16em] text-ink-soft">{profile.principal_title || "Kepala sekolah"}</h2>
+                  <p className="mt-2 break-words text-lg font-semibold tracking-tight text-ink">{profile.principal_name || "Belum dipilih"}</p>
+                  <p className="mt-3 line-clamp-3 whitespace-pre-line break-words text-sm leading-6 text-ink-soft">{profile.principal_message || "Hadirkan sapaan hangat dari kepala sekolah untuk keluarga dan calon peserta didik."}</p>
+                  <button type="button" onClick={() => openEditor("principal")} className="mt-5 inline-flex cursor-pointer items-center gap-2 rounded-lg text-xs font-semibold text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary">Kelola profil & sambutan<ProfileIcon path="M4 12h16m-6-6 6 6-6 6" className="h-4 w-4" /></button>
+                </div>
+              </section>
+
+              <section aria-labelledby="next-step-title" className="rounded-3xl border border-primary/10 bg-primary-light p-6">
+                <span className="mb-4 flex h-9 w-9 items-center justify-center rounded-xl bg-white text-primary"><ProfileIcon path={nextSection ? "m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3ZM20 17v4m-2-2h4" : "m5 12 4 4L19 6"} className="h-5 w-5" /></span>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-primary">{nextSection ? "Langkah berikutnya" : "Semua kolom terisi"}</p>
+                <h2 id="next-step-title" className="mt-2 text-base font-semibold text-ink">{nextSection ? `Lengkapi ${nextSection.title.toLowerCase()}` : "Profil siap ditinjau kembali"}</h2>
+                <p className="mt-2 text-xs leading-6 text-ink-muted">{nextSection ? `${nextSection.fields.length - nextSection.filled} kolom belum terisi di bagian ini. Tambahkan informasi yang relevan untuk sekolah.` : "Seluruh bagian telah terisi. Tinjau website untuk memastikan informasi tetap akurat dan terkini."}</p>
+                <Button variant="primary" size="sm" className="mt-5 w-full rounded-xl" onClick={() => openEditor(nextSection?.id || "identity")}>{nextSection ? "Lanjutkan mengisi" : "Tinjau identitas"}<ProfileIcon path="M4 12h16m-6-6 6 6-6 6" className="h-4 w-4" /></Button>
+              </section>
+            </aside>
           </div>
         </>
       )}
@@ -350,7 +370,11 @@ export default function ProfilPage() {
         <div inert={hasConfirmation ? true : undefined} aria-hidden={hasConfirmation ? true : undefined}>
           <Modal open={Boolean(section)} onClose={closeEditor} title={section ? `Edit ${section.title}` : "Edit Profil"} size={["vision-mission", "principal", "public"].includes(activeSection) ? "xl" : "lg"} hideClose={saving || uploading}>
             {section && <form onSubmit={handleSave} noValidate className="space-y-6">
-              <div className="flex flex-col justify-between gap-2 border-b border-divider pb-4 sm:flex-row sm:items-start"><p className="max-w-xl text-sm leading-relaxed text-ink-soft">{section.description}</p><span role="status" className={`shrink-0 text-xs font-medium ${dirty ? "text-warning" : "text-ink-faint"}`}>{uploading ? "Mengunggah foto…" : dirty ? "Perubahan belum disimpan" : "Sesuai data tersimpan"}</span></div>
+              <div className="flex flex-col gap-4 rounded-2xl border border-primary/10 bg-primary-light/50 p-4 sm:flex-row sm:items-center">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-primary"><ProfileIcon path={section.icon} /></span>
+                <div className="min-w-0 flex-1"><p className="text-sm leading-relaxed text-ink-muted">{section.description}</p><p className="mt-1 text-xs text-ink-soft">Perbarui informasi, lalu simpan untuk menerapkannya.</p></div>
+                <span role="status" className={`self-start rounded-full bg-white px-3 py-1.5 text-[11px] font-medium sm:max-w-36 sm:self-center ${dirty ? "text-warning" : "text-ink-soft"}`}>{uploading ? "Mengunggah foto…" : dirty ? "Perubahan belum disimpan" : "Sesuai data tersimpan"}</span>
+              </div>
               {saveError && <div role="alert" className="rounded-xl border border-danger/20 bg-danger-light px-4 py-3 text-sm text-danger"><p className="font-medium">Perubahan belum tersimpan</p><p className="mt-1">{saveError}</p></div>}
               <fieldset disabled={saving || uploading} className="min-w-0 space-y-5 disabled:opacity-70">
                 {activeSection === "identity" && <><Input label="Nama Sekolah" {...fieldProps("name")} required /><Input label="Tagline" {...fieldProps("tagline")} hint="Kalimat singkat yang mewakili identitas sekolah." /><Textarea label="Deskripsi Sekolah" {...fieldProps("description")} rows={6} /><div className="grid gap-5 sm:grid-cols-2"><Input label="Akreditasi" {...fieldProps("accreditation")} /><Input label="NPSN" {...fieldProps("npsn")} /></div></>}

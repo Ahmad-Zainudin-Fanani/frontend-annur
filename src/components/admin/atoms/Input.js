@@ -33,8 +33,8 @@ export default function Input({
         required={required}
         aria-invalid={!!error}
         aria-describedby={error ? `${id}-error` : hint ? `${id}-hint` : undefined}
-        className={`w-full rounded-lg border px-3 py-2.5 text-sm transition-colors
-          bg-white text-ink placeholder:text-ink-faint
+        className={`w-full rounded-xl border px-3.5 py-3 text-sm transition-colors
+          bg-surface-muted/60 text-ink placeholder:text-ink-faint focus:bg-white
           focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
           disabled:bg-surface-muted disabled:cursor-not-allowed
           ${error ? "border-danger focus:ring-danger/30 focus:border-danger" : "border-divider"}

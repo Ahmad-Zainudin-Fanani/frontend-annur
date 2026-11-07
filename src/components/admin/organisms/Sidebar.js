@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/admin/AuthContext";
 
-const navItems = [
+export const navItems = [
   {
     label: "Dashboard",
     href: "/admin",
@@ -128,26 +128,32 @@ const navItems = [
   },
 ];
 
-function NavLink({ href, icon, label, active }) {
+function NavLink({ href, icon, label, active, collapsed, onNavigate }) {
   return (
     <Link
       href={href}
-      className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150
+      onClick={onNavigate}
+      aria-current={active ? "page" : undefined}
+      aria-label={collapsed ? label : undefined}
+      title={collapsed ? label : undefined}
+      className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] font-medium transition-colors ${collapsed ? "justify-center" : ""}
         ${active
-          ? "bg-sidebar-active text-sidebar-text-active shadow-sm"
-          : "text-sidebar-text hover:bg-sidebar-hover hover:text-white"
+          ? "bg-sidebar-active text-sidebar-text-active"
+          : "text-sidebar-text hover:bg-sidebar-hover hover:text-primary"
         }`}
     >
-      <span className={active ? "text-white" : "text-sidebar-text"}>{icon}</span>
-      {label}
+      <span className="shrink-0" aria-hidden="true">{icon}</span>
+      {!collapsed && <span className="flex-1">{label}</span>}
+      {active && !collapsed && <span className="h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" />}
     </Link>
   );
 }
 
-export default function Sidebar({ collapsed = false }) {
+export default function Sidebar({ collapsed = false, onNavigate }) {
   const pathname = usePathname();
   const { user, logout } = useAuth();
   const [loggingOut, setLoggingOut] = useState(false);
+  const [logoutError, setLogoutError] = useState(null);
 
   const isActive = (href) => {
     if (href === "/admin") return pathname === "/admin";
@@ -156,47 +162,54 @@ export default function Sidebar({ collapsed = false }) {
 
   const handleLogout = async () => {
     setLoggingOut(true);
-    await logout();
+    setLogoutError(null);
+    try {
+      await logout();
+    } catch {
+      setLogoutError("Gagal keluar. Silakan coba lagi.");
+    } finally {
+      setLoggingOut(false);
+    }
   };
 
   return (
     <aside
-      className={`bg-sidebar flex flex-col h-full sidebar-transition ${
-        collapsed ? "w-16" : "w-64"
-      }`}
+      aria-label="Navigasi administrasi"
+      className="flex h-full w-full flex-col bg-sidebar"
     >
       {/* Logo */}
-      <div className="flex items-center gap-3 px-4 py-5 border-b border-white/10">
-        <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shrink-0">
-          <span className="text-white text-xs font-bold">AN</span>
-        </div>
+      <Link href="/admin" onClick={onNavigate} aria-label="An-Nur — Dashboard" className={`flex min-h-24 items-center gap-3 px-5 ${collapsed ? "justify-center px-2" : ""}`}>
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-primary text-sm font-bold tracking-tight text-white shadow-[0_6px_16px_-6px_#17657580]">an<span className="text-[#b7e3d6]">.</span></span>
         {!collapsed && (
-          <div className="min-w-0">
-            <p className="text-white text-sm font-semibold leading-tight truncate">SD Plus An-Nur</p>
-            <p className="text-sidebar-text text-xs truncate">Admin Panel</p>
-          </div>
+          <span className="min-w-0">
+            <span className="block truncate text-[17px] font-bold tracking-tight text-ink">An-Nur<span className="text-primary">.</span></span>
+            <span className="mt-0.5 block text-[10px] font-medium tracking-[0.12em] text-ink-soft uppercase">School workspace</span>
+          </span>
         )}
-      </div>
+      </Link>
 
       {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-1">
-        {navItems.map((item, i) => {
+      <nav aria-label="Menu utama" className="min-h-0 flex-1 space-y-1 overflow-y-auto px-3 pb-4">
+        {!collapsed && <p className="px-3 pb-3 text-[10px] font-medium tracking-[0.14em] text-ink-soft uppercase">Ruang kerja</p>}
+        {navItems.map((item) => {
           if (item.href) {
             return (
               <NavLink
                 key={item.href}
                 href={item.href}
                 icon={item.icon}
-                label={collapsed ? "" : item.label}
+                label={item.label}
                 active={isActive(item.href)}
+                collapsed={collapsed}
+                onNavigate={onNavigate}
               />
             );
           }
           if (item.group) {
             return (
-              <div key={item.group} className="pt-2">
+              <div key={item.group} className="pt-5">
                 {!collapsed && (
-                  <p className="text-xs font-semibold text-sidebar-text/50 uppercase tracking-wider px-3 mb-1">
+                  <p className="mb-2 px-3 text-[10px] font-medium tracking-[0.14em] text-ink-soft uppercase">
                     {item.group}
                   </p>
                 )}
@@ -206,8 +219,10 @@ export default function Sidebar({ collapsed = false }) {
                       key={sub.href}
                       href={sub.href}
                       icon={sub.icon}
-                      label={collapsed ? "" : sub.label}
+                      label={sub.label}
                       active={isActive(sub.href)}
+                      collapsed={collapsed}
+                      onNavigate={onNavigate}
                     />
                   ))}
                 </div>
@@ -219,7 +234,7 @@ export default function Sidebar({ collapsed = false }) {
       </nav>
 
       {/* User section */}
-      <div className="border-t border-white/10 p-3">
+      <div className="mx-3 border-t border-divider py-3">
         <div className={`flex items-center gap-3 px-2 py-2 rounded-lg ${collapsed ? "justify-center" : ""}`}>
           <div className="w-8 h-8 rounded-full bg-primary-light flex items-center justify-center shrink-0">
             <span className="text-primary text-xs font-bold">
@@ -228,7 +243,7 @@ export default function Sidebar({ collapsed = false }) {
           </div>
           {!collapsed && (
             <div className="min-w-0 flex-1">
-              <p className="text-white text-xs font-medium truncate">{user?.name ?? "Admin"}</p>
+              <p className="text-ink text-xs font-semibold truncate">{user?.name ?? "Admin"}</p>
               <p className="text-sidebar-text text-xs truncate">{user?.email ?? ""}</p>
             </div>
           )}
@@ -236,7 +251,9 @@ export default function Sidebar({ collapsed = false }) {
         <button
           onClick={handleLogout}
           disabled={loggingOut}
-          className={`w-full mt-1 flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-sidebar-text hover:bg-sidebar-hover hover:text-white transition-colors ${
+          aria-label={collapsed ? "Keluar dari akun" : undefined}
+          title={collapsed ? "Keluar dari akun" : undefined}
+          className={`w-full mt-1 flex items-center gap-3 px-3 py-2 rounded-xl text-xs text-sidebar-text hover:bg-danger-light hover:text-danger transition-colors disabled:opacity-50 ${
             collapsed ? "justify-center" : ""
           }`}
         >
@@ -245,6 +262,7 @@ export default function Sidebar({ collapsed = false }) {
           </svg>
           {!collapsed && <span>{loggingOut ? "Keluar..." : "Keluar"}</span>}
         </button>
+        {logoutError && <p role="alert" className="mt-2 px-2 text-xs text-danger">{logoutError}</p>}
       </div>
     </aside>
   );

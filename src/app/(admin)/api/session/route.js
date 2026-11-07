@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { privateJson } from "@/lib/cache-policy";
 
 const API_BASE_URL = process.env.API_BASE_URL;
 
@@ -11,7 +11,7 @@ export async function GET() {
     const token = cookieStore.get("admin_session")?.value;
 
     if (!token) {
-      return NextResponse.json({ success: false, user: null }, { status: 401 });
+      return privateJson({ success: false, user: null }, { status: 401 });
     }
 
     const res = await fetch(`${API_BASE_URL}/me`, {
@@ -21,7 +21,7 @@ export async function GET() {
 
     if (!res.ok) {
       cookieStore.delete("admin_session");
-      return NextResponse.json({ success: false, user: null }, { status: 401 });
+      return privateJson({ success: false, user: null }, { status: 401 });
     }
 
     const data = await res.json();
@@ -30,10 +30,10 @@ export async function GET() {
     // Re-verify role
     if (user?.role !== "admin") {
       cookieStore.delete("admin_session");
-      return NextResponse.json({ success: false, user: null }, { status: 403 });
+      return privateJson({ success: false, user: null }, { status: 403 });
     }
 
-    return NextResponse.json({
+    return privateJson({
       success: true,
       user: {
         id: user.id,
@@ -44,6 +44,6 @@ export async function GET() {
     });
   } catch (err) {
     console.error("[BFF session]", err);
-    return NextResponse.json({ success: false, user: null }, { status: 500 });
+    return privateJson({ success: false, user: null }, { status: 500 });
   }
 }

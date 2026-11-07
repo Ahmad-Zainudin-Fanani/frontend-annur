@@ -1,5 +1,3 @@
-import React from "react";
-import Badge from "@/components/atoms/Badge";
 import { CheckIcon, BookOpenIcon, BuildingIcon, AwardIcon, SparklesIcon } from "@/components/atoms/Icons";
 
 const iconMap = {
@@ -10,89 +8,70 @@ const iconMap = {
 };
 
 export default function CurriculumCard({ pillar, level }) {
-  if (pillar) {
-    const IconComponent = iconMap[pillar.iconName] || BookOpenIcon;
-    return (
-      <div className="bg-white border border-[#e0e0e0] rounded-[18px] p-6 lg:p-8 flex flex-col justify-between transition-all hover:border-[#1d1d1f]">
-        <div>
-          <div className="w-12 h-12 rounded-xl bg-[#f5f5f7] border border-[#e0e0e0] flex items-center justify-center text-[#333333] mb-5">
-            <IconComponent className="w-6 h-6" />
-          </div>
+  const data = pillar || level;
+  if (!data) return null;
 
-          <Badge variant="primary" size="sm" className="mb-3">
-            {pillar.category}
-          </Badge>
+  const IconComponent = pillar ? iconMap[pillar.iconName] || BookOpenIcon : null;
+  const category = pillar ? pillar.category : level.level;
+  const description = pillar ? pillar.summary : level.description;
+  const points = (pillar ? pillar.points : level.keyCompetencies) ?? [];
 
-          <h3 className="text-[21px] font-semibold leading-[1.2] tracking-[0.231px] text-[#1d1d1f] mb-3">
-            {pillar.title}
-          </h3>
-
-          <p className="text-[17px] text-[#7a7a7a] leading-[1.47] tracking-[-0.374px] mb-6">
-            {pillar.summary}
+  return (
+    <article className="flex min-w-0 flex-col rounded-[24px] border border-[#e0e0e0] bg-white p-6 sm:p-8">
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+        {IconComponent ? (
+          <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#f5f5f7] text-[#333333]">
+            <IconComponent className="h-5 w-5" />
+          </span>
+        ) : null}
+        {category ? (
+          <p className={`text-xs font-semibold uppercase tracking-[0.12em] text-[#7a7a7a] ${pillar ? "ml-auto text-right" : ""}`}>
+            {category}
           </p>
+        ) : null}
+        {level?.ageRange ? <span className="text-xs text-[#7a7a7a]">{level.ageRange}</span> : null}
+      </div>
 
+      <h3 className="break-words text-xl font-semibold leading-snug tracking-tight text-[#1d1d1f] sm:text-2xl">
+        {data.title}
+      </h3>
+      {level?.focus ? (
+        <p className="mt-3 text-sm font-medium leading-relaxed text-[#333333]">Fokus: {level.focus}</p>
+      ) : null}
+      {description ? (
+        <p className="mt-4 whitespace-pre-line break-words text-base leading-relaxed text-[#7a7a7a]">
+          {description}
+        </p>
+      ) : null}
+
+      {points.length > 0 ? (
+        <div className="mt-6 border-t border-[#e0e0e0] pt-5">
+          {level ? (
+            <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.1em] text-[#7a7a7a]">
+              Kompetensi Utama Lulusan
+            </h4>
+          ) : null}
           <ul className="space-y-3">
-            {pillar.points.map((pt, idx) => (
-              <li key={idx} className="flex items-start gap-2.5 text-[14px] text-[#333333] leading-[1.4]">
-                <span className="text-[#333333] mt-0.5 shrink-0">
-                  <CheckIcon className="w-4 h-4" />
+            {points.map((point, index) => (
+              <li key={index} className="flex items-start gap-3 text-sm leading-relaxed text-[#333333]">
+                <span aria-hidden="true" className="mt-1 shrink-0 text-[#7a7a7a]">
+                  <CheckIcon className="h-4 w-4" />
                 </span>
-                <span>{pt}</span>
+                <span className="min-w-0 break-words">{point}</span>
               </li>
             ))}
           </ul>
         </div>
-      </div>
-    );
-  }
+      ) : null}
 
-  if (level) {
-    return (
-      <div className="bg-white border border-[#e0e0e0] rounded-[18px] p-6 lg:p-8 flex flex-col justify-between transition-all hover:border-[#333333]">
-        <div>
-          <div className="flex items-center justify-between gap-2 mb-3">
-            <Badge variant="dark" size="sm">
-              {level.level}
-            </Badge>
-            <span className="text-[12px] text-[#7a7a7a]">{level.ageRange}</span>
-          </div>
-
-          <h3 className="text-[21px] font-semibold leading-[1.2] text-[#1d1d1f] mb-2">
-            {level.title}
-          </h3>
-
-          <p className="text-[14px] font-medium text-[#333333] mb-3">
-            Fokus: {level.focus}
-          </p>
-
-          <p className="text-[15px] text-[#7a7a7a] leading-relaxed mb-6">
-            {level.description}
-          </p>
-
-          <div className="border-t border-[#f0f0f0] pt-4 mb-4">
-            <h4 className="text-[13px] font-semibold text-[#1d1d1f] uppercase tracking-wider mb-2.5">
-              Kompetensi Utama Lulusan:
-            </h4>
-            <ul className="space-y-2">
-              {level.keyCompetencies.map((comp, idx) => (
-                <li key={idx} className="flex items-start gap-2 text-[13px] text-[#333333] leading-[1.35]">
-                  <span className="text-[#333333] mt-0.5 shrink-0">
-                    <CheckIcon className="w-3.5 h-3.5" />
-                  </span>
-                  <span>{comp}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+      {level?.hours ? (
+        <div className="mt-auto pt-6">
+          <dl className="flex flex-wrap items-center justify-between gap-2 border-t border-[#e0e0e0] pt-4 text-xs">
+            <dt className="text-[#7a7a7a]">Waktu Belajar</dt>
+            <dd className="font-medium text-[#1d1d1f]">{level.hours}</dd>
+          </dl>
         </div>
-
-        <div className="pt-3 border-t border-[#f0f0f0] text-[12px] text-[#7a7a7a] flex items-center justify-between">
-          <span>Waktu Belajar:</span>
-          <span className="font-medium text-[#1d1d1f]">{level.hours}</span>
-        </div>
-      </div>
-    );
-  }
-
-  return null;
+      ) : null}
+    </article>
+  );
 }

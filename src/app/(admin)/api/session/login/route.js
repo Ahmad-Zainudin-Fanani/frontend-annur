@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { privateJson } from "@/lib/cache-policy";
 
 const API_BASE_URL = process.env.API_BASE_URL;
 
@@ -9,7 +9,7 @@ export async function POST(request) {
     const { email, password } = body;
 
     if (!email || !password) {
-      return NextResponse.json(
+      return privateJson(
         { success: false, message: "Email dan password wajib diisi." },
         { status: 422 }
       );
@@ -20,12 +20,13 @@ export async function POST(request) {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify({ email, password }),
+      cache: "no-store",
     });
 
     const laravelData = await laravelRes.json();
 
     if (!laravelRes.ok) {
-      return NextResponse.json(
+      return privateJson(
         { success: false, message: laravelData.message || "Login gagal." },
         { status: laravelRes.status }
       );
@@ -40,7 +41,7 @@ export async function POST(request) {
         method: "POST",
         headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
       });
-      return NextResponse.json(
+      return privateJson(
         { success: false, message: "Akses ditolak. Akun ini bukan admin." },
         { status: 403 }
       );
@@ -51,7 +52,7 @@ export async function POST(request) {
         method: "POST",
         headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
       });
-      return NextResponse.json(
+      return privateJson(
         { success: false, message: "Email belum diverifikasi. Periksa kotak masuk Anda." },
         { status: 403 }
       );
@@ -66,7 +67,7 @@ export async function POST(request) {
       secure: process.env.NODE_ENV === "production",
     });
 
-    return NextResponse.json({
+    return privateJson({
       success: true,
       user: {
         id: user.id,
@@ -77,7 +78,7 @@ export async function POST(request) {
     });
   } catch (err) {
     console.error("[BFF login]", err);
-    return NextResponse.json(
+    return privateJson(
       { success: false, message: "Terjadi kesalahan server. Coba lagi nanti." },
       { status: 500 }
     );

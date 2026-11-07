@@ -11,6 +11,23 @@ Panduan ini menjadi acuan saat membuat panel admin yang memakai API Laravel An-N
 - Halaman publik `/profil/lppm-annur` mengambil pengurus dari `GET /api/organization-structures?status=published` tanpa token admin. Respons `data` berupa array dengan `id`, `name`, `position`, `image` (URL atau `null`), `parent_id`, `order`, dan `status`. Backend harus membatasi endpoint publik ke pengurus berstatus `published`; foto kosong ditampilkan sebagai keterangan, bukan foto dummy.
 - Gunakan label dan pesan validasi berbahasa Indonesia. Setiap halaman daftar/form memiliki loading, empty, error, dan success state.
 
+### Tampilan dan navigasi admin
+
+Panel menggunakan sidebar terang, kanvas abu kebiruan, dan aksen teal. Token
+visual berada di `src/app/(admin)/globals.css`; tombol, input, tabel, serta modal
+menggunakan komponen bersama di `src/components/admin/`. Website publik tetap
+memakai layout dan sistem gayanya sendiri.
+
+Header menyediakan pencarian menu dan tautan website publik. Sidebar dapat
+diciutkan di desktop; pada ponsel, menu memakai drawer dengan dukungan Escape,
+pembatasan fokus keyboard, dan pemulihan fokus ke tombol pembuka.
+
+Dashboard menampilkan jumlah konten dan distribusi status CRM dari API, bukan
+angka atau tren simulasi. Profil sekolah menggunakan ringkasan identitas,
+progres kolom tersimpan (termasuk opsional, bukan status publikasi), serta daftar
+bagian yang membuka editor. Penyimpanan, validasi server, pemilihan kepala
+sekolah, unggahan foto, dan konfirmasi perubahan tetap mengikuti kontrak API.
+
 ## 2. Integrasi API dan Sesi
 
 Backend API menggunakan prefix `/api`. Untuk development, base URL umumnya `http://127.0.0.1:8000/api`. Simpan base URL dalam environment server-only aplikasi root, misalnya `API_BASE_URL`; jangan memakai prefix `NEXT_PUBLIC_`.
@@ -35,6 +52,44 @@ Simpan token Laravel dalam cookie `HttpOnly`, `SameSite=Lax`, `Path=/`, dan `Sec
 Jika login mengembalikan role selain `admin` atau `email_verified: false`, jangan buat cookie sesi; cabut token melalui endpoint logout. BFF memeriksa sesi sebelum meneruskan request admin. Penolakan di frontend/BFF tidak menggantikan otorisasi backend.
 
 Login Laravel menghapus personal access token lama milik user sebelum membuat token baru. Konfigurasi token saat ini tidak memiliki expiry; perilaku ini perlu diperhitungkan jika satu akun dipakai dari beberapa perangkat.
+
+### Cache CMS dan invalidasi publik
+
+`apiFetch` menyimpan GET profil, guru, prestasi, lomba, pilar kurikulum, fase,
+slide hero, galeri, ekstrakurikuler (termasuk daftar gambar), dan struktur yayasan
+selama 30 detik hanya di memori browser, terpisah berdasarkan identitas sesi.
+Tidak ada penyimpanan persisten atau cache server bersama untuk data admin.
+CRM, dashboard, sesi, upload, respons gagal, dan mutasi tidak dicache.
+Gunakan `apiFetch(path, { cache: false })` untuk membaca CMS tanpa cache memori;
+request dengan `signal` juga melewati cache/deduplikasi.
+
+Mutasi sukses membersihkan seluruh cache CMS lokal dan mengirim invalidasi
+antartab melalui `BroadcastChannel` jika tersedia. Perubahan sesi mengosongkan
+cache; tab penerima menonaktifkan cache sampai identitas lokal divalidasi lagi
+(misalnya dengan memuat ulang halaman). Perpindahan fokus/visibilitas tab juga
+membersihkan cache. Respons yang sedang berjalan tidak boleh mengisi cache
+setelah invalidasi atau membawa data dari sesi sebelumnya.
+
+BFF menginvalidasi Next.js Data Cache publik (TTL 60 detik) setelah mutasi sukses:
+
+| Resource admin | Tag resource publik |
+|---|---|
+| Profil atau guru | `profile`, `teachers`, `stats` |
+| Prestasi, lomba, atau galeri | Resource bersangkutan dan `stats` |
+| Pilar kurikulum atau fase | Resource bersangkutan dan `curriculums` |
+| Slide hero | `hero-slides` |
+| Ekstrakurikuler/gambar | `extracurriculars`, `extracurricular-images` |
+| Struktur yayasan | `organization-structures` |
+
+GET profil admin juga menginvalidasi `profile` dan `stats` karena backend dapat
+menginisialisasi profil pada pembacaan pertama. Tag di kode memakai prefix
+`public:` dan `{ expire: 0 }` agar pembacaan berikutnya menunggu data baru.
+CRM dan upload tidak menginvalidasi tag publik. Seluruh respons JSON BFF
+admin/sesi, termasuk penolakan akses, memakai `private, no-store`.
+
+Perubahan melalui klien lain mengandalkan TTL; tab publik tidak diperbarui
+secara realtime. `NEXT_PUBLIC_API_URL` dan `API_BASE_URL` harus menunjuk ke
+backend yang sama. Detail batasan cache berlapis ada di `README.md`.
 
 ## 3. Endpoint dan Form
 

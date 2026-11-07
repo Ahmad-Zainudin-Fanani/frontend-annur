@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { revalidateTag } from "next/cache";
+import { getPublicInvalidationTags, privateJson } from "@/lib/cache-policy";
 
 const API_BASE_URL = process.env.API_BASE_URL;
 
@@ -52,7 +53,7 @@ async function proxy(request, context, method) {
   if (!API_BASE_URL) {
     console.error("[BFF proxy] API_BASE_URL belum dikonfigurasi.");
 
-    return NextResponse.json(
+    return privateJson(
       {
         success: false,
         message: "Konfigurasi API server belum tersedia.",
@@ -70,13 +71,13 @@ async function proxy(request, context, method) {
         const originHost = new URL(origin).host;
 
         if (originHost !== host) {
-          return NextResponse.json(
+          return privateJson(
             { success: false, message: "Forbidden" },
             { status: 403 }
           );
         }
       } catch {
-        return NextResponse.json(
+        return privateJson(
           { success: false, message: "Invalid origin" },
           { status: 403 }
         );
@@ -88,7 +89,7 @@ async function proxy(request, context, method) {
   const token = cookieStore.get("admin_session")?.value;
 
   if (!token) {
-    return NextResponse.json(
+    return privateJson(
       { success: false, message: "Sesi tidak valid." },
       { status: 401 }
     );
@@ -105,7 +106,7 @@ async function proxy(request, context, method) {
       pathSegments,
     });
 
-    return NextResponse.json(
+    return privateJson(
       { success: false, message: "Endpoint tidak diizinkan." },
       { status: 403 }
     );
@@ -158,7 +159,18 @@ async function proxy(request, context, method) {
       });
     }
 
-    return NextResponse.json(responseData ?? {}, {
+    if (response.ok && responseData?.success !== false) {
+      try {
+        for (const tag of getPublicInvalidationTags(pathSegments[0], method)) {
+          revalidateTag(tag, { expire: 0 });
+        }
+      } catch (error) {
+        // Do not report an already committed backend mutation as a failed save.
+        console.error("[BFF proxy] Invalidasi cache publik gagal:", { apiPath, error });
+      }
+    }
+
+    return privateJson(responseData ?? {}, {
       status: response.status,
     });
   } catch (error) {
@@ -168,7 +180,7 @@ async function proxy(request, context, method) {
       error,
     });
 
-    return NextResponse.json(
+    return privateJson(
       {
         success: false,
         message: "Tidak dapat terhubung ke server. Coba lagi.",

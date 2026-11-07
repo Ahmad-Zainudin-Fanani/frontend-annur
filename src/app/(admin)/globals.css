@@ -1,56 +1,41 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand Colors */
-  --color-primary: #1a56db;
-  --color-primary-hover: #1e429f;
-  --color-primary-light: #ebf5ff;
-  --color-primary-muted: #3f83f8;
-
-  /* Neutral */
-  --color-ink: #111928;
-  --color-ink-muted: #4b5563;
-  --color-ink-soft: #6b7280;
-  --color-ink-faint: #9ca3af;
-  --color-divider: #e5e7eb;
-  --color-divider-soft: #f3f4f6;
-
-  /* Surface */
+  --color-primary: #176575;
+  --color-primary-hover: #104d59;
+  --color-primary-light: #e5f0ef;
+  --color-primary-muted: #42818b;
+  --color-ink: #18283e;
+  --color-ink-muted: #536477;
+  --color-ink-soft: #738293;
+  --color-ink-faint: #99a6b2;
+  --color-divider: #e4ebee;
+  --color-divider-soft: #f1f5f6;
   --color-canvas: #ffffff;
-  --color-canvas-secondary: #f9fafb;
+  --color-canvas-secondary: #edf3f5;
   --color-surface: #ffffff;
-  --color-surface-muted: #f3f4f6;
-
-  /* Sidebar */
-  --color-sidebar: #1e2a3a;
-  --color-sidebar-hover: #243447;
-  --color-sidebar-active: #1a56db;
-  --color-sidebar-text: #cbd5e1;
-  --color-sidebar-text-active: #ffffff;
-
-  /* Status */
-  --color-success: #057a55;
-  --color-success-light: #def7ec;
-  --color-warning: #c27803;
-  --color-warning-light: #fdf6b2;
-  --color-danger: #e02424;
-  --color-danger-light: #fde8e8;
-  --color-info: #1c64f2;
-  --color-info-light: #e1effe;
-
-  /* Typography */
-  --font-inter: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --color-surface-muted: #f2f6f7;
+  --color-sidebar: #ffffff;
+  --color-sidebar-hover: #f0f6f6;
+  --color-sidebar-active: #e2eeee;
+  --color-sidebar-text: #64798b;
+  --color-sidebar-text-active: #176575;
+  --color-success: #26745b;
+  --color-success-light: #e5f3eb;
+  --color-warning: #996623;
+  --color-warning-light: #fbf0dd;
+  --color-danger: #bf4c53;
+  --color-danger-light: #fbecee;
+  --color-info: #3a749b;
+  --color-info-light: #e8f1f8;
 }
 
 :root {
-  --background: #f9fafb;
-  --foreground: #111928;
+  --background: #e4ecef;
+  --foreground: #18283e;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
+html { scroll-behavior: smooth; }
 body {
   background: var(--background);
   color: var(--foreground);
@@ -58,82 +43,38 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+button:not(:disabled), summary { cursor: pointer; }
+button, a, input, textarea, select { -webkit-tap-highlight-color: transparent; }
+::selection { background: #cce3e1; color: #104d59; }
+*:focus-visible { outline: 2px solid #176575; outline-offset: 3px; }
 
-/* Sidebar transition */
-.sidebar-transition {
-  transition: width 250ms cubic-bezier(0.4, 0, 0.2, 1),
-    transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
-}
+@layer components {
 
-/* Table row hover */
-.table-row-hover {
-  transition: background-color 120ms ease;
-}
-
-/* Focus ring */
-*:focus-visible {
-  outline: 2px solid #1a56db;
-  outline-offset: 2px;
+.admin-icon-button { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 13px; background: #ffffff; color: #537783; border: 1px solid #ffffff; transition: color 150ms, background 150ms; }
+.admin-icon-button:hover { background: #e0edee; color: #176575; }
+.admin-panel { border: 1px solid #ffffff; border-radius: 24px; background: #ffffff; box-shadow: 0 4px 20px -16px #213d5133; }
 }
 
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: #d1d5db;
-  border-radius: 99px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
-}
+.sidebar-transition { transition: width 250ms cubic-bezier(0.4, 0, 0.2, 1), transform 250ms cubic-bezier(0.4, 0, 0.2, 1); }
+.table-row-hover { transition: background-color 150ms ease; }
 
-/* Skeleton animation */
-@keyframes skeleton-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-.skeleton {
-  animation: skeleton-pulse 1.5s ease-in-out infinite;
-  background: #e5e7eb;
-  border-radius: 6px;
-}
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #c4d2d8; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #95adb8; }
 
-/* Fade in */
-@keyframes fade-in {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.animate-fade-in {
-  animation: fade-in 200ms ease forwards;
-}
+@keyframes skeleton-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.skeleton { animation: skeleton-pulse 1.5s ease-in-out infinite; background: #e4ecef; border-radius: 8px; }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+.animate-fade-in { animation: fade-in 250ms ease both; }
+@keyframes slide-in-right { from { transform: translateX(110%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+.animate-slide-in { animation: slide-in-right 250ms cubic-bezier(0.4, 0, 0.2, 1); }
+@keyframes backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+.animate-backdrop { animation: backdrop-in 150ms ease; }
+@keyframes modal-in { from { opacity: 0; transform: scale(0.98) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+.animate-modal { animation: modal-in 200ms cubic-bezier(0.4, 0, 0.2, 1); }
 
-/* Toast slide */
-@keyframes slide-in-right {
-  from { transform: translateX(110%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
-.animate-slide-in {
-  animation: slide-in-right 250ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Modal backdrop */
-@keyframes backdrop-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-.animate-backdrop {
-  animation: backdrop-in 150ms ease;
-}
-
-@keyframes modal-in {
-  from { opacity: 0; transform: scale(0.96) translateY(8px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
-}
-.animate-modal {
-  animation: modal-in 200ms cubic-bezier(0.4, 0, 0.2, 1);
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }

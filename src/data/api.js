@@ -1,3 +1,5 @@
+import { getPublicCachePolicy, getPublicFetchOptions } from "@/lib/cache-policy";
+
 const API_URL = (
   process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api"
 ).replace(/\/$/, "");
@@ -13,17 +15,29 @@ export class ApiError extends Error {
 
 async function request(endpoint, options = {}) {
   const { includeMeta = false, ...fetchOptions } = options;
+  const method = (fetchOptions.method || "GET").toUpperCase();
+  const policy = method === "GET" ? getPublicCachePolicy(endpoint) : null;
+  const browser = typeof window !== "undefined";
+  const canCache = policy && !fetchOptions.cache && !fetchOptions.signal;
+  const cacheOptions = canCache && !browser
+    ? getPublicFetchOptions(policy)
+    : { cache: fetchOptions.cache || "no-store" };
+  const url = browser && policy
+    ? `/api/public${policy.endpoint}`
+    : `${API_URL}${policy?.endpoint || endpoint}`;
   let response;
 
   try {
-    response = await fetch(`${API_URL}${endpoint}`, {
+    response = await fetch(url, {
+      ...cacheOptions,
       ...fetchOptions,
       headers: {
         Accept: "application/json",
         ...(fetchOptions.body ? { "Content-Type": "application/json" } : {}),
         ...fetchOptions.headers,
       },
-      cache: fetchOptions.cache || "no-store",
+      ...(policy ? { credentials: "omit" } : {}),
+      cache: browser ? "no-store" : cacheOptions.cache,
     });
   } catch (error) {
     throw new ApiError("Backend tidak dapat dihubungi. Coba lagi nanti.", 0, {
