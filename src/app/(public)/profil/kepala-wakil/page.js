@@ -78,11 +78,11 @@ export default async function KepalaWakilPage() {
           </div>
 
           {/* FEATURED: KEPALA SEKOLAH (Prominent Apple-style Hero Showcase) */}
-          <div className="bg-[#fafafc] border border-[#e0e0e0] rounded-[24px] p-6 sm:p-10 lg:p-12 apple-product-shadow">
+          <div className="bg-[#fafafc] border border-[#e0e0e0] rounded-3xl p-6 sm:p-10 lg:p-12 apple-product-shadow">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
               {/* Photo Column */}
               <div className="lg:col-span-5 flex justify-center">
-                <div className="relative w-full max-w-[340px] aspect-[3/4] rounded-[20px] overflow-hidden border border-[#e0e0e0] bg-[#1d1d1f] apple-product-shadow shadow-md">
+                <div className="relative w-full max-w-85 aspect-3/4 rounded-[20px] overflow-hidden border border-[#e0e0e0] bg-[#1d1d1f] apple-product-shadow shadow-md">
                   {principalPhoto ? (
                     <Image
                       src={principalPhoto}
@@ -94,7 +94,7 @@ export default async function KepalaWakilPage() {
                       priority
                     />
                   ) : null}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
                   <div className="absolute top-4 left-4 z-10">
                     <span className="px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md text-white text-[12px] font-medium tracking-wide border border-white/20">
                       Kepala Sekolah
@@ -195,7 +195,7 @@ export default async function KepalaWakilPage() {
                   >
                     <div>
                       {/* Portrait Header */}
-                      <div className="relative aspect-[4/3] bg-gradient-to-br from-[#f5f5f7] via-[#f0f0f2] to-[#e8e8ed] flex items-center justify-center border-b border-[#e0e0e0] overflow-hidden">
+                      <div className="relative aspect-4/3 bg-linear-to-br from-[#f5f5f7] via-[#f0f0f2] to-[#e8e8ed] flex items-center justify-center border-b border-[#e0e0e0] overflow-hidden">
                         <div className="w-24 h-24 rounded-full bg-white shadow-md border border-[#e0e0e0] flex items-center justify-center text-[#333333] font-bold text-2xl">
                           {vp.name
                             .replace(/^(Ustadz|Ustadzah|Dr\.|Dra\.|H\.|Hj\.)\s+/gi, "")

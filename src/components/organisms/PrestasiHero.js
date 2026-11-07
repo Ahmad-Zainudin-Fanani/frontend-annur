@@ -86,7 +86,7 @@ export default function PrestasiHero() {
   return (
     <section
       ref={containerRef}
-      className="w-full pt-12 pb-8 sm:pt-16 sm:pb-10 px-4 sm:px-6 lg:px-8 bg-white border-b border-[#e0e0e0] select-none"
+      className="w-full pt-12 pb-8 sm:pt-16 sm:pb-10 px-4 sm:px-6 lg:px-8 bg-white select-none"
     >
       <div className="max-w-4xl mx-auto flex flex-col items-center text-center">
         {/* Eyebrow Editorial — Bersih tanpa pill badge berbingkai */}
