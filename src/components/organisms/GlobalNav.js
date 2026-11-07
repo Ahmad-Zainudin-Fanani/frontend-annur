@@ -27,7 +27,7 @@ const navLinks = [
       { href: "/profil/sejarah", label: "Sejarah", desc: "Awal pendirian & rekam jejak kepemimpinan" },
       { href: "/profil/kepala-wakil", label: "Kepala & Wakil Kepala", desc: "Pimpinan lembaga dan manajemen" },
       { href: "/profil/lppm-annur", label: "LPPM ANNUR", desc: "Struktur yayasan dan pengurus" },
-      { href: "/guru", label: "Dewan Guru", desc: "Profil tenaga pendidik" },
+      { href: "/profil/guru", label: "Dewan Guru", desc: "Profil tenaga pendidik" },
       { href: "/profil/tim-pengembang", label: "Tim Pengembang WEB", desc: "Tim perancang sistem web" },
     ],
   },
@@ -286,8 +286,7 @@ export default function GlobalNav() {
     wasOpenRef.current = profileOpen;
   }, [profileOpen]);
 
-  const isProfilActive =
-    pathname.startsWith("/profil") || pathname.startsWith("/guru");
+  const isProfilActive = pathname.startsWith("/profil");
 
   return (
     <>

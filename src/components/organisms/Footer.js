@@ -100,22 +100,22 @@ export default function Footer() {
             </h4>
             <ul className="text-[13px] sm:text-[14px] space-y-2.5 text-[#555555]">
               <li>
-                <Link href="/guru" className="hover:text-[#1d1d1f] transition-colors">
+                <Link href="/profil/guru" className="hover:text-[#1d1d1f] transition-colors">
                   Direktori Guru
                 </Link>
               </li>
               <li>
-                <Link href="/guru" className="hover:text-[#1d1d1f] transition-colors">
+                <Link href="/profil/guru" className="hover:text-[#1d1d1f] transition-colors">
                   Guru Kelas 1 s.d 6
                 </Link>
               </li>
               <li>
-                <Link href="/guru" className="hover:text-[#1d1d1f] transition-colors">
+                <Link href="/profil/guru" className="hover:text-[#1d1d1f] transition-colors">
                   Guru PAI &amp; Tahfidz
                 </Link>
               </li>
               <li>
-                <Link href="/guru" className="hover:text-[#1d1d1f] transition-colors">
+                <Link href="/profil/guru" className="hover:text-[#1d1d1f] transition-colors">
                   Guru Bidang Studi
                 </Link>
               </li>

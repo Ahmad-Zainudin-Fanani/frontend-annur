@@ -1,6 +1,5 @@
 import React from "react";
 import MainLayout from "@/components/templates/MainLayout";
-import HeroTile from "@/components/organisms/HeroTile";
 import CTASection from "@/components/organisms/CTASection";
 import Badge from "@/components/atoms/Badge";
 import Button from "@/components/atoms/Button";
@@ -61,19 +60,7 @@ export default async function KepalaWakilPage() {
 
   return (
     <MainLayout>
-      {/* Hero Tile */}
-      <HeroTile
-        variant="parchment"
-        eyebrow="Kepemimpinan Penuh Amanah"
-        title="Kepala & Wakil Kepala Sekolah"
-        subtitle="Mewujudkan visi pendidikan dasar Islam holistik yang mengintegrasikan adab, tahfidzul qur'an, dan keunggulan akademik Kurikulum SD Merdeka."
-        primaryCtaText="Lihat Profil Pimpinan"
-        primaryCtaHref="#pimpinan-utama"
-        secondaryCtaText="Dewan Guru Lengkap"
-        secondaryCtaHref="/guru"
-      />
-
-      <section id="pimpinan-utama" className="py-16 lg:py-24 bg-white border-b border-[#f0f0f0]">
+      <section id="pimpinan-utama" className="py-16 lg:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* SECTION HEADER */}
           <div className="max-w-3xl mb-12">
@@ -253,7 +240,7 @@ export default async function KepalaWakilPage() {
                     <div className="px-6 py-4 bg-[#fafafc] border-t border-[#f0f0f0] flex items-center justify-between text-[13px]">
                       <span className="text-[#7a7a7a]">Tim Manajemen SD</span>
                       <Button
-                        href="/guru"
+                        href="/profil/guru"
                         variant="secondary-pill"
                         size="sm"
                         className="text-[12px] py-1 px-3"
@@ -271,14 +258,14 @@ export default async function KepalaWakilPage() {
 
       {/* Bottom CTA */}
       <CTASection
-        theme="dark"
+        theme="neutral"
         eyebrow="Konsultasi & Silaturahmi"
         title="Ingin Berkenalan Lebih Dekat dengan SD Plus An-Nur?"
         description="Pintu komunikasi kami terbuka lebar bagi orang tua murid yang ingin mendiskusikan masa depan pendidikan ananda."
-        primaryText="Hubungi Kontak & Lokasi"
+        primaryText="Hubungi Kami"
         primaryHref="/kontak"
-        secondaryText="Kembali ke Profil Sekolah"
-        secondaryHref="/profil"
+        secondaryText=""
+        secondaryHref=""
       />
     </MainLayout>
   );

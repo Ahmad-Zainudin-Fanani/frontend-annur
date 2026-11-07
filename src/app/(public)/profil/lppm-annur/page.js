@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import MainLayout from "@/components/templates/MainLayout";
-import HeroTile from "@/components/organisms/HeroTile";
 import FoundationStructure from "@/components/organisms/FoundationStructure";
+import CTASection from "@/components/organisms/CTASection";
 
 export const metadata = {
   title: "LPPM ANNUR | SD Plus An-Nur",
@@ -13,15 +13,7 @@ export const instant = false;
 export default function LppmAnnurPage() {
   return (
     <MainLayout>
-      <HeroTile
-        variant="parchment"
-        eyebrow="Profil Yayasan"
-        title="LPPM ANNUR"
-        subtitle="Mengenal struktur yayasan dan jajaran pengurus LPPM ANNUR."
-        primaryCtaText="Lihat Pengurus Yayasan"
-        primaryCtaHref="#pengurus-yayasan"
-      />
-      <section id="pengurus-yayasan" className="border-b border-[#f0f0f0] bg-white py-16 lg:py-24">
+      <section id="pengurus-yayasan" className="bg-white py-16 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12 max-w-3xl">
             <span className="mb-2 block text-[13px] font-semibold uppercase tracking-[0.2px] text-[#7a7a7a]">
@@ -40,6 +32,18 @@ export default function LppmAnnurPage() {
           </Suspense>
         </div>
       </section>
+
+      {/* CTA */}
+      <CTASection
+        theme="neutral"
+        eyebrow="Silaturahmi & Kunjungan"
+        title="Ingin Mengenal Lebih Dekat LPPM ANNUR?"
+        description="Kami terbuka untuk berdiskusi dan bersilaturahmi mengenai peran yayasan dalam mendidik generasi Qur'ani yang berakhlak mulia."
+        primaryText="Hubungi Kami"
+        primaryHref="/kontak"
+        secondaryText=""
+        secondaryHref=""
+      />
     </MainLayout>
   );
 }

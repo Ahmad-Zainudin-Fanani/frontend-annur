@@ -7,6 +7,7 @@ export default function FileUpload({
   id,
   value,
   onChange,
+  onUploadingChange,
   error,
   hint,
   accept = "image/*",
@@ -21,7 +22,7 @@ export default function FileUpload({
 
   const handleFile = useCallback(
     async (file) => {
-      if (!file) return;
+      if (!file || disabled || uploading) return;
 
       const MAX_SIZE = 5 * 1024 * 1024;
       const ALLOWED = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif", "image/avif", "application/pdf"];
@@ -37,6 +38,7 @@ export default function FileUpload({
 
       setUploadError(null);
       setUploading(true);
+      onUploadingChange?.(true);
 
       try {
         const data = await apiUpload(file);
@@ -46,9 +48,10 @@ export default function FileUpload({
         setUploadError(err.message || "Upload gagal.");
       } finally {
         setUploading(false);
+        onUploadingChange?.(false);
       }
     },
-    [onChange]
+    [onChange, onUploadingChange, disabled, uploading]
   );
 
   const handleChange = (e) => {

@@ -115,8 +115,8 @@ export default async function SejarahPage() {
         description="SD Plus An-Nur terus berinovasi menjaga amanah para pendahulu dalam mendidik generasi Qur'ani yang berakhlak mulia."
         primaryText="Hubungi Kami"
         primaryHref="/kontak"
-        secondaryText="Kembali ke Profil Sekolah"
-        secondaryHref="/profil"
+        secondaryText=""
+        secondaryHref=""
       />
     </MainLayout>
   );

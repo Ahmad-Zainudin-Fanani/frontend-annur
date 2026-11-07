@@ -1,6 +1,5 @@
 import React from "react";
 import MainLayout from "@/components/templates/MainLayout";
-import HeroTile from "@/components/organisms/HeroTile";
 import CTASection from "@/components/organisms/CTASection";
 
 export const metadata = {
@@ -30,18 +29,7 @@ const devTeam = [
 export default function TimPengembangPage() {
   return (
     <MainLayout>
-      <HeroTile
-        variant="white"
-        eyebrow="Inovasi & Digitalisasi Pendidikan"
-        title="Tim Pengembang WEB SD Plus An-Nur"
-        subtitle="Kolaborasi tim pengembang dalam merancang website resmi berstandar modern, elegan, dan ramah pengguna dengan prinsip Atomic Design."
-        primaryCtaText="Lihat Tim Pengembang"
-        primaryCtaHref="#tim"
-        secondaryCtaText="Kembali ke Beranda"
-        secondaryCtaHref="/"
-      />
-
-      <section id="tim" className="py-16 lg:py-20 bg-[#f5f5f7] border-b border-[#e0e0e0]">
+      <section id="tim" className="py-16 lg:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mb-12">
             <span className="text-[13px] font-semibold uppercase tracking-[0.2px] text-[#7a7a7a] mb-2 block">
@@ -90,14 +78,14 @@ export default function TimPengembangPage() {
       </section>
 
       <CTASection
-        theme="dark"
+        theme="neutral"
         eyebrow="Komitmen Kualitas"
-        title="Dukungan &amp; Pengembangan Berkelanjutan"
+        title="Dukungan & Pengembangan Berkelanjutan"
         description="Aplikasi web SD Plus An-Nur dibangun dengan standar Atomic Design, responsivitas tinggi, dan performa optimal."
-        primaryText="Kunjungi Laman Utama"
-        primaryHref="/"
-        secondaryText="Hubungi Kami"
-        secondaryHref="/kontak"
+        primaryText="Hubungi Kami"
+        primaryHref="/kontak"
+        secondaryText=""
+        secondaryHref=""
       />
     </MainLayout>
   );

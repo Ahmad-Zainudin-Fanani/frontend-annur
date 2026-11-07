@@ -40,21 +40,16 @@ const [currentPage, setCurrentPage] = useState(1);
     return filteredTeachers.slice(start, start + ITEMS_PER_PAGE);
   }, [filteredTeachers, currentPage]);
 
-  const handlePrevPage = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  const goToPage = (page) => {
+    if (page === currentPage || page < 1 || page > totalPages) return;
+    setCurrentPage(page);
     // Smooth scroll to top of section
     const elem = document.getElementById("guru");
     if (elem) elem.scrollIntoView({ behavior: "smooth" });
   };
 
-  const handleNextPage = () => {
-    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
-    const elem = document.getElementById("guru");
-    if (elem) elem.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
-    <section id="guru" className="py-16 lg:py-20 bg-[#f5f5f7]">
+    <section id="guru" className="py-16 lg:py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
           eyebrow="Tenaga Pendidik Berdedikasi"
@@ -113,38 +108,45 @@ const [currentPage, setCurrentPage] = useState(1);
 
         {/* Pagination Controls (Max 8 items per page) */}
         {totalPages > 1 && (
-          <div className="mt-12 flex items-center justify-center gap-3">
-            <button
-              type="button"
-              onClick={handlePrevPage}
-              disabled={currentPage === 1}
-              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-[13px] font-medium transition-all ${
-                currentPage === 1
-                  ? "bg-[#e5e5e7] text-[#999999] cursor-not-allowed"
-                  : "bg-white text-[#1d1d1f] border border-[#e0e0e0] hover:border-[#1d1d1f] hover:bg-[#fafafc] shadow-xs cursor-pointer apple-press-action"
-              }`}
-            >
-              <ChevronLeftIcon className="w-4 h-4" />
-              <span>Previous</span>
-            </button>
+          <div className="flex items-center justify-center mt-16 pt-8 border-t border-[#f0f0f0]">
+            <nav aria-label="Navigasi halaman" className="flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => goToPage(currentPage - 1)}
+                disabled={currentPage === 1}
+                aria-label="Halaman sebelumnya"
+                className="w-9 h-9 rounded-full flex items-center justify-center bg-[#f5f5f7] text-[#1d1d1f] hover:bg-[#e8e8ed] disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-[#f5f5f7] transition-all duration-200"
+              >
+                <ChevronLeftIcon className="w-4 h-4" />
+              </button>
 
-            <span className="text-[13px] font-medium text-[#7a7a7a] px-3">
-              Halaman <strong className="text-[#1d1d1f]">{currentPage}</strong> dari {totalPages}
-            </span>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={page}
+                  type="button"
+                  onClick={() => goToPage(page)}
+                  aria-label={`Halaman ${page}`}
+                  aria-current={currentPage === page ? "page" : undefined}
+                  className={`w-9 h-9 rounded-full text-[13px] font-medium transition-all duration-200 ${
+                    currentPage === page
+                      ? "bg-[#1d1d1f] text-white"
+                      : "text-[#7a7a7a] hover:text-[#1d1d1f] hover:bg-[#f0f0f0]"
+                  }`}
+                >
+                  {page}
+                </button>
+              ))}
 
-            <button
-              type="button"
-              onClick={handleNextPage}
-              disabled={currentPage === totalPages}
-              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-[13px] font-medium transition-all ${
-                currentPage === totalPages
-                  ? "bg-[#e5e5e7] text-[#999999] cursor-not-allowed"
-                  : "bg-white text-[#1d1d1f] border border-[#e0e0e0] hover:border-[#1d1d1f] hover:bg-[#fafafc] shadow-xs cursor-pointer apple-press-action"
-              }`}
-            >
-              <span>Next</span>
-              <ChevronRightIcon className="w-4 h-4" />
-            </button>
+              <button
+                type="button"
+                onClick={() => goToPage(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                aria-label="Halaman berikutnya"
+                className="w-9 h-9 rounded-full flex items-center justify-center bg-[#f5f5f7] text-[#1d1d1f] hover:bg-[#e8e8ed] disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-[#f5f5f7] transition-all duration-200"
+              >
+                <ChevronRightIcon className="w-4 h-4" />
+              </button>
+            </nav>
           </div>
         )}
       </div>
