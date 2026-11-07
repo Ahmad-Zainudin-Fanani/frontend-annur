@@ -16,10 +16,8 @@ import { apiFetch } from "@/lib/admin/api";
 import { useToast } from "@/context/admin/ToastContext";
 
 const CATEGORIES = [
-  { value: "kegiatan", label: "Kegiatan" },
-  { value: "prestasi", label: "Prestasi" },
-  { value: "fasilitas", label: "Fasilitas" },
-  { value: "lainnya", label: "Lainnya" },
+  { value: "Kegiatan Belajar", label: "Kegiatan Belajar" },
+  { value: "Sarana Sekolah", label: "Sarana Sekolah" },
 ];
 
 const STATUS_OPTIONS = [

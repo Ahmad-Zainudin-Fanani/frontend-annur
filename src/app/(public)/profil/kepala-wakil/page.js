@@ -1,18 +1,9 @@
 import React from "react";
 import MainLayout from "@/components/templates/MainLayout";
 import CTASection from "@/components/organisms/CTASection";
-import Badge from "@/components/atoms/Badge";
-import Button from "@/components/atoms/Button";
 import Image from "next/image";
 import ApiState from "@/components/atoms/ApiState";
 import { publicApi } from "@/data/api";
-import {
-  GraduationCapIcon,
-  AwardIcon,
-  SparklesIcon,
-  ShieldCheckIcon,
-  CheckIcon,
-} from "@/components/atoms/Icons";
 
 export const metadata = {
   title: "Kepala & Wakil Kepala Sekolah | SD Plus An-Nur",
@@ -48,6 +39,15 @@ export default async function KepalaWakilPage() {
     : principal?.photo;
   const vicePrincipals = profile.leadership.slice(1);
 
+  const principalInitials =
+    principal?.name
+      .replace(/^(?:(?:Ustadz|Ustadzah|Dr|Dra|H|Hj)\.?\s+)+/i, "")
+      .split(/\s+/)
+      .slice(0, 2)
+      .map((word) => word.charAt(0))
+      .join("")
+      .toUpperCase() || "AA";
+
   if (!principal) {
     return (
       <MainLayout>
@@ -77,94 +77,46 @@ export default async function KepalaWakilPage() {
             </p>
           </div>
 
-          {/* FEATURED: KEPALA SEKOLAH (Prominent Apple-style Hero Showcase) */}
-          <div className="bg-[#fafafc] border border-[#e0e0e0] rounded-3xl p-6 sm:p-10 lg:p-12 apple-product-shadow">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-              {/* Photo Column */}
-              <div className="lg:col-span-5 flex justify-center">
-                <div className="relative w-full max-w-85 aspect-3/4 rounded-[20px] overflow-hidden border border-[#e0e0e0] bg-[#1d1d1f] apple-product-shadow shadow-md">
-                  {principalPhoto ? (
-                    <Image
-                      src={principalPhoto}
-                      alt={principal.name}
-                      fill
-                      unoptimized
-                      className="object-cover object-top"
-                      sizes="(max-width: 1024px) 100vw, 340px"
-                      priority
-                    />
-                  ) : null}
-                  <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
-                  <div className="absolute top-4 left-4 z-10">
-                    <span className="px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md text-white text-[12px] font-medium tracking-wide border border-white/20">
-                      Kepala Sekolah
-                    </span>
-                  </div>
-                  <div className="absolute bottom-4 left-4 right-4 z-10 text-white">
-                    <p className="text-[13px] font-medium text-white/90">
-                      {profile.institutionName}
-                    </p>
-                  </div>
-                </div>
-              </div>
+          {/* FEATURED: KEPALA SEKOLAH */}
+          <div className="overflow-hidden rounded-[18px] border border-[#e0e0e0] bg-white">
+            <div className="grid grid-cols-1 lg:grid-cols-12">
+              {/* Text Column */}
+              <div className="flex flex-col justify-center px-7 py-10 sm:px-12 sm:py-14 lg:col-span-7 lg:px-16 lg:py-16">
+                <p className="text-[14px] text-[#7a7a7a]">Kepala Sekolah</p>
 
-              {/* Bio & Details Column */}
-              <div className="lg:col-span-7 flex flex-col justify-center">
-                <div className="flex flex-wrap items-center gap-2 mb-3">
-                  <Badge variant="primary" size="md">
-                    Pimpinan Lembaga
-                  </Badge>
-                  <Badge variant="emerald" size="md">
-                    <ShieldCheckIcon className="w-3.5 h-3.5 inline mr-1" />
-                    {profile.accreditation}
-                  </Badge>
-                </div>
-
-                <h3 className="text-[26px] sm:text-[32px] font-bold text-[#1d1d1f] tracking-tight leading-snug mb-2">
+                <h3 className="mt-3 text-[32px] sm:text-[40px] lg:text-[44px] font-semibold text-[#1d1d1f] tracking-[-0.02em] leading-[1.08]">
                   {principal.name}
                 </h3>
 
-                <p className="text-[16px] font-medium text-[#333333] mb-6">
-                  {principal.role}
+                <p className="mt-3 text-[15px] leading-[1.47] text-[#7a7a7a]">
+                  {principal.role || "Kepala SD Plus An-Nur"}
+                  {profile.accreditation ? ` · ${profile.accreditation}` : ""}
                 </p>
 
-                {/* Quote Callout */}
-                <div className="bg-white border-l-4 border-[#333333] rounded-r-xl p-5 border border-y-[#e0e0e0] border-r-[#e0e0e0] mb-6">
-                  <p className="text-[15px] sm:text-[16px] italic text-[#333333] leading-relaxed">
-                    &ldquo;{principal.bio}&rdquo;
+                {principal.message ? (
+                  <p className="mt-4 max-w-[52ch] text-[17px] leading-[1.47] text-[#333333]">
+                    {principal.message}
                   </p>
-                </div>
+                ) : null}
+              </div>
 
-                {/* Key Credentials Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-[#e0e0e0]">
-                  <div className="flex items-start gap-3">
-                    <div className="w-9 h-9 rounded-lg bg-[#f0f0f0] flex items-center justify-center text-[#333333] shrink-0">
-                      <GraduationCapIcon className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <span className="text-[12px] text-[#7a7a7a] uppercase font-semibold block">
-                        Latar Belakang Pendidikan
-                      </span>
-                      <span className="text-[14px] text-[#1d1d1f] font-medium leading-snug">
-                        {principal.education}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <div className="w-9 h-9 rounded-lg bg-[#f0f0f0] flex items-center justify-center text-[#333333] shrink-0">
-                      <AwardIcon className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <span className="text-[12px] text-[#7a7a7a] uppercase font-semibold block">
-                        Pengalaman Pengabdian
-                      </span>
-                      <span className="text-[14px] text-[#1d1d1f] font-medium leading-snug">
-                        {principal.experience}
-                      </span>
-                    </div>
-                  </div>
-                </div>
+              {/* Photo Column */}
+              <div className="relative flex aspect-4/3 w-full items-center justify-center overflow-hidden bg-[#f5f5f7] lg:col-span-5 lg:aspect-auto lg:min-h-[420px]">
+                {principalPhoto ? (
+                  <Image
+                    src={principalPhoto}
+                    alt={principal.name}
+                    fill
+                    unoptimized
+                    className="object-cover object-top"
+                    sizes="(max-width: 1024px) 100vw, 40vw"
+                    priority
+                  />
+                ) : (
+                  <span className="text-[80px] font-semibold tracking-[-0.02em] text-[#86868b]">
+                    {principalInitials}
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -183,72 +135,50 @@ export default async function KepalaWakilPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {vicePrincipals.map((vp, index) => {
-                // Find matching teacher record if exists
-                const isFemale = vp.gender === "P";
+                const initials =
+                  vp.name
+                    .replace(/^(?:(?:Ustadz|Ustadzah|Dr|Dra|H|Hj)\.?\s+)+/i, "")
+                    .split(/\s+/)
+                    .slice(0, 2)
+                    .map((word) => word.charAt(0))
+                    .join("")
+                    .toUpperCase() || "AA";
 
                 return (
-                  <div
+                  <article
                     key={index}
-                    className="bg-white border border-[#e0e0e0] rounded-[20px] overflow-hidden apple-product-shadow flex flex-col justify-between transition-all hover:border-[#1d1d1f] hover:-translate-y-1"
+                    className="group flex flex-col overflow-hidden rounded-[18px] border border-[#e0e0e0] bg-white transition-colors duration-200 hover:border-[#1d1d1f]"
                   >
-                    <div>
-                      {/* Portrait Header */}
-                      <div className="relative aspect-4/3 bg-linear-to-br from-[#f5f5f7] via-[#f0f0f2] to-[#e8e8ed] flex items-center justify-center border-b border-[#e0e0e0] overflow-hidden">
-                        <div className="w-24 h-24 rounded-full bg-white shadow-md border border-[#e0e0e0] flex items-center justify-center text-[#333333] font-bold text-2xl">
-                          {vp.name
-                            .replace(/^(Ustadz|Ustadzah|Dr\.|Dra\.|H\.|Hj\.)\s+/gi, "")
-                            .slice(0, 2)
-                            .toUpperCase()}
+                    {/* Foto / monogram */}
+                    <div className="relative flex aspect-4/5 w-full items-center justify-center overflow-hidden border-b border-[#f0f0f0] bg-linear-to-b from-[#f5f5f7] to-[#e8e8ed]">
+                      {vp.photo ? (
+                        <Image
+                          src={vp.photo}
+                          alt={vp.name}
+                          fill
+                          unoptimized
+                          className="object-cover object-top"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        />
+                      ) : (
+                        <div className="flex h-20 w-20 items-center justify-center rounded-full border border-[#e0e0e0] bg-white text-[22px] font-semibold tracking-[-0.01em] text-[#333333]">
+                          {initials}
                         </div>
-                        <div className="absolute top-3.5 right-3.5">
-                          <span className="px-3 py-1 rounded-full bg-white/90 backdrop-blur-xs text-[11px] font-semibold text-[#333333] border border-[#e0e0e0]">
-                            {isFemale ? "Ustadzah" : "Ustadz"}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Content */}
-                      <div className="p-6">
-                        <span className="text-[12px] font-semibold text-[#7a7a7a] uppercase tracking-wide block mb-1">
-                          {vp.role}
-                        </span>
-                        <h3 className="text-[18px] font-semibold text-[#1d1d1f] leading-snug mb-3">
-                          {vp.name}
-                        </h3>
-
-                        <div className="space-y-2 mb-4 text-[13px] text-[#555555]">
-                          <div className="flex items-start gap-2">
-                            <GraduationCapIcon className="w-4 h-4 text-[#7a7a7a] shrink-0 mt-0.5" />
-                      <span className="leading-snug">{vp.education}</span>
-                          </div>
-                          <div className="flex items-start gap-2">
-                            <SparklesIcon className="w-4 h-4 text-[#7a7a7a] shrink-0 mt-0.5" />
-                            <span className="leading-snug">{vp.experience}</span>
-                          </div>
-                        </div>
-
-                        {vp.bio && (
-                          <p className="text-[13px] italic text-[#555555] bg-[#fafafc] p-3 rounded-xl border border-[#e0e0e0] leading-relaxed">
-                            &ldquo;{vp.bio}&rdquo;
-                          </p>
-                        )}
-                      </div>
+                      )}
                     </div>
 
-                    <div className="px-6 py-4 bg-[#fafafc] border-t border-[#f0f0f0] flex items-center justify-between text-[13px]">
-                      <span className="text-[#7a7a7a]">Tim Manajemen SD</span>
-                      <Button
-                        href="/profil/guru"
-                        variant="secondary-pill"
-                        size="sm"
-                        className="text-[12px] py-1 px-3"
-                      >
-                        Lihat Dewan Guru →
-                      </Button>
+                    {/* Nama & jabatan */}
+                    <div className="flex flex-col items-center px-5 py-5 text-center">
+                      <h3 className="text-[17px] font-semibold leading-snug tracking-[-0.01em] text-[#1d1d1f]">
+                        {vp.name}
+                      </h3>
+                      <p className="mt-1 text-[14px] leading-snug text-[#7a7a7a]">
+                        {vp.role}
+                      </p>
                     </div>
-                  </div>
+                  </article>
                 );
               })}
             </div>

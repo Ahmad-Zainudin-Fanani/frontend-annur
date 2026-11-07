@@ -249,49 +249,40 @@ export default function VisionMissionPrincipal({ profile, error = null }) {
             {principal ? (
               <article
                 ref={leaderCardRef}
-                className="relative h-full min-h-[380px] lg:min-h-0 rounded-[20px] overflow-hidden border border-[#e0e0e0] bg-white flex flex-col justify-end shadow-sm group"
+                className="h-full min-h-[380px] lg:min-h-0 rounded-[20px] overflow-hidden border border-[#e0e0e0] bg-white flex flex-col shadow-sm group"
               >
-                {/* Foto resmi pimpinan di bagian atas/latar belakang */}
-                {hasPrincipalPhoto ? (
-                  <Image
-                    src={principal.photo}
-                    alt={principal.name}
-                    fill
-                    unoptimized
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-cover object-top filter brightness-[0.95] group-hover:scale-102 transition-transform duration-700"
-                    onError={() => setFailedPrincipalPhoto(principal.photo)}
-                  />
-                ) : (
-                  <div className="absolute inset-0 bg-linear-to-br from-[#272729] to-[#161617] flex items-center justify-center text-white/20">
-                    <UsersIcon className="w-20 h-20" />
-                  </div>
-                )}
+                {/* Slot foto pimpinan — rasio tetap 3:2 agar proporsional */}
+                <div className="relative w-full aspect-[3/2] shrink-0 overflow-hidden bg-[#1d1d1f]">
+                  {hasPrincipalPhoto ? (
+                    <Image
+                      src={principal.photo}
+                      alt={principal.name}
+                      fill
+                      unoptimized
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                      className="object-cover object-top transition-transform duration-700 group-hover:scale-102"
+                      onError={() => setFailedPrincipalPhoto(principal.photo)}
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-[#272729] to-[#161617] text-white/20">
+                      <UsersIcon className="w-16 h-16" />
+                    </div>
+                  )}
+                </div>
 
-                {/* Subtle gradient scrim (dibatasi agar tidak bocor ke sudut bawah kartu) */}
-                <div className="absolute inset-x-0 top-0 bottom-24 bg-linear-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+                {/* Panel konten di bawah foto */}
+                <div className="flex flex-1 flex-col bg-white p-4 sm:p-4.5">
+                  <p className="text-[13px] font-semibold tracking-[-0.01em] text-[#86868b]">
+                    Pimpinan Lembaga
+                  </p>
+                  <h3 className="mt-1 text-[17px] sm:text-[18px] lg:text-[19px] font-semibold leading-tight text-[#1d1d1f] tracking-tight whitespace-nowrap overflow-hidden text-ellipsis">
+                    {principal.name}
+                  </h3>
+                  <p className="mt-1 text-[13px] sm:text-[13.5px] text-[#7a7a7a]">
+                    {principal.role || "Kepala SD Plus An-Nur"}
+                  </p>
 
-                {/* Kotak konten overlay di bagian bawah dengan warna putih solid persis visi misi */}
-                <div className="relative z-10 bg-white rounded-t-[18px] rounded-b-[19px] border-t border-[#e0e0e0] p-4 sm:p-4.5">
-                  <div>
-                    <p className="text-[15px] sm:text-[16px] font-semibold tracking-[-0.02em] text-[#86868b]">
-                      Pimpinan Lembaga
-                    </p>
-                    <h3 className="mt-1 text-[17px] sm:text-[18px] lg:text-[19px] font-semibold leading-tight text-[#1d1d1f] tracking-tight whitespace-nowrap overflow-hidden text-ellipsis">
-                      {principal.name}
-                    </h3>
-                    <p className="mt-0.5 text-[13px] sm:text-[13.5px] font-medium text-[#7a7a7a]">
-                      {principal.role || "Kepala SD Plus An-Nur"}
-                    </p>
-
-                    {principal.bio ? (
-                      <blockquote className="mt-2 text-[12px] sm:text-[12.5px] leading-[1.45] text-[#555555] line-clamp-2">
-                        “{principal.bio}”
-                      </blockquote>
-                    ) : null}
-                  </div>
-
-                  <div className="mt-2.5 pt-2 border-t border-[#e0e0e0] flex justify-end">
+                  <div className="mt-auto flex justify-end pt-3">
                     <Link
                       href="/profil/kepala-wakil"
                       className="inline-flex items-center gap-1 text-[12px] font-medium text-[#1d1d1f] hover:text-[#6e6e73] transition-colors"

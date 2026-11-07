@@ -7,9 +7,13 @@ import ApiState from "@/components/atoms/ApiState";
 
 export default function GalleryShowcase({ galleries = [], error = null }) {
   const [category, setCategory] = useState("Semua Foto");
+  // Hanya kategori ini yang ditampilkan sebagai tombol filter.
+  const visibleCategories = ["Kegiatan Belajar", "Sarana Sekolah"];
   const categories = [
     "Semua Foto",
-    ...new Set(galleries.map((item) => item.category).filter(Boolean)),
+    ...visibleCategories.filter((item) =>
+      galleries.some((gallery) => gallery.category === item)
+    ),
   ];
   const filteredGalleries = useMemo(
     () =>
