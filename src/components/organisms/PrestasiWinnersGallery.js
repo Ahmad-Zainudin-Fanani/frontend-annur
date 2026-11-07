@@ -85,7 +85,7 @@ export default function PrestasiWinnersGallery({ achievements = [], error = null
         try {
           splitRef.current = new SplitText(headingRef.current, {
             type: "words,lines",
-            linesClass: "overflow-hidden py-0.5",
+            linesClass: "overflow-hidden pb-0.5 -mb-0.5",
           });
 
           gsap.fromTo(

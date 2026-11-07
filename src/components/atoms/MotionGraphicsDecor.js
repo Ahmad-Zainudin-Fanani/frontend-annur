@@ -13,7 +13,7 @@
 
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import { gsap, ScrollTrigger } from "@/lib/gsapConfig";
+import { gsap } from "@/lib/gsapConfig";
 
 export default function MotionGraphicsDecor() {
   const containerRef = useRef(null);
@@ -66,8 +66,6 @@ export default function MotionGraphicsDecor() {
         parallax("[data-spark]",   -0.12);
         rotate("[data-star]",  0.06);
         rotate("[data-ring]", -0.04);
-
-        return () => ScrollTrigger.getAll().forEach((t) => t.kill());
       });
 
       return () => mm.revert();

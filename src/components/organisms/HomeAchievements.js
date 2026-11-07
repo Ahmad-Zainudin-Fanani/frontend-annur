@@ -9,12 +9,14 @@
  * - Jarak scroll dihitung dinamis dari lebar track dikurangi lebar viewport
  * - Memakai CardPrestasi yang sama dengan halaman /prestasi
  * - SplitText & ScrollTrigger untuk judul dan kemunculan strip
+ * - Di layar < 768px (mobile / F12 device mode) pin dimatikan dan kartu
+ *   bisa diusap horizontal secara native; desktop tetap memakai pin + scrub
  */
 
 import Link from "next/link";
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useSyncExternalStore } from "react";
 import { useGSAP } from "@gsap/react";
-import { gsap, SplitText, ease } from "@/lib/gsapConfig";
+import { gsap, ScrollTrigger, SplitText, ease } from "@/lib/gsapConfig";
 import { ArrowUpRightIcon } from "@/components/atoms/Icons";
 import CardPrestasi from "@/components/molecules/CardPrestasi";
 import ApiState from "@/components/atoms/ApiState";
@@ -24,6 +26,26 @@ const MAX_ITEMS = 8;
 // Jarak aman agar kartu terakhir tidak menempel tepat di tepi layar.
 const END_GUTTER = 24;
 
+// Mode geser (swipe) untuk layar kecil. Desktop selalu memakai pin + scrub
+// horizontal. Sengaja hanya memakai lebar layar agar kelas CSS dan
+// ScrollTrigger memakai satu sumber kebenaran: keduanya tidak pernah aktif
+// bersamaan (mis. laptop layar sentuh yang melaporkan pointer: coarse).
+const SWIPE_MEDIA_QUERY = "(max-width: 767px)";
+
+function subscribeSwipeMode(onChange) {
+  const mq = window.matchMedia(SWIPE_MEDIA_QUERY);
+  mq.addEventListener("change", onChange);
+  return () => mq.removeEventListener("change", onChange);
+}
+
+function getSwipeModeSnapshot() {
+  return window.matchMedia(SWIPE_MEDIA_QUERY).matches;
+}
+
+function getSwipeModeServerSnapshot() {
+  return false;
+}
+
 export default function HomeAchievements({ achievements = [], error = null }) {
   const sectionRef  = useRef(null);
   const headingRef  = useRef(null);
@@ -31,6 +53,11 @@ export default function HomeAchievements({ achievements = [], error = null }) {
   const stripRef    = useRef(null);
   const viewportRef = useRef(null);
   const trackRef    = useRef(null);
+  const swipeMode   = useSyncExternalStore(
+    subscribeSwipeMode,
+    getSwipeModeSnapshot,
+    getSwipeModeServerSnapshot
+  );
 
   // Ambil maksimal 8 prestasi terbaru (tahun terbaru, lalu tanggal input)
   const latest = useMemo(() => {
@@ -111,33 +138,8 @@ export default function HomeAchievements({ achievements = [], error = null }) {
         );
       }
 
-      // 3. Pin section + geser kartu horizontal mengikuti scroll.
-      //    Jarak tempuh = lebar seluruh track dikurangi lebar viewport,
-      //    jadi kartu terakhir berhenti tepat di dalam layar.
-      const track = trackRef.current;
-      const viewport = viewportRef.current;
-
-      if (track && viewport) {
-        const getDistance = () => {
-          const scrollable = track.scrollWidth - viewport.clientWidth;
-          return scrollable > 0 ? scrollable + END_GUTTER : 0;
-        };
-
-        gsap.to(track, {
-          x: () => -getDistance(),
-          ease: "none",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top top",
-            end: () => `+=${Math.max(1, getDistance())}`,
-            pin: true,
-            pinSpacing: true,
-            scrub: 0.6,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-          },
-        });
-      }
+      // Pin & scrub horizontal ditangani effect terpisah di bawah agar bisa
+      // dibuat ulang setiap kali mode (swipe/desktop) berubah.
 
       return () => {
         if (splitRef.current) {
@@ -147,6 +149,59 @@ export default function HomeAchievements({ achievements = [], error = null }) {
       };
     },
     { scope: sectionRef, dependencies: [latest.length] }
+  );
+
+  // 3. Pin section + geser kartu horizontal mengikuti scroll (desktop).
+  //    Effect ini sengaja bergantung pada `swipeMode` supaya saat keluar dari
+  //    emulasi mobile (F12) pin langsung dibuat/dibuang ulang dan tidak
+  //    menyisakan section yang terkunci tanpa animasi.
+  useGSAP(
+    () => {
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+      if (prefersReduced || swipeMode) return;
+
+      const track = trackRef.current;
+      const viewport = viewportRef.current;
+      if (!track || !viewport) return;
+
+      const getDistance = () => {
+        const scrollable = track.scrollWidth - viewport.clientWidth;
+        return scrollable > 0 ? scrollable + END_GUTTER : 0;
+      };
+
+      gsap.to(track, {
+        x: () => -getDistance(),
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: () => `+=${Math.max(1, getDistance())}`,
+          pin: true,
+          pinSpacing: true,
+          scrub: 0.6,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          // Section ini berada di atas galeri yang juga di-pin. Prioritas
+          // lebih tinggi memastikan spacer-nya dihitung lebih dulu saat
+          // refresh (termasuk sesudah keluar dari emulasi mobile).
+          refreshPriority: 1,
+        },
+      });
+
+      // Pastikan posisi pin section lain di bawahnya ikut dihitung ulang
+      // setelah mode berganti. refreshPriority di atas menjaga urutan
+      // pengukuran terhadap galeri yang juga di-pin.
+      ScrollTrigger.refresh();
+    },
+    {
+      scope: sectionRef,
+      dependencies: [swipeMode, latest.length],
+      // Penting: revert dulu konteks lama sebelum membuat pin baru, supaya
+      // pin-spacer tidak menumpuk saat mode swipe/desktop berganti.
+      revertOnUpdate: true,
+    }
   );
 
   return (
@@ -191,7 +246,11 @@ export default function HomeAchievements({ achievements = [], error = null }) {
             ref={viewportRef}
             role="region"
             aria-label="Prestasi terkini siswa SD Plus An-Nur"
-            className="overflow-hidden"
+            className={
+              swipeMode
+                ? "overflow-x-auto overscroll-x-contain snap-x snap-mandatory [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                : "overflow-hidden"
+            }
           >
             <div
               ref={trackRef}
@@ -201,7 +260,9 @@ export default function HomeAchievements({ achievements = [], error = null }) {
               {latest.map((item) => (
                 <div
                   key={item.id}
-                  className="shrink-0 w-[340px] sm:w-[460px] lg:w-[580px]"
+                  className={`shrink-0 w-[340px] sm:w-[460px] lg:w-[580px] ${
+                    swipeMode ? "snap-start" : ""
+                  }`}
                 >
                   <CardPrestasi item={item} />
                 </div>

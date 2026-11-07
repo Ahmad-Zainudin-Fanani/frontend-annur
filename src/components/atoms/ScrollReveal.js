@@ -69,7 +69,7 @@ export default function ScrollReveal({
   );
 
   return (
-    <div ref={containerRef} className={className} style={{ willChange: "transform, opacity" }}>
+    <div ref={containerRef} className={className}>
       {children}
     </div>
   );

@@ -75,7 +75,7 @@ export default function HeroCarousel({ slides = [], error = null }) {
       try {
         splitRef.current = new SplitText(headingRef.current, {
           type: "words,lines",
-          linesClass: "overflow-hidden py-0.5",
+          linesClass: "overflow-hidden pb-0.5 -mb-0.5",
         });
 
         gsap.set(splitRef.current.words, { yPercent: 115, opacity: 0 });
@@ -202,7 +202,7 @@ export default function HeroCarousel({ slides = [], error = null }) {
         if (headingRef.current) {
           splitRef.current = new SplitText(headingRef.current, {
             type: "words,lines",
-            linesClass: "overflow-hidden py-0.5",
+            linesClass: "overflow-hidden pb-0.5 -mb-0.5",
           });
           tl.fromTo(
             splitRef.current.words,

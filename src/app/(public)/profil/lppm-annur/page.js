@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import MainLayout from "@/components/templates/MainLayout";
 import FoundationStructure from "@/components/organisms/FoundationStructure";
 import CTASection from "@/components/organisms/CTASection";
@@ -23,13 +22,7 @@ export default function LppmAnnurPage() {
               Pengurus Yayasan
             </h2>
           </div>
-          <Suspense fallback={(
-            <p role="status" className="py-10 text-center text-sm text-[#7a7a7a]">
-              Memuat data pengurus yayasan...
-            </p>
-          )}>
-            <FoundationStructure />
-          </Suspense>
+          <FoundationStructure />
         </div>
       </section>
 

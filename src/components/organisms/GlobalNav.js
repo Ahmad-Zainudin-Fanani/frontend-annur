@@ -42,6 +42,7 @@ export default function GlobalNav() {
   const [mobileMenuRoute, setMobileMenuRoute] = useState(null);
   const [profileOpenRoute, setProfileOpenRoute] = useState(null);
   const [mobileProfilExpanded, setMobileProfilExpanded] = useState(true);
+  const [hideNav, setHideNav] = useState(false);
   const headerRef = useRef(null);
   const profileTriggerRef = useRef(null);
   const panelRef = useRef(null);
@@ -183,6 +184,56 @@ export default function GlobalNav() {
     };
   }, [profileOpen]);
 
+  // Sembunyikan navbar saat scroll ke bawah, tampilkan kembali saat scroll ke atas.
+  useEffect(() => {
+    let lastY = window.scrollY;
+    let downwardAccum = 0;
+    let upwardAccum = 0;
+    let ticking = false;
+
+    const update = () => {
+      ticking = false;
+      const currentY = Math.max(window.scrollY, 0);
+      const delta = currentY - lastY;
+      lastY = currentY;
+
+      // Selalu tampil saat berada di dekat bagian atas halaman.
+      if (currentY <= 72) {
+        downwardAccum = 0;
+        upwardAccum = 0;
+        setHideNav(false);
+        return;
+      }
+
+      if (delta > 0) {
+        // Scroll ke bawah: butuh jarak cukup agar tidak berkedip.
+        upwardAccum = 0;
+        downwardAccum += delta;
+        if (downwardAccum > 24) {
+          downwardAccum = 0;
+          setHideNav(true);
+        }
+      } else if (delta < 0) {
+        // Scroll ke atas: tampilkan lebih responsif.
+        downwardAccum = 0;
+        upwardAccum += -delta;
+        if (upwardAccum > 10) {
+          upwardAccum = 0;
+          setHideNav(false);
+        }
+      }
+    };
+
+    const handleScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(update);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   // Tutup menu saat fokus keyboard keluar dari header/panel.
   const handleHeaderBlur = (event) => {
     if (
@@ -287,13 +338,17 @@ export default function GlobalNav() {
   }, [profileOpen]);
 
   const isProfilActive = pathname.startsWith("/profil");
+  // Navbar selalu terlihat saat menu sedang terbuka.
+  const navHidden = hideNav && !profileOpen && !mobileMenuOpen;
 
   return (
     <>
       <header
         ref={headerRef}
         onBlur={handleHeaderBlur}
-        className="sticky top-0 z-50 bg-[#000000]/90 backdrop-blur-md text-white select-none border-b border-[#222222]/80 transition-colors duration-300"
+        className={`sticky top-0 z-50 bg-[#000000]/90 backdrop-blur-md text-white select-none border-b border-[#222222]/80 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform motion-reduce:transition-none ${
+          navHidden ? "-translate-y-full" : "translate-y-0"
+        }`}
       >
         <div className="max-w-7xl mx-auto h-[60px] px-4 sm:px-6 lg:px-8 grid grid-cols-[1fr_auto_1fr] items-center">
           {/* Left: Brand Identity */}

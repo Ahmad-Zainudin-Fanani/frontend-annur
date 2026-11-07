@@ -24,8 +24,17 @@ export default function GSAPProvider() {
       limitCallbacks: true,
     });
 
-    // Refresh ScrollTrigger setelah semua font & gambar termuat
-    const onLoad = () => ScrollTrigger.refresh();
+    let cancelled = false;
+    const refresh = () => {
+      if (!cancelled) ScrollTrigger.refresh();
+    };
+
+    // Refresh setelah font selesai dimuat agar tinggi layout final
+    // (dan posisi pin) sudah stabil — mengurangi layout shift.
+    document.fonts?.ready.then(refresh);
+
+    // Refresh setelah semua gambar termuat.
+    const onLoad = () => refresh();
     if (document.readyState === "complete") {
       onLoad();
     } else {
@@ -33,7 +42,8 @@ export default function GSAPProvider() {
     }
 
     return () => {
-      ScrollTrigger.getAll().forEach((t) => t.kill());
+      cancelled = true;
+      window.removeEventListener("load", onLoad);
     };
   }, []);
 
