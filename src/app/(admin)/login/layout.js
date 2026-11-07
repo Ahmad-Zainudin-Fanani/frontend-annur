@@ -1,11 +1,14 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { AuthProvider } from "@/context/admin/AuthContext";
 
 export const instant = false;
 
 async function getSession() {
+  // Login juga membaca cookie sesi, jadi jangan ikut diprerender.
+  await connection();
   const cookieStore = await cookies();
   const token = cookieStore.get("admin_session")?.value;
 

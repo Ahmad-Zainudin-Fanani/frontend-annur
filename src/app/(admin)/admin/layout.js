@@ -1,6 +1,7 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { AuthProvider } from "@/context/admin/AuthContext";
 import { ToastProvider } from "@/context/admin/ToastContext";
 import AdminLayout from "@/components/admin/templates/AdminLayout";
@@ -8,6 +9,8 @@ import AdminLayout from "@/components/admin/templates/AdminLayout";
 export const instant = false;
 
 async function getSession() {
+  // Admin selalu butuh request asli (cookie sesi + data user), bukan hasil prerender.
+  await connection();
   const cookieStore = await cookies();
   const token = cookieStore.get("admin_session")?.value;
 

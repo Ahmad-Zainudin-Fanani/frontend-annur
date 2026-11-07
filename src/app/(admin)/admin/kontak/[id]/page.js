@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { use, useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import PageHeader from "@/components/admin/molecules/PageHeader";
 import Button from "@/components/admin/atoms/Button";
@@ -26,7 +26,7 @@ const PRIORITY_OPTS = [
 ];
 
 export default function CRMDetailPage({ params }) {
-  const { id } = params;
+  const { id } = use(params);
   const toast = useToast();
   const router = useRouter();
   const [contact, setContact] = useState(null);
